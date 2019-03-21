@@ -1,0 +1,31 @@
+{
+  "name": "@zesty-io/sdk",
+  "version": "0.0.1",
+  "description": "Zesty.io software development kit for node.js runtime",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zesty-io/node-sdk.git"
+  },
+  "author": "<developers@zesty.io>",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/zesty-io/node-sdk/issues"
+  },
+  "homepage": "https://github.com/zesty-io/node-sdk#readme",
+  "scripts": {
+    "precommit": "pretty-quick --staged",
+    "test": "npx ava"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "request": "^2.73.0"
+  },
+  "devDependencies": {
+    "ava": "^1.3.1",
+    "dotenv": "^7.0.0",
+    "husky": "^1.3.1",
+    "prettier": "^1.16.4",
+    "pretty-quick": "^1.10.0"
+  }
+}
