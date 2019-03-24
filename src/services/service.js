@@ -2,7 +2,25 @@
 
 const request = require("request");
 
-module.exports = class Request {
+module.exports = class Service {
+  constructor(instanceZUID, token, options) {
+    if (!instanceZUID) {
+      throw new Error(
+        "Service is missing required `instanceZUID` argument on instantiation"
+      );
+    }
+
+    if (!token) {
+      throw new Error(
+        "Service is missing required `token` argument on instantiation. All API requests have to be authenticated"
+      );
+    }
+
+    this.instanceZUID = instanceZUID;
+    this.token = token;
+    this.options = options;
+  }
+
   async getRequest(uri, params = {}) {
     if (!params.hasOwnProperty("successCode")) {
       params.successCode = 200;
@@ -61,16 +79,19 @@ module.exports = class Request {
   request(uri, params) {
     if (!this.baseAPI) {
       throw new Error(
-        "When extending the Request class you must provide a `baseAPI` property which forms the base, protocol://domain/path, of every API request."
+        "When extending the Request class you must set a `baseAPI` property which forms the base, protocol://domain/path, of every API request."
       );
     }
-
-    const URL = `${this.baseAPI}${uri}`;
+    if (!this.token) {
+      throw new Error(
+        "When extending the Request class you must set a `token` property. All API request are authenticated."
+      );
+    }
 
     return new Promise((resolve, reject) => {
       const opts = {
         method: params.method,
-        uri: URL,
+        uri: `${this.baseAPI}${uri}`,
         json: true,
         auth: {
           bearer: this.token
@@ -97,32 +118,32 @@ module.exports = class Request {
 
       // Use the "request" module to make request
       request(opts, (error, response, body) => {
-        // this.logResponse(response);
+        if (response) {
+          // Add response status code
+          const enrichedBody = { statusCode: response.statusCode, ...body };
+          const formattedBody = params.responseFormatter
+            ? params.responseFormatter(enrichedBody)
+            : enrichedBody;
 
-        if (error) {
-          // this.logError(error);
-          reject({
-            statusCode: response.statusCode,
-            error
-          });
-        }
-
-        // Add response status code
-        const enrichedResponse = { statusCode: response.statusCode, ...body };
-
-        if (response.statusCode === params.successCode) {
-          resolve(
-            params.responseFormatter
-              ? params.responseFormatter(enrichedResponse)
-              : enrichedResponse
-          );
+          if (response.statusCode === params.successCode) {
+            resolve(formattedBody);
+          } else {
+            // this.logError(enrichedBody);
+            reject(formattedBody);
+          }
         } else {
-          // this.logError(enrichedResponse);
-          reject(
-            params.responseFormatter
-              ? params.responseFormatter(enrichedResponse)
-              : enrichedResponse
-          );
+          if (error) {
+            // this.logError(error);
+            console.log(error);
+
+            reject({
+              error
+            });
+          } else {
+            reject({
+              error: "unknown network error"
+            });
+          }
         }
       });
     });

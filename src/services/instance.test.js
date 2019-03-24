@@ -4,8 +4,8 @@ require("dotenv").config();
 
 const test = require("ava");
 
-const Auth = require("../auth");
-const Instance = require("./index.js");
+const Auth = require("./auth");
+const Instance = require("./instance");
 
 async function authedInstance() {
   const auth = new Auth();
@@ -25,7 +25,7 @@ test("Instance:fetchModels", async t => {
     const instance = await authedInstance();
     const models = await instance.getModels();
 
-    console.log(models);
+    console.log(models.data.length);
 
     t.pass();
   } catch (err) {

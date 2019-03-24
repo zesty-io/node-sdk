@@ -1,7 +1,18 @@
 "use strict";
 
-module.exports = class Instance {
+const Service = require("./service");
+
+console.log("Media:Service", Service);
+
+module.exports = class Media extends Service {
   constructor(instanceZUID, token, options = {}) {
+    // super();
+
+    this.baseAPI =
+      options.mediaAPIURL ||
+      process.env.ZESTY_MEDIA_API ||
+      `https://svc.zesty.io`;
+
     this.mediaAPIEndpoints = {
       binsGETAll: "/media-manager-service/site/SITE_ID/bins",
       binsGET: "/media-manager-service/bin/BIN_ID",

@@ -3,10 +3,10 @@
 require("dotenv").config();
 
 const test = require("ava");
-const Auth = require("./index.js");
+const Auth = require("./auth");
 
 const auth = new Auth({
-  authURL: "http://127.0.0.1:3011"
+  authURL: process.env.ZESTY_AUTH_API
 });
 
 test("Auth:login:success", async t => {
@@ -47,8 +47,9 @@ test("Auth:verifyToken:success", async t => {
 test("Auth:verifyToken:fail", async t => {
   try {
     const token = await auth.verifyToken("BAD TOKEN");
-    t.is(token, false);
-  } catch (err) {
+    t.log(`token passed verification: ${token}`);
     t.fail();
+  } catch (err) {
+    t.is(err, false);
   }
 });

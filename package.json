@@ -7,7 +7,10 @@
     "type": "git",
     "url": "git+https://github.com/zesty-io/node-sdk.git"
   },
-  "author": "<developers@zesty.io>",
+  "author": "Zesty.io Developers <developers@zesty.io>",
+  "contributors": [
+    "Stuart Runyan <stuart@zesty.io>"
+  ],
   "license": "GNU",
   "bugs": {
     "url": "https://github.com/zesty-io/node-sdk/issues"

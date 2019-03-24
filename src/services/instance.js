@@ -1,17 +1,20 @@
 "use strict";
 
-const Request = require("../request");
+const Service = require("./service");
 
-module.exports = class Instance extends Request {
+// console.log("Instance:Service", Service);
+
+module.exports = class Instance extends Service {
   constructor(instanceZUID, token, options = {}) {
-    super();
+    super(instanceZUID, token, options);
 
     this.defaultAccessError = "Request Failed";
 
-    this.sitesServiceURL = options.hasOwnProperty("sitesServiceURL")
-      ? options.sitesServiceURL
-      : `https://svc.zesty.io/sites-service/${instanceZUID}`;
-
+    // Legacy API endpoints
+    this.sitesServiceURL =
+      options.sitesServiceURL ||
+      process.env.ZESTY_INSTANCE_LEGACY_API ||
+      `https://svc.zesty.io/sites-service/${instanceZUID}`;
     this.legacyAPI = {
       schedulePublishPOST: "/content/items/ITEM_ZUID/publish-schedule",
       scheduleUnpublishPATCH:
@@ -19,9 +22,10 @@ module.exports = class Instance extends Request {
       itemsDELETE: "/content/sets/MODEL_ZUID/items/ITEM_ZUID"
     };
 
-    this.baseAPI = options.hasOwnProperty("instancesAPIURL")
-      ? options.instancesAPIURL
-      : `https://${instanceZUID}.api.zesty.io/v1`;
+    this.baseAPI =
+      options.instancesAPIURL ||
+      process.env.ZESTY_INSTANCE_API ||
+      `https://${instanceZUID}.api.zesty.io/v1`;
 
     this.API = {
       fetchModels: "/content/models",
