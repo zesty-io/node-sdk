@@ -2,11 +2,9 @@
 
 const Service = require("./service");
 
-console.log("Media:Service", Service);
-
 module.exports = class Media extends Service {
   constructor(instanceZUID, token, options = {}) {
-    // super();
+    super(instanceZUID, token, options);
 
     this.baseAPI =
       options.mediaAPIURL ||

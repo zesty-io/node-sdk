@@ -9,7 +9,7 @@ const auth = new Auth({
   authURL: process.env.ZESTY_AUTH_API
 });
 
-test("Auth:login:success", async t => {
+test("login:success", async t => {
   try {
     const token = await auth.login(
       process.env.ZESTY_USER_EMAIL,
@@ -22,7 +22,7 @@ test("Auth:login:success", async t => {
   }
 });
 
-test("Auth:login:fail", async t => {
+test("login:fail", async t => {
   try {
     const token = await auth.login("BAD@USERNAME", "BAD PASSWORD");
     t.fail("Code should not be reached");
@@ -31,7 +31,7 @@ test("Auth:login:fail", async t => {
   }
 });
 
-test("Auth:verifyToken:success", async t => {
+test("verifyToken:success", async t => {
   try {
     const token = await auth.login(
       process.env.ZESTY_USER_EMAIL,
@@ -44,7 +44,7 @@ test("Auth:verifyToken:success", async t => {
   }
 });
 
-test("Auth:verifyToken:fail", async t => {
+test("verifyToken:fail", async t => {
   try {
     const token = await auth.verifyToken("BAD TOKEN");
     t.log(`token passed verification: ${token}`);

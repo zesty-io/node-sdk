@@ -3,7 +3,7 @@
 const request = require("request");
 
 module.exports = class Service {
-  constructor(instanceZUID, token, options) {
+  constructor(instanceZUID, token, options = {}) {
     if (!instanceZUID) {
       throw new Error(
         "Service is missing required `instanceZUID` argument on instantiation"

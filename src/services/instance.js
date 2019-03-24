@@ -2,8 +2,6 @@
 
 const Service = require("./service");
 
-// console.log("Instance:Service", Service);
-
 module.exports = class Instance extends Service {
   constructor(instanceZUID, token, options = {}) {
     super(instanceZUID, token, options);

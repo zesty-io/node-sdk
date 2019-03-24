@@ -20,7 +20,7 @@ async function authedInstance() {
   });
 }
 
-test("Instance:fetchModels", async t => {
+test("fetchModels", async t => {
   try {
     const instance = await authedInstance();
     const models = await instance.getModels();
