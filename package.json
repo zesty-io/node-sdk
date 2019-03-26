@@ -18,7 +18,11 @@
   "homepage": "https://github.com/zesty-io/node-sdk#readme",
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "test": "npx nyc ava --verbose"
+    "test": "npx nyc ava --verbose",
+    "release": "npm test && npm publish --access public"
+  },
+  "engines": {
+    "node": ">=8.14"
   },
   "dependencies": {
     "moment": "^2.24.0",
