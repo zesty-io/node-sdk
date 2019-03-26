@@ -35,8 +35,8 @@ module.exports = class Service {
     }
 
     return this.request(uri, {
-      method: "GET",
-      ...params
+      ...params,
+      method: "GET"
     });
   }
 
@@ -45,9 +45,9 @@ module.exports = class Service {
       params.successCode = 200;
     }
 
-    return this.request({
-      method: "DELETE",
-      ...params
+    return this.request(uri, {
+      ...params,
+      method: "DELETE"
     });
   }
 
@@ -56,9 +56,9 @@ module.exports = class Service {
       params.successCode = 200;
     }
 
-    return this.request({
-      method: "PUT",
-      ...params
+    return this.request(uri, {
+      ...params,
+      method: "PUT"
     });
   }
 
@@ -67,9 +67,9 @@ module.exports = class Service {
       params.successCode = 201;
     }
 
-    return this.request({
-      method: "POST",
-      ...params
+    return this.request(uri, {
+      ...params,
+      method: "POST"
     });
   }
 
@@ -78,9 +78,9 @@ module.exports = class Service {
       params.successCode = 200;
     }
 
-    return this.request({
-      method: "PATCH",
-      ...params
+    return this.request(uri, {
+      ...params,
+      method: "PATCH"
     });
   }
 
@@ -117,7 +117,7 @@ module.exports = class Service {
       }
 
       if (params.payload) {
-        if (params.isFormPayload) {
+        if (params.isFormData) {
           opts.formData = params.payload;
         } else {
           opts.body = params.payload;

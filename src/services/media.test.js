@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const test = require("ava");
+const FormData = require("form-data");
 
 const Auth = require("./auth");
 const Media = require("./media");
@@ -30,4 +31,19 @@ test("getBin:200", async t => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
   t.is(res.data[0].id, BIN_ZUID);
+});
+
+test.skip("updateBin:200", async t => {
+  const payload = new FormData();
+  payload.append("name", "test");
+
+  const res = await t.context.media.updateBin(BIN_ZUID, payload);
+
+  console.log(res);
+
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
+  t.is(res.data[0].id, BIN_ZUID);
+  // t.is(res.data[0].name, "test");
 });

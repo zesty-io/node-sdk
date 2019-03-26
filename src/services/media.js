@@ -15,9 +15,9 @@ module.exports = class Media extends Service {
     this.API = {
       fetchBins: "/media-manager-service/site/SITE_ID/bins",
       fetchBin: "/media-manager-service/bin/BIN_ZUID",
+      updateBin: "/media-manager-service/bin/BIN_ZUID",
 
       // todo
-      binsPATCH: "/media-manager-service/bin/BIN_ZUID",
       filesPOST: "/media-storage-service/upload/STORAGE_DRIVER/STORAGE_NAME",
       filesGET: "/media-manager-service/file/FILE_ID",
       filesGETAll: "/media-manager-service/bin/BIN_ZUID/files",
@@ -50,5 +50,13 @@ module.exports = class Media extends Service {
         BIN_ZUID: binZUID
       })
     );
+  }
+
+  async updateBin(binZUID, payload) {
+    const uri = this.interpolate(this.API.updateBin, { BIN_ZUID: binZUID });
+    return await this.patchRequest(uri, {
+      isFormData: true,
+      payload
+    });
   }
 };
