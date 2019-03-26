@@ -1,0 +1,15 @@
+{
+  "name": "import-example",
+  "version": "1.0.0",
+  "description": "Example way to import data into zesty.io using the node npm wrapper",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Zesty.io",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "@zesty-io/sdk": "^0.0.1"
+  }
+}

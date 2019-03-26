@@ -1,6 +1,6 @@
 const test = require("ava");
 
-test.skip("Service", t => {
+test.skip("test", t => {
   // Can make requests
   // Response has statusCode
 });
