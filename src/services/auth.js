@@ -28,7 +28,7 @@ module.exports = class Auth {
             resolve({
               statusCode: response.statusCode,
               ...body,
-              token: body.meta.token
+              token: body.meta.token || null
             });
           }
         }

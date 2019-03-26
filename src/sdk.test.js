@@ -3,22 +3,30 @@
 require("dotenv").config();
 
 const test = require("ava");
+const Auth = require("./services/auth");
 const SDK = require("./sdk");
 
 async function authedSDK() {
-  const sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID, null);
-  await sdk.login(
+  const auth = new Auth();
+  const res = await auth.login(
     process.env.ZESTY_USER_EMAIL,
     process.env.ZESTY_USER_PASSWORD
   );
 
-  return sdk;
+  return new SDK(process.env.ZESTY_INSTANCE_ZUID, res.token);
 }
+
+test("requires token", t => {
+  try {
+    const sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID);
+  } catch (err) {
+    t.is(err.message, "SDK: missing required `token` parameter");
+  }
+});
 
 test("authenticated", async t => {
   const sdk = await authedSDK();
   const res = await sdk.instance.getModels();
-
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });

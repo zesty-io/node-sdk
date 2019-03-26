@@ -92,13 +92,12 @@ test("getItemPublishings:200", async t => {
   t.truthy(res.data.length > 0);
   t.is(res.data[0].itemZUID, ITEM_ZUID);
 });
-test("getItemPublishing:200", async t => {
+test.skip("getItemPublishing:200", async t => {
   const res = await t.context.instance.getItemPublishing(
     MODEL_ZUID,
     ITEM_ZUID,
     PUBLISH_ZUID
   );
-
   t.is(res.statusCode, 200);
 });
 test("getItemVersions:200", async t => {
