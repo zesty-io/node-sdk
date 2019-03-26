@@ -4,52 +4,43 @@ require("dotenv").config();
 
 const test = require("ava");
 const Auth = require("./auth");
-
 const auth = new Auth({
   authURL: process.env.ZESTY_AUTH_API
 });
 
-test("login:success", async t => {
-  try {
-    const token = await auth.login(
-      process.env.ZESTY_USER_EMAIL,
-      process.env.ZESTY_USER_PASSWORD
-    );
-    t.not("", token);
-  } catch (err) {
-    console.log(err);
-    t.fail();
-  }
+// NOTE: We explicitly do not catch promise rejections,
+// instead we let them throw failing the test. Ava will
+// print the uncaught error to the console
+
+test("login:200", async t => {
+  const res = await auth.login(
+    process.env.ZESTY_USER_EMAIL,
+    process.env.ZESTY_USER_PASSWORD
+  );
+
+  t.is(res.statusCode, 200);
+  t.not("", res.token);
 });
 
-test("login:fail", async t => {
-  try {
-    const token = await auth.login("BAD@USERNAME", "BAD PASSWORD");
-    t.fail("Code should not be reached");
-  } catch (err) {
-    t.is(err.errorCode, 401);
-  }
+test("login:401", async t => {
+  const res = await auth.login("BAD@USERNAME", "BAD PASSWORD");
+  t.is(res.statusCode, 401);
 });
 
-test("verifyToken:success", async t => {
-  try {
-    const token = await auth.login(
-      process.env.ZESTY_USER_EMAIL,
-      process.env.ZESTY_USER_PASSWORD
-    );
-    const verified = await auth.verifyToken(token);
-    t.is(verified, true);
-  } catch (err) {
-    t.fail();
-  }
+test("verifyToken:200", async t => {
+  const session = await auth.login(
+    process.env.ZESTY_USER_EMAIL,
+    process.env.ZESTY_USER_PASSWORD
+  );
+  const res = await auth.verifyToken(session.token);
+
+  t.is(res.statusCode, 200);
+  t.is(res.verified, true);
 });
 
-test("verifyToken:fail", async t => {
-  try {
-    const token = await auth.verifyToken("BAD TOKEN");
-    t.log(`token passed verification: ${token}`);
-    t.fail();
-  } catch (err) {
-    t.is(err, false);
-  }
+test("verifyToken:401", async t => {
+  const res = await auth.verifyToken("BADTOKEN");
+
+  t.is(res.statusCode, 401);
+  t.is(res.verified, false);
 });

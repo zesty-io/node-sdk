@@ -11,9 +11,26 @@ module.exports = class Account extends Service {
       process.env.ZESTY_ACCOUNTS_API ||
       `https://accounts.api.zesty.io/v1`;
 
-    this.accountsAPIEndpoints = {
-      instanceGET: `/instances/${instanceZUID}`,
-      instanceUsersGET: `/instances/${instanceZUID}/users/roles`
+    this.API = {
+      fetchInstance: `/instances/${instanceZUID}`,
+      fetchInstanceUsers: `/instances/${instanceZUID}/users/roles`
     };
+  }
+
+  async getInstance() {
+    return await this.getRequest(this.API.fetchInstance);
+  }
+  async getInstanceUsers() {
+    return await this.getRequest(this.API.fetchInstanceUsers);
+  }
+  async getSiteId() {
+    if (this.siteId) {
+      return this.siteId;
+    } else {
+      const instanceData = await this.getInstance();
+      this.siteId = instanceData.data.ID;
+
+      return this.siteId;
+    }
   }
 };

@@ -31,6 +31,7 @@ module.exports = class Instance extends Service {
       fetchModelFields: "/content/models/MODEL_ZUID/fields",
       fetchModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID",
 
+      // todo
       itemsGETAll: "/content/models/MODEL_ZUID/items",
       itemsPOST: "/content/models/MODEL_ZUID/items",
       itemsGET: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
@@ -82,5 +83,27 @@ module.exports = class Instance extends Service {
 
   async getModels() {
     return await this.getRequest(this.API.fetchModels);
+  }
+  async getModel(modelZUID) {
+    return await this.getRequest(
+      this.interpolate(this.API.fetchModel, {
+        MODEL_ZUID: modelZUID
+      })
+    );
+  }
+  async getModelFields(modelZUID) {
+    return await this.getRequest(
+      this.interpolate(this.API.fetchModelFields, {
+        MODEL_ZUID: modelZUID
+      })
+    );
+  }
+  async getModelField(modelZUID, fieldZUID) {
+    return await this.getRequest(
+      this.interpolate(this.API.fetchModelField, {
+        MODEL_ZUID: modelZUID,
+        FIELD_ZUID: fieldZUID
+      })
+    );
   }
 };

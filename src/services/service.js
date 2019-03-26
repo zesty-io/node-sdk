@@ -21,6 +21,14 @@ module.exports = class Service {
     this.options = options;
   }
 
+  interpolate(url, replacementObject) {
+    for (const key in replacementObject) {
+      url = url.replace(key, replacementObject[key]);
+    }
+
+    return url;
+  }
+
   async getRequest(uri, params = {}) {
     if (!params.hasOwnProperty("successCode")) {
       params.successCode = 200;
@@ -118,32 +126,16 @@ module.exports = class Service {
 
       // Use the "request" module to make request
       request(opts, (error, response, body) => {
-        if (response) {
+        if (error) {
+          reject(error);
+        } else {
           // Add response status code
           const enrichedBody = { statusCode: response.statusCode, ...body };
           const formattedBody = params.responseFormatter
             ? params.responseFormatter(enrichedBody)
             : enrichedBody;
 
-          if (response.statusCode === params.successCode) {
-            resolve(formattedBody);
-          } else {
-            // this.logError(enrichedBody);
-            reject(formattedBody);
-          }
-        } else {
-          if (error) {
-            // this.logError(error);
-            console.log(error);
-
-            reject({
-              error
-            });
-          } else {
-            reject({
-              error: "unknown network error"
-            });
-          }
+          resolve(formattedBody);
         }
       });
     });

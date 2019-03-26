@@ -22,20 +22,14 @@ module.exports = class Auth {
           }
         },
         (error, response, body) => {
-          if (response.statusCode === 200) {
-            return resolve(body.meta.token);
+          if (error) {
+            reject(error);
           } else {
-            if (error) {
-              return reject({
-                errorCode: -1,
-                errorMessage: "Unexpected error."
-              });
-            } else {
-              return reject({
-                errorCode: response.statusCode,
-                errorMessage: body.message || ""
-              });
-            }
+            resolve({
+              statusCode: response.statusCode,
+              ...body,
+              token: body.meta.token
+            });
           }
         }
       );
@@ -53,17 +47,20 @@ module.exports = class Auth {
           json: true
         },
         (error, response, body) => {
-          if (response.statusCode === 200) {
-            return resolve(true);
+          if (error) {
+            reject(error);
           } else {
-            if (error) {
-              return reject({
-                errorCode: -1,
-                errorMessage: "Unexpected error."
-              });
-            } else {
-              return reject(false);
+            let verified = false;
+
+            if (response.statusCode === 200) {
+              verified = true;
             }
+
+            resolve({
+              statusCode: response.statusCode,
+              ...body,
+              verified
+            });
           }
         }
       );
