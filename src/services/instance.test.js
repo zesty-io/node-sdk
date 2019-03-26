@@ -9,7 +9,9 @@ const Instance = require("./instance");
 
 const MODEL_ZUID = "6-aa7788-9dhmdf";
 const FIELD_ZUID = "12-d2aa60-cj23bq";
-const ITEM_ZUID = "7-82b5cff0fc-7pkvcp";
+const ITEM_ZUID = "7-780b5a8-823sn7";
+const PUBLISH_ZUID = "18-7f5ff3a-rnn5ls";
+const ITEM_VERSION = 4;
 
 test.beforeEach(async t => {
   const auth = new Auth();
@@ -48,6 +50,12 @@ test("fetchModel:404", async t => {
 // Fields
 test("fetchModelFields:200", async t => {
   const res = await t.context.instance.getModelFields(MODEL_ZUID);
+
+  // const res = await t.context.instance.Model(MODEL_ZUID).Item(ITEM_ZUID).save();
+  // const res = await t.context.instance.Model(MODEL_ZUID).Item(ITEM_ZUID).publish();
+  // const res = await t.context.instance.Model(MODEL_ZUID).Item(ITEM_ZUID).unpublish();
+  // const res = await t.context.instance.Model(MODEL_ZUID).Item(ITEM_ZUID).delete();
+
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
@@ -61,5 +69,55 @@ test("fetchModelField:200", async t => {
 });
 
 // Content Item
+test("fetchItems:200", async t => {
+  const res = await t.context.instance.getItems(MODEL_ZUID);
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
+});
+test("fetchItem:200", async t => {
+  const res = await t.context.instance.getItem(MODEL_ZUID, ITEM_ZUID);
+  t.is(res.statusCode, 200);
+  t.truthy(typeof res.data === "object");
+  t.is(res.data.meta.ZUID, ITEM_ZUID);
+  t.is(res.data.meta.contentModelZUID, MODEL_ZUID);
+});
+test("getItemPublishings:200", async t => {
+  const res = await t.context.instance.getItemPublishings(
+    MODEL_ZUID,
+    ITEM_ZUID
+  );
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
+  t.is(res.data[0].itemZUID, ITEM_ZUID);
+});
+test("getItemPublishing:200", async t => {
+  const res = await t.context.instance.getItemPublishing(
+    MODEL_ZUID,
+    ITEM_ZUID,
+    PUBLISH_ZUID
+  );
+
+  t.is(res.statusCode, 200);
+});
+test("getItemVersions:200", async t => {
+  const res = await t.context.instance.getItemVersions(MODEL_ZUID, ITEM_ZUID);
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
+});
+test("getItemVersion:200", async t => {
+  const res = await t.context.instance.getItemVersion(
+    MODEL_ZUID,
+    ITEM_ZUID,
+    ITEM_VERSION
+  );
+  t.is(res.statusCode, 200);
+  t.truthy(typeof res.data === "object");
+  t.is(res.data.meta.contentModelZUID, MODEL_ZUID);
+  t.is(res.data.meta.ZUID, ITEM_ZUID);
+  t.is(res.data.meta.version, ITEM_VERSION);
+});
 
 // Templates
