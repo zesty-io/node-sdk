@@ -3,11 +3,10 @@
 require("dotenv").config();
 
 const test = require("ava");
-const Auth = require("./services/auth");
 const SDK = require("./sdk");
 
 async function authedSDK() {
-  const auth = new Auth();
+  const auth = new SDK.Auth();
   const res = await auth.login(
     process.env.ZESTY_USER_EMAIL,
     process.env.ZESTY_USER_PASSWORD

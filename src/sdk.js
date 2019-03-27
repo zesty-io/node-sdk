@@ -37,3 +37,5 @@ module.exports = class SDK {
     });
   }
 };
+
+module.exports.Auth = Auth;
