@@ -45,10 +45,11 @@ module.exports = class Instance extends Service {
       fetchItemVersion:
         "/content/models/MODEL_ZUID/items/ITEM_ZUID/versions/VERSION_NUMBER",
 
+      createItem: "/content/models/MODEL_ZUID/items",
+
       ///////
       // TODO all below
       ///////
-      itemsPOST: "/content/models/MODEL_ZUID/items",
       itemsPUT: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
       // Settings
@@ -174,6 +175,17 @@ module.exports = class Instance extends Service {
         ITEM_ZUID: itemZUID,
         VERSION_NUMBER: version
       })
+    );
+  }
+
+  async createItem(modelZUID, payload) {
+    return await this.postRequest(
+      this.interpolate(this.API.createItem, {
+        MODEL_ZUID: modelZUID
+      }),
+      {
+        payload
+      }
     );
   }
 };
