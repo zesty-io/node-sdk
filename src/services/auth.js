@@ -12,10 +12,16 @@ module.exports = class Auth {
 
   async login(email, password) {
     if (!email) {
-      throw new Error("Auth:login() missing required argument `email`");
+      return {
+        statusCode: 400,
+        message: "Auth:login() missing required argument `email`"
+      };
     }
     if (!password) {
-      throw new Error("Auth:login() missing required argument `password`");
+      return {
+        statusCode: 400,
+        message: "Auth:login() missing required argument `password`"
+      };
     }
 
     return new Promise((resolve, reject) => {
@@ -33,9 +39,9 @@ module.exports = class Auth {
             reject(error);
           } else {
             resolve({
-              statusCode: response.statusCode,
               ...body,
-              token: body.meta.token || null
+              statusCode: response.statusCode,
+              token: (body.meta && body.meta.token) || null
             });
           }
         }
@@ -46,7 +52,7 @@ module.exports = class Auth {
   async verifyToken(token) {
     if (!token) {
       console.log("Auth:verifyToken() called without `token` argument");
-      return false;
+      return { verified: false };
     }
     return new Promise((resolve, reject) => {
       request.get(
@@ -61,16 +67,10 @@ module.exports = class Auth {
           if (error) {
             reject(error);
           } else {
-            let verified = false;
-
-            if (response.statusCode === 200) {
-              verified = true;
-            }
-
             resolve({
-              statusCode: response.statusCode,
               ...body,
-              verified
+              statusCode: response.statusCode,
+              verified: response.statusCode === 200 ? true : false
             });
           }
         }
