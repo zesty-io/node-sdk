@@ -6,13 +6,13 @@ module.exports = class Service {
   constructor(instanceZUID, token, options = {}) {
     if (!instanceZUID) {
       throw new Error(
-        "Service is missing required `instanceZUID` argument on instantiation"
+        "Service:constructor() missing required `instanceZUID` argument on instantiation"
       );
     }
 
     if (!token) {
       throw new Error(
-        "Service is missing required `token` argument on instantiation. All API requests have to be authenticated"
+        "Service:constructor() missing required `token` argument on instantiation. All API requests have to be authenticated"
       );
     }
 

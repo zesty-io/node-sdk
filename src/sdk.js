@@ -17,7 +17,7 @@ module.exports = class SDK {
     if (token) {
       this.init(token);
     } else {
-      throw new Error("SDK: missing required `token` parameter");
+      throw new Error("SDK:constructor() missing required `token` parameter");
     }
   }
 
