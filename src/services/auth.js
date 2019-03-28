@@ -11,6 +11,13 @@ module.exports = class Auth {
   }
 
   async login(email, password) {
+    if (!email) {
+      throw new Error("Auth:login() missing required argument `email`");
+    }
+    if (!password) {
+      throw new Error("Auth:login() missing required argument `password`");
+    }
+
     return new Promise((resolve, reject) => {
       request.post(
         {
@@ -37,6 +44,10 @@ module.exports = class Auth {
   }
 
   async verifyToken(token) {
+    if (!token) {
+      console.log("Auth:verifyToken() called without `token` argument");
+      return false;
+    }
     return new Promise((resolve, reject) => {
       request.get(
         {
