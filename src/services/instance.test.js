@@ -195,7 +195,7 @@ test("upsertItem:200", async t => {
 });
 
 // Upsert: create new item
-test("upsertItem:201", async t => {
+test.skip("upsertItem:201", async t => {
   const title = `node-sdk:upsertItem:${moment().format()}`;
   const pathPart = t.context.instance.formatPath(title);
   const res = await t.context.instance.upsertItem(MODEL_ZUID, pathPart, {
