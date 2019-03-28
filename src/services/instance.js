@@ -46,61 +46,65 @@ module.exports = class Instance extends Service {
         "/content/models/MODEL_ZUID/items/ITEM_ZUID/versions/VERSION_NUMBER",
 
       createItem: "/content/models/MODEL_ZUID/items",
-
-      ///////
-      // TODO all below
-      ///////
-      itemsPUT: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
+      updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
       // Settings
-      settingsGETAll: "/env/settings",
-      settingsGET: "/env/settings/SETTINGS_ID",
+      // settingsGETAll: "/env/settings",
+      // settingsGET: "/env/settings/SETTINGS_ID",
 
       // Templates
-      viewsGETAll: "/web/views",
-      viewsGET: "/web/views/VIEW_ZUID",
-      viewsGETVersions: "/web/views/VIEW_ZUID/versions",
-      viewsGETVersion: "/web/views/VIEW_ZUID/versions/VERSION_NUMBER",
-      viewsPOST: "/web/views",
-      viewsPUT: "/web/views/VIEW_ZUID",
-      viewsPUTPublish: "/web/views/VIEW_ZUID?action=publish",
+      // viewsGETAll: "/web/views",
+      // viewsGET: "/web/views/VIEW_ZUID",
+      // viewsGETVersions: "/web/views/VIEW_ZUID/versions",
+      // viewsGETVersion: "/web/views/VIEW_ZUID/versions/VERSION_NUMBER",
+      // viewsPOST: "/web/views",
+      // viewsPUT: "/web/views/VIEW_ZUID",
+      // viewsPUTPublish: "/web/views/VIEW_ZUID?action=publish",
 
       // Stylesheets
-      stylesheetsGETAll: "/web/stylesheets",
-      stylesheetsGET: "/web/stylesheets/STYLESHEET_ZUID",
-      stylesheetsGETVersions: "/web/stylesheets/STYLESHEET_ZUID/versions",
-      stylesheetsGETVersion:
-        "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER",
-      stylesheetsPOST: "/web/stylesheets",
-      stylesheetsPUT: "/web/stylesheets/STYLESHEET_ZUID",
-      stylesheetsPUTPublish: "/web/stylesheets/STYLESHEET_ZUID?action=publish",
+      // stylesheetsGETAll: "/web/stylesheets",
+      // stylesheetsGET: "/web/stylesheets/STYLESHEET_ZUID",
+      // stylesheetsGETVersions: "/web/stylesheets/STYLESHEET_ZUID/versions",
+      // stylesheetsGETVersion:
+      //   "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER",
+      // stylesheetsPOST: "/web/stylesheets",
+      // stylesheetsPUT: "/web/stylesheets/STYLESHEET_ZUID",
+      // stylesheetsPUTPublish: "/web/stylesheets/STYLESHEET_ZUID?action=publish",
 
       // Scripts
-      scriptsGETAll: "/web/scripts",
-      scriptsGET: "/web/scripts/SCRIPT_ZUID",
-      scriptsGETVersions: "/web/scripts/SCRIPT_ZUID/versions",
-      scriptsGETVersion: "/web/scripts/SCRIPT_ZUID/versions/VERSION_NUMBER",
-      scriptsPOST: "/web/scripts",
-      scriptsPUT: "/web/scripts/SCRIPT_ZUID",
-      scriptsPUTPublish: "/web/scripts/SCRIPT_ZUID?action=publish",
+      // scriptsGETAll: "/web/scripts",
+      // scriptsGET: "/web/scripts/SCRIPT_ZUID",
+      // scriptsGETVersions: "/web/scripts/SCRIPT_ZUID/versions",
+      // scriptsGETVersion: "/web/scripts/SCRIPT_ZUID/versions/VERSION_NUMBER",
+      // scriptsPOST: "/web/scripts",
+      // scriptsPUT: "/web/scripts/SCRIPT_ZUID",
+      // scriptsPUTPublish: "/web/scripts/SCRIPT_ZUID?action=publish",
 
       // Document Tags
-      siteHeadGET: "/web/headers",
-      headTagsGETAll: "/web/headtags",
-      headTagsGET: "/web/headtags/HEADTAG_ZUID",
-      headTagsDELETE: "/web/headtags/HEADTAG_ZUID",
-      headTagsPUT: "/web/headtags/HEADTAG_ZUID",
-      headTagsPOST: "/web/headtags",
+      // siteHeadGET: "/web/headers",
+      // headTagsGETAll: "/web/headtags",
+      // headTagsGET: "/web/headtags/HEADTAG_ZUID",
+      // headTagsDELETE: "/web/headtags/HEADTAG_ZUID",
+      // headTagsPUT: "/web/headtags/HEADTAG_ZUID",
+      // headTagsPOST: "/web/headtags",
 
       // Audit Logs
-      auditsGETAll: "/env/audits",
-      auditsGET: "/env/audits/AUDIT_ZUID",
-      auditsGETParams: "/env/audits?AUDIT_SEARCH_PARAMS",
+      // auditsGETAll: "/env/audits",
+      // auditsGET: "/env/audits/AUDIT_ZUID",
+      // auditsGETParams: "/env/audits?AUDIT_SEARCH_PARAMS",
 
       // Misc.
-      navGET: "/env/nav",
-      searchGET: "/search/items?q=SEARCH_TERM" // Undocumented
+      // navGET: "/env/nav",
+      findItem: "/search/items?q=SEARCH_TERM" // Undocumented
     };
+  }
+
+  formatPath(str) {
+    return str
+      .trim()
+      .toLowerCase()
+      .replace(/\&/g, "and")
+      .replace(/[^a-zA-Z0-9]/g, "-");
   }
 
   async getModels() {
@@ -187,5 +191,40 @@ module.exports = class Instance extends Service {
         payload
       }
     );
+  }
+
+  async updateItem(modelZUID, itemZUID, payload) {
+    return await this.putRequest(
+      this.interpolate(this.API.updateItem, {
+        MODEL_ZUID: modelZUID,
+        ITEM_ZUID: itemZUID
+      }),
+      {
+        payload
+      }
+    );
+  }
+
+  async findItem(query) {
+    return await this.getRequest(
+      this.interpolate(this.API.findItem, {
+        SEARCH_TERM: query
+      })
+    );
+  }
+
+  async upsertItem(modelZUID, path, payload) {
+    const res = await this.findItem(path);
+
+    if (Array.isArray(res.data) && res.data.length) {
+      const item = res.data.find(item => item.web.pathPart === path);
+      if (item) {
+        return await this.updateItem(modelZUID, item.meta.ZUID, payload);
+      } else {
+        return await this.createItem(modelZUID, payload);
+      }
+    } else {
+      return await this.createItem(modelZUID, payload);
+    }
   }
 };

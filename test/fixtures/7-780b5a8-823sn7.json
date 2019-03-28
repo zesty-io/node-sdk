@@ -1,0 +1,33 @@
+{
+  "data": {
+    "title": "node-sdk:updateItem"
+  },
+  "meta": {
+    "contentModelName": null,
+    "contentModelZUID": "6-aa7788-9dhmdf",
+    "createdAt": "2018-12-27T21:27:04Z",
+    "langID": 1,
+    "listed": true,
+    "masterZUID": "7-780b5a8-823sn7",
+    "sort": 1,
+    "updatedAt": "2019-03-26T20:37:26Z",
+    "version": 4,
+    "ZUID": "7-780b5a8-823sn7"
+  },
+  "web": {
+    "canonicalQueryParamWhitelist": null,
+    "canonicalTagCustomValue": null,
+    "canonicalTagMode": 0,
+    "createdAt": "2019-03-26T20:37:26Z",
+    "createdByUserZUID": "5-44ccc74-tr1vmph",
+    "metaDescription": "",
+    "metaKeywords": null,
+    "metaLinkText": "23452345",
+    "metaTitle": "23452345",
+    "parentZUID": "6-aa7788-9dhmdf",
+    "path": "/23452345/",
+    "pathPart": "node-sdk-updateitem",
+    "sitemapPriority": -1,
+    "updatedAt": "2019-03-26T20:37:26Z"
+  }
+}
