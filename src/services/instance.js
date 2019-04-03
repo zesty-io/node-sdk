@@ -183,6 +183,8 @@ module.exports = class Instance extends Service {
   }
 
   async createItem(modelZUID, payload) {
+    delete payload.meta; // New items can not set their own meta
+
     return await this.postRequest(
       this.interpolate(this.API.createItem, {
         MODEL_ZUID: modelZUID
