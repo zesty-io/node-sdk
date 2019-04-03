@@ -330,6 +330,9 @@ module.exports = class Instance extends Service {
     if (Array.isArray(res.data) && res.data.length) {
       const item = res.data.find(item => item.web.pathPart === path);
       if (item) {
+        // Ensure required masterZUID is set for updates
+        payload.meta.masterZUID = item.meta.ZUID;
+
         return await this.updateItem(modelZUID, item.meta.ZUID, payload);
       } else {
         return await this.createItem(modelZUID, payload);
