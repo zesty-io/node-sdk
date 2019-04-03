@@ -99,8 +99,11 @@ module.exports = class Instance extends Service {
     };
   }
 
-  formatPath(str) {
-    return str
+  formatPath(path) {
+    if (!path) {
+      throw new Error("SDK:formatPath() missing required `path` argument");
+    }
+    return path
       .trim()
       .toLowerCase()
       .replace(/\&/g, "and")
@@ -111,6 +114,9 @@ module.exports = class Instance extends Service {
     return await this.getRequest(this.API.fetchModels);
   }
   async getModel(modelZUID) {
+    if (!modelZUID) {
+      throw new Error("SDK:getModel() missing required `modelZUID` argument");
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchModel, {
         MODEL_ZUID: modelZUID
@@ -118,6 +124,11 @@ module.exports = class Instance extends Service {
     );
   }
   async getModelFields(modelZUID) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:getModelFields() missing required `modelZUID` argument"
+      );
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchModelFields, {
         MODEL_ZUID: modelZUID
@@ -125,6 +136,16 @@ module.exports = class Instance extends Service {
     );
   }
   async getModelField(modelZUID, fieldZUID) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:getModelField() missing required `modelZUID` argument"
+      );
+    }
+    if (!fieldZUID) {
+      throw new Error(
+        "SDK:getModelField() missing required `fieldZUID` argument"
+      );
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchModelField, {
         MODEL_ZUID: modelZUID,
@@ -133,6 +154,9 @@ module.exports = class Instance extends Service {
     );
   }
   async getItems(modelZUID) {
+    if (!modelZUID) {
+      throw new Error("SDK:getItems() missing required `modelZUID` argument");
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchItems, {
         MODEL_ZUID: modelZUID
@@ -140,6 +164,12 @@ module.exports = class Instance extends Service {
     );
   }
   async getItem(modelZUID, itemZUID) {
+    if (!modelZUID) {
+      throw new Error("SDK:getItem() missing required `modelZUID` argument");
+    }
+    if (!itemZUID) {
+      throw new Error("SDK:getItem() missing required `itemZUID` argument");
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchItem, {
         MODEL_ZUID: modelZUID,
@@ -148,6 +178,16 @@ module.exports = class Instance extends Service {
     );
   }
   async getItemPublishings(modelZUID, itemZUID) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:getItemPublishings() missing required `modelZUID` argument"
+      );
+    }
+    if (!itemZUID) {
+      throw new Error(
+        "SDK:getItemPublishings() missing required `itemZUID` argument"
+      );
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchItemPublishings, {
         MODEL_ZUID: modelZUID,
@@ -156,6 +196,21 @@ module.exports = class Instance extends Service {
     );
   }
   async getItemPublishing(modelZUID, itemZUID, publishZUID) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:getItemPublishing() missing required `modelZUID` argument"
+      );
+    }
+    if (!itemZUID) {
+      throw new Error(
+        "SDK:getItemPublishing() missing required `itemZUID` argument"
+      );
+    }
+    if (!publishZUID) {
+      throw new Error(
+        "SDK:getItemPublishing() missing required `publishZUID` argument"
+      );
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchItemPublishing, {
         MODEL_ZUID: modelZUID,
@@ -165,6 +220,16 @@ module.exports = class Instance extends Service {
     );
   }
   async getItemVersions(modelZUID, itemZUID) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:getItemVersions() missing required `modelZUID` argument"
+      );
+    }
+    if (!itemZUID) {
+      throw new Error(
+        "SDK:getItemVersions() missing required `itemZUID` argument"
+      );
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchItemVersions, {
         MODEL_ZUID: modelZUID,
@@ -173,6 +238,21 @@ module.exports = class Instance extends Service {
     );
   }
   async getItemVersion(modelZUID, itemZUID, version) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:getItemVersion() missing required `modelZUID` argument"
+      );
+    }
+    if (!itemZUID) {
+      throw new Error(
+        "SDK:getItemVersion() missing required `itemZUID` argument"
+      );
+    }
+    if (!version) {
+      throw new Error(
+        "SDK:getItemVersion() missing required `version` argument"
+      );
+    }
     return await this.getRequest(
       this.interpolate(this.API.fetchItemVersion, {
         MODEL_ZUID: modelZUID,
@@ -183,6 +263,13 @@ module.exports = class Instance extends Service {
   }
 
   async createItem(modelZUID, payload) {
+    if (!modelZUID) {
+      throw new Error("SDK:createItem() missing required `modelZUID` argument");
+    }
+    if (!payload) {
+      throw new Error("SDK:createItem() missing required `payload` argument");
+    }
+
     delete payload.meta; // New items can not set their own meta
 
     return await this.postRequest(
@@ -196,6 +283,15 @@ module.exports = class Instance extends Service {
   }
 
   async updateItem(modelZUID, itemZUID, payload) {
+    if (!modelZUID) {
+      throw new Error("SDK:updateItem() missing required `modelZUID` argument");
+    }
+    if (!itemZUID) {
+      throw new Error("SDK:updateItem() missing required `itemZUID` argument");
+    }
+    if (!payload) {
+      throw new Error("SDK:updateItem() missing required `payload` argument");
+    }
     return await this.putRequest(
       this.interpolate(this.API.updateItem, {
         MODEL_ZUID: modelZUID,
@@ -208,6 +304,9 @@ module.exports = class Instance extends Service {
   }
 
   async findItem(query) {
+    if (!query) {
+      throw new Error("SDK:findItem() missing required `query` argument");
+    }
     return await this.getRequest(
       this.interpolate(this.API.findItem, {
         SEARCH_TERM: query
@@ -216,6 +315,16 @@ module.exports = class Instance extends Service {
   }
 
   async upsertItem(modelZUID, path, payload) {
+    if (!modelZUID) {
+      throw new Error("SDK:upsertItem() missing required `modelZUID` argument");
+    }
+    if (!path) {
+      throw new Error("SDK:upsertItem() missing required `path` argument");
+    }
+    if (!payload) {
+      throw new Error("SDK:upsertItem() missing required `payload` argument");
+    }
+
     const res = await this.findItem(path);
 
     if (Array.isArray(res.data) && res.data.length) {
