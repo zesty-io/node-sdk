@@ -35,33 +35,6 @@ test.beforeEach(async t => {
   );
 });
 
-test.skip("proposed API interface", async t => {
-  // const instance = sdk.Instance(INSTANCE_ZUID)
-  // const model = instance.Model(MODEL_ZUID)
-  // const res = await model.Item(ITEM_ZUID).get();
-  // const res = await model.Item(ITEM_ZUID).save();
-  // const res = await model.Item(ITEM_ZUID).publish();
-  // const res = await model.Item(ITEM_ZUID).unpublish();
-  // const res = await model.Item(ITEM_ZUID).delete();
-  // const res = await model.Item().create({
-  //   data: {
-  //     field1: "Hello Test 1",
-  //     field2: "Hello Test 2"
-  //   },
-  //   web: {
-  //     canonicalTagMode: 1,
-  //     metaLinkText: "Hello Test 1",
-  //     metaTitle: "Meta Title Text",
-  //     metaKeywords: "meta,keyword,list",
-  //     metaDescription: "This is the meta description."
-  //   },
-  //   meta: {
-  //     contentModelZUID: MODEL_ZUID,
-  //     createdByUserZUID: USER_ZUID
-  //   }
-  // })
-});
-
 // Models
 test("fetchModels:200", async t => {
   const res = await t.context.instance.getModels();

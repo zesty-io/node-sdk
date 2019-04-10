@@ -3,22 +3,21 @@
 const request = require("request");
 
 module.exports = class Service {
-  constructor(instanceZUID, token, options = {}) {
-    if (!instanceZUID) {
+  constructor(baseAPI, token) {
+    if (!baseAPI) {
       throw new Error(
-        "Service:constructor() missing required `instanceZUID` argument on instantiation"
+        "SDK:Service:constructor() missing required `baseAPI` argument on instantiation"
       );
     }
 
     if (!token) {
       throw new Error(
-        "Service:constructor() missing required `token` argument on instantiation. All API requests have to be authenticated"
+        "SDK:Service:constructor() missing required `token` argument on instantiation. All API requests have to be authenticated"
       );
     }
 
-    this.instanceZUID = instanceZUID;
+    this.baseAPI = baseAPI;
     this.token = token;
-    this.options = options;
   }
 
   interpolate(url, replacementObject) {
@@ -85,17 +84,6 @@ module.exports = class Service {
   }
 
   request(uri, params) {
-    if (!this.baseAPI) {
-      throw new Error(
-        "When extending the Request class you must set a `baseAPI` property which forms the base, protocol://domain/path, of every API request."
-      );
-    }
-    if (!this.token) {
-      throw new Error(
-        "When extending the Request class you must set a `token` property. All API request are authenticated."
-      );
-    }
-
     return new Promise((resolve, reject) => {
       const opts = {
         method: params.method,
