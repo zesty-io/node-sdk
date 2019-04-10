@@ -25,6 +25,10 @@ test.beforeEach(async t => {
     process.env.ZESTY_USER_PASSWORD
   );
 
+  if (session.statusCode !== 200) {
+    t.log(session);
+  }
+
   t.context.instance = new Instance(
     process.env.ZESTY_INSTANCE_ZUID,
     session.token
@@ -216,6 +220,23 @@ test("upsertItem:201", async t => {
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+});
+
+// Settings
+test("fetchSettings:200", async t => {
+  const res = await t.context.instance.getSettings();
+
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length);
+});
+test("fetchSetting:200", async t => {
+  const SETTING_ID = 1;
+  const res = await t.context.instance.getSetting(SETTING_ID);
+
+  t.is(res.statusCode, 200);
+  t.truthy(typeof res.data === "object");
+  t.is(res.data.ID, SETTING_ID);
 });
 
 // Templates

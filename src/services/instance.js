@@ -49,8 +49,8 @@ module.exports = class Instance extends Service {
       updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
       // Settings
-      // settingsGETAll: "/env/settings",
-      // settingsGET: "/env/settings/SETTINGS_ID",
+      fetchSettings: "/env/settings",
+      fetchSetting: "/env/settings/SETTINGS_ID",
 
       // Templates
       // viewsGETAll: "/web/views",
@@ -340,5 +340,20 @@ module.exports = class Instance extends Service {
     } else {
       return await this.createItem(modelZUID, payload);
     }
+  }
+
+  async getSettings() {
+    return await this.getRequest(this.API.fetchSettings);
+  }
+
+  async getSetting(id) {
+    if (!id) {
+      throw new Error("SDK:getSetting() missing required `id` argument");
+    }
+    return await this.getRequest(
+      this.interpolate(this.API.fetchSetting, {
+        SETTINGS_ID: id
+      })
+    );
   }
 };

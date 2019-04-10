@@ -7,12 +7,12 @@ const SDK = require("./sdk");
 
 async function authedSDK() {
   const auth = new SDK.Auth();
-  const res = await auth.login(
+  const session = await auth.login(
     process.env.ZESTY_USER_EMAIL,
     process.env.ZESTY_USER_PASSWORD
   );
 
-  return new SDK(process.env.ZESTY_INSTANCE_ZUID, res.token);
+  return new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
 }
 
 test("requires token", t => {
