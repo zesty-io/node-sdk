@@ -30,9 +30,8 @@ module.exports = class Instance extends Service {
     this.legacy = new Service(sitesServiceURL, token);
     this.legacy.API = {
       publishItem: "/content/items/ITEM_ZUID/publish-schedule",
-      unpublishItem:
-        "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
-      deleteItem: "/content/sets/MODEL_ZUID/items/ITEM_ZUID"
+      unpublishItem: "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID"
+      // deleteItem: "/content/sets/MODEL_ZUID/items/ITEM_ZUID"
     };
 
     this.API = {
