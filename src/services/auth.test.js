@@ -38,10 +38,16 @@ test.skip("login:400", async t => {
     "Auth:login() missing required argument `password`"
   );
 });
-test("login:401", async t => {
+
+test("login:401||403", async t => {
   const res = await auth.login("BAD@USERNAME", "BAD PASSWORD");
-  t.is(res.statusCode, 401);
+
+  // After 5 failed login attempts the auth service locks the account and returns
+  // a 403 status code. We check for both status codes otherwise this test is inconsistent
+  // when rain over 5 times within 5 minutes.
+  t.truthy(res.statusCode == 401 || res.statusCode == 403);
 });
+
 test("login:error", async t => {
   try {
     const res = await badAuth.login(
@@ -64,16 +70,19 @@ test("verifyToken:200", async t => {
   t.is(res.statusCode, 200);
   t.is(res.verified, true);
 });
+
 test("verifyToken:401", async t => {
   const res = await auth.verifyToken("BADTOKEN");
 
   t.is(res.statusCode, 401);
   t.is(res.verified, false);
 });
+
 test("verifyToken:missing token", async t => {
   const res = await auth.verifyToken();
   t.is(res.verified, false);
 });
+
 test("verifyToken:error", async t => {
   try {
     const res = await badAuth.verifyToken("BADTOKEN");
