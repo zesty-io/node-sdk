@@ -1,6 +1,7 @@
 "use strict";
 
 const request = require("request");
+const cookie = require("cookie");
 
 module.exports = class Service {
   constructor(baseAPI, token) {
@@ -18,6 +19,8 @@ module.exports = class Service {
 
     this.baseAPI = baseAPI;
     this.token = token;
+
+    this.cookieName = process.env.COOKIE || "APP_SID";
   }
 
   interpolate(url, replacementObject) {
@@ -89,19 +92,18 @@ module.exports = class Service {
         method: params.method,
         uri: `${this.baseAPI}${uri}`,
         json: true,
+        headers: {},
         auth: {
           bearer: this.token
         }
       };
 
+      if (params.usesCookieAuth) {
+        opts.headers["Cookie"] = cookie.serialize(this.cookieName, this.token);
+      }
+
       if (params.usesXAuthHeader) {
-        opts.headers = {
-          "X-Auth": this.token
-        };
-      } else {
-        opts.auth = {
-          bearer: this.token
-        };
+        opts.headers["X-Auth"] = this.token;
       }
 
       if (params.payload) {
