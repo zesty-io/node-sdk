@@ -1,6 +1,9 @@
 "use strict";
 
+const moment = require("moment");
 const Service = require("./service");
+
+const UTC_FORMAT = "YYYY-MM-DD HH:mm:ss";
 
 module.exports = class Instance extends Service {
   constructor(instanceZUID, token, options = {}) {
@@ -19,15 +22,17 @@ module.exports = class Instance extends Service {
     super(baseAPI, token, options);
 
     // Legacy API endpoints
-    this.sitesServiceURL =
+    const sitesServiceURL =
       options.sitesServiceURL ||
       process.env.ZESTY_INSTANCE_LEGACY_API ||
       `https://svc.zesty.io/sites-service/${instanceZUID}`;
-    this.legacyAPI = {
-      schedulePublishPOST: "/content/items/ITEM_ZUID/publish-schedule",
-      scheduleUnpublishPATCH:
+
+    this.legacy = new Service(sitesServiceURL, token);
+    this.legacy.API = {
+      publishItem: "/content/items/ITEM_ZUID/publish-schedule",
+      unpublishItem:
         "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
-      itemsDELETE: "/content/sets/MODEL_ZUID/items/ITEM_ZUID"
+      deleteItem: "/content/sets/MODEL_ZUID/items/ITEM_ZUID"
     };
 
     this.API = {
@@ -326,6 +331,79 @@ module.exports = class Instance extends Service {
         payload
       }
     );
+  }
+
+  async publishItem(modelZUID, itemZUID, version) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:Instance:publishItem() missing required `modelZUID` argument"
+      );
+    }
+    if (!itemZUID) {
+      throw new Error(
+        "SDK:Instance:publishItem() missing required `itemZUID` argument"
+      );
+    }
+    if (!version) {
+      throw new Error(
+        "SDK:Instance:publishItem() missing required `version` argument"
+      );
+    }
+
+    return await this.legacy.postRequest(
+      this.legacy.interpolate(this.legacy.API.publishItem, {
+        MODEL_ZUID: modelZUID,
+        ITEM_ZUID: itemZUID
+      }),
+      {
+        usesCookieAuth: true,
+        payload: {
+          version_num: version
+        }
+      }
+    );
+  }
+
+  async unpublishItem(
+    modelZUID,
+    itemZUID,
+    publishZUID,
+    offlineAt = moment().format(UTC_FORMAT)
+  ) {
+    if (!modelZUID) {
+      throw new Error(
+        "SDK:Instance:unpublishItem() missing required `modelZUID` argument"
+      );
+    }
+    if (!itemZUID) {
+      throw new Error(
+        "SDK:Instance:unpublishItem() missing required `itemZUID` argument"
+      );
+    }
+
+    if (!publishZUID) {
+      const res = await this.getItemPublishings(modelZUID, itemZUID);
+      if (res.data.length) {
+        publishZUID = res.data[0].ZUID;
+      } else {
+        throw new Error(
+          `No publishing records found for itemZUID: ${itemZUID}`
+        );
+      }
+    }
+
+    const url = this.legacy.interpolate(this.legacy.API.unpublishItem, {
+      MODEL_ZUID: modelZUID,
+      ITEM_ZUID: itemZUID,
+      PUBLISHING_ZUID: publishZUID
+    });
+
+    return await this.legacy.patchRequest(url, {
+      usesCookieAuth: true,
+      payload: {
+        take_offline_at: offlineAt
+      }
+    });
   }
 
   async findItem(query) {
