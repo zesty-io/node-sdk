@@ -43,6 +43,10 @@ module.exports = class Instance extends Service {
       fetchModelFields: "/content/models/MODEL_ZUID/fields",
       fetchModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID",
 
+      //createField: "content/models/MODEL_ZUID/fields",
+      //updateField: "content/models/MODEL_ZUID/fields/ITEM_ZUID",
+      //deleteField: "content/models/MODEL_ZUID/fields/ITEM_ZUID"
+
       // Content
       fetchItems: "/content/models/MODEL_ZUID/items",
       fetchItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
@@ -56,6 +60,7 @@ module.exports = class Instance extends Service {
 
       createItem: "/content/models/MODEL_ZUID/items",
       updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
+      //deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID"
 
       // Settings
       fetchSettings: "/env/settings",
