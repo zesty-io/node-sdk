@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const test = require("ava");
 
-const Auth = require("./auth");
+const Auth = require("../auth");
 const Account = require("./account");
 
 test.beforeEach(async t => {

@@ -1,6 +1,6 @@
 "use strict";
 
-const Service = require("./service");
+const Service = require("../service");
 
 module.exports = class Account extends Service {
   constructor(instanceZUID, token, options = {}) {

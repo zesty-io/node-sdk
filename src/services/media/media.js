@@ -1,7 +1,7 @@
 "use strict";
 
-const Service = require("./service");
-const Account = require("./account");
+const Service = require("../service");
+const Account = require("../account");
 
 module.exports = class Media extends Service {
   constructor(instanceZUID, token, options = {}) {

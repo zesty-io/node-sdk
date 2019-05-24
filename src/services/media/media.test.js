@@ -3,7 +3,7 @@ require("dotenv").config();
 const test = require("ava");
 const FormData = require("form-data");
 
-const Auth = require("./auth");
+const Auth = require("../auth");
 const Media = require("./media");
 
 const BIN_ZUID = "1-76a04cf-dgpem";
