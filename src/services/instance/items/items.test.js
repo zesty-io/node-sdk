@@ -68,7 +68,7 @@ test("getItemVersion:200", async t => {
   t.truthy(typeof res.data === "object");
   t.is(res.data.meta.contentModelZUID, TEST_MODEL_ZUID);
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
-  t.is(res.data.meta.version, TEST_ITEM_VERSION);
+  t.is(Number(res.data.meta.version), Number(TEST_ITEM_VERSION));
 });
 test("createItem:200", async t => {
   const title = `node-sdk:createItem:${moment().valueOf()}`;
