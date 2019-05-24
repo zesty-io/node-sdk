@@ -2,9 +2,35 @@
 
 module.exports = {
   API: {
-    // auditsGETAll: "/env/audits",
-    // auditsGET: "/env/audits/AUDIT_ZUID",
-    // auditsGETParams: "/env/audits?AUDIT_SEARCH_PARAMS",
+    fetchAuditLogs: "/env/audits",
+    fetchAuditLog: "/env/audits/AUDIT_ZUID",
+    searchAuditLogs: "/env/audits?AUDIT_SEARCH_PARAMS"
   },
-  AuditLog: superclass => class extends superclass {}
+  mixin: superclass =>
+    class extends superclass {
+      async getAuditLogs() {
+        return await this.getRequest(this.interpolate(this.API.fetchAuditLogs));
+      }
+
+      async getAuditLog(auditZUID) {
+        if (!auditZUID) {
+          throw new Error(
+            "SDK:Instance:getModelFields() missing required `auditZUID` argument"
+          );
+        }
+        return await this.getRequest(
+          this.interpolate(this.API.fetchAuditLog, {
+            AUDIT_ZUID: auditZUID
+          })
+        );
+      }
+
+      async searchAuditLogs(query) {
+        return await this.getRequest(
+          this.interpolate(this.API.searchAuditLogs, {
+            AUDIT_SEARCH_PARAMS: query
+          })
+        );
+      }
+    }
 };

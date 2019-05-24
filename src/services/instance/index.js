@@ -5,6 +5,7 @@ const Models = require("./models");
 const Fields = require("./fields");
 const Items = require("./items");
 const Settings = require("./settings");
+const AuditLogs = require("./audit-logs");
 
 /**
   Utility class to combine mixins
@@ -21,14 +22,6 @@ class MixinBuilder {
 }
 let mix = superclass => new MixinBuilder(superclass);
 
-// function GenMixin(API, name, class) {
-//   return {
-//     API,
-//     mixin: superclass => class extends superclass {
-//     }
-//   }
-// }
-
 /**
   Instance Class
   Using mixins we combine sub-classes with the Service superclass to generate the `Instance` class
@@ -38,7 +31,8 @@ module.exports = class Instance extends mix(Service).with(
   Models.mixin,
   Fields.mixin,
   Items.mixin,
-  Settings.mixin
+  Settings.mixin,
+  AuditLogs.mixin
 ) {
   constructor(instanceZUID, token, options = {}) {
     if (!instanceZUID) {
@@ -72,7 +66,8 @@ module.exports = class Instance extends mix(Service).with(
       ...Models.API,
       ...Fields.API,
       ...Items.API,
-      ...Settings.API
+      ...Settings.API,
+      ...AuditLogs.API
     };
   }
 

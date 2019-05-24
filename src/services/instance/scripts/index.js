@@ -10,5 +10,5 @@ module.exports = {
     // scriptsPUT: "/web/scripts/SCRIPT_ZUID",
     // scriptsPUTPublish: "/web/scripts/SCRIPT_ZUID?action=publish"
   },
-  Script: superclass => class extends superclass {}
+  mixin: superclass => class extends superclass {}
 };

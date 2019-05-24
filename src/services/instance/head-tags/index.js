@@ -9,5 +9,5 @@ module.exports = {
     // headTagsPUT: "/web/headtags/HEADTAG_ZUID",
     // headTagsPOST: "/web/headtags",
   },
-  HeadTag: superclass => class extends superclass {}
+  mixin: superclass => class extends superclass {}
 };
