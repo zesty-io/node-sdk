@@ -15,7 +15,7 @@ module.exports = {
       async getAuditLog(auditZUID) {
         if (!auditZUID) {
           throw new Error(
-            "SDK:Instance:getModelFields() missing required `auditZUID` argument"
+            "SDK:Instance:AuditLogs:getAuditLog() missing required `auditZUID` argument"
           );
         }
         return await this.getRequest(

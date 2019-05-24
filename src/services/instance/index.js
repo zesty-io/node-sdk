@@ -6,6 +6,7 @@ const Fields = require("./fields");
 const Items = require("./items");
 const Settings = require("./settings");
 const AuditLogs = require("./audit-logs");
+const HeadTags = require("./head-tags");
 
 /**
   Utility class to combine mixins
@@ -32,7 +33,8 @@ module.exports = class Instance extends mix(Service).with(
   Fields.mixin,
   Items.mixin,
   Settings.mixin,
-  AuditLogs.mixin
+  AuditLogs.mixin,
+  HeadTags.mixin
 ) {
   constructor(instanceZUID, token, options = {}) {
     if (!instanceZUID) {
@@ -67,7 +69,8 @@ module.exports = class Instance extends mix(Service).with(
       ...Fields.API,
       ...Items.API,
       ...Settings.API,
-      ...AuditLogs.API
+      ...AuditLogs.API,
+      ...HeadTags.API
     };
   }
 

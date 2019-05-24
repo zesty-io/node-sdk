@@ -2,21 +2,8 @@ require("dotenv").config();
 
 const test = require("ava");
 
-const Auth = require("../auth");
-const Account = require("./account");
-
-test.beforeEach(async t => {
-  const auth = new Auth();
-  const session = await auth.login(
-    process.env.ZESTY_USER_EMAIL,
-    process.env.ZESTY_USER_PASSWORD
-  );
-
-  t.context.account = new Account(
-    process.env.ZESTY_INSTANCE_ZUID,
-    session.token
-  );
-});
+const authContext = require("../../../test/helpers/auth-context");
+test.beforeEach(authContext);
 
 test("getInstance:200", async t => {
   const res = await t.context.account.getInstance();
