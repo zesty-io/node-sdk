@@ -1,6 +1,6 @@
 # node-sdk
 
-> This package is the [Zesty.io](https://www.zesty.io/) SDK(software development kit) for the [node.js](https://nodejs.org/en/) runtime
+> This package is the [Zesty.io](https://www.zesty.io/) software development kit (SDK) for the [node.js](https://nodejs.org/en/) runtime
 
 ## what is zesty.io?
 
