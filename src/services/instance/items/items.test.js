@@ -214,10 +214,11 @@ test("upsertItem:201", async t => {
     },
     web: {
       createdByUserZUID: "5-44ccc74-tr1vmph",
-      parentZUID: "6-aa7788-9dhmdf",
       pathPart
     }
   });
+
+  console.log(res.data);
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
