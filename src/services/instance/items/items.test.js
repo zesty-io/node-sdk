@@ -41,7 +41,7 @@ test("getItemPublishings:200", async t => {
   t.truthy(res.data.length > 0);
   t.is(res.data[0].itemZUID, TEST_ITEM_ZUID);
 });
-test.skip("getItemPublishing:200", async t => {
+test("getItemPublishing:200", async t => {
   const res = await t.context.instance.getItemPublishing(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
