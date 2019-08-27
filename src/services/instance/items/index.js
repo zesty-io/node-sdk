@@ -17,7 +17,7 @@ module.exports = {
 
     createItem: "/content/models/MODEL_ZUID/items",
     updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
-    //deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID"
+    deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
     // NOTE should this be in a separate `Search` module?
     findItem: "/search/items?q=SEARCH_TERM" // Undocumented
@@ -27,7 +27,6 @@ module.exports = {
       // TODO migrate legacy endpoints to new api
       publishItem: "/content/items/ITEM_ZUID/publish-schedule",
       unpublishItem: "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID"
-      // deleteItem: "/content/sets/MODEL_ZUID/items/ITEM_ZUID"
     }
   },
   mixin: superclass =>
@@ -280,6 +279,15 @@ module.exports = {
         return await this.getRequest(
           this.interpolate(this.API.findItem, {
             SEARCH_TERM: query
+          })
+        );
+      }
+
+      async deleteItem(modelZUID, itemZUID) {
+        return await this.getRequest(
+          this.interpolate(this.API.deleteItem, {
+            MODEL_ZUID: modelZUID,
+            ITEM_ZUID: itemZUID
           })
         );
       }

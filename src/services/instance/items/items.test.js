@@ -218,8 +218,6 @@ test("upsertItem:201", async t => {
     }
   });
 
-  console.log(res.data);
-
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
 });
@@ -238,12 +236,10 @@ test("deleteItem:200", async t => {
   t.is(item.statusCode, 201);
   t.truthy(item.data.ZUID);
 
-  const res = await t.context.instance.createItem(
+  const res = await t.context.instance.deleteItem(
     TEST_MODEL_ZUID,
     item.data.ZUID
   );
-
-  console.log(res);
 
   t.is(res.statusCode, 200);
 });
