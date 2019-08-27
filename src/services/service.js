@@ -24,6 +24,9 @@ module.exports = class Service {
   }
 
   interpolate(url, replacementObject) {
+    if (!url) {
+      throw new Error("A url must be provided to interpolate");
+    }
     for (const key in replacementObject) {
       url = url.replace(key, replacementObject[key]);
     }

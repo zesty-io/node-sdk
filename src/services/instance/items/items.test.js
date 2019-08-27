@@ -223,3 +223,27 @@ test("upsertItem:201", async t => {
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
 });
+
+test("deleteItem:200", async t => {
+  const title = `node-sdk:deleteItem:${moment().valueOf()}`;
+  const item = await t.context.instance.createItem(TEST_MODEL_ZUID, {
+    data: {
+      title: title
+    },
+    web: {
+      pathPart: t.context.instance.formatPath(title)
+    }
+  });
+
+  t.is(item.statusCode, 201);
+  t.truthy(item.data.ZUID);
+
+  const res = await t.context.instance.createItem(
+    TEST_MODEL_ZUID,
+    item.data.ZUID
+  );
+
+  console.log(res);
+
+  t.is(res.statusCode, 200);
+});
