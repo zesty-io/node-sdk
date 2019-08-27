@@ -2,25 +2,23 @@
 
 > This package is the [Zesty.io](https://www.zesty.io/) software development kit (SDK) for the [node.js](https://nodejs.org/en/) runtime
 
-## what is zesty.io?
+### what is zesty.io?
 
 [Zesty.io](https://www.zesty.io/) is a cloud web content management system (WCMS) that is API driven with open-source user interfaces. Our software is built to automate the configuration, optimization, and distribution of digital content so marketing teams and developers can focus on creating excellent digital experiences. [Learn more in our platform knowledge base](https://zesty.org/).
 
-## pre-requisites
+### pre-requisites
 
 - [Node.js 10.16 LTS](https://nodejs.org/dist/latest-v10.x/docs/api/)
 
-## installing
+### installing
 
 ```
 npm install @zesty-io/sdk
 ```
 
-## usage
+## [Get started using the node-sdk](https://github.com/zesty-io/node-sdk/wiki)
 
-Review the [repository wiki](https://github.com/zesty-io/node-sdk/wiki) for complete documentation on usage.
-
-## development
+### development
 
 By providing a .env file and override values a developer can build the SDK code against alternate (non-production) services.
 
