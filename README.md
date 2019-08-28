@@ -1,5 +1,7 @@
 # node-sdk
 
+[!version badge](https://img.shields.io/npm/v/@zesty-io/sdk)
+
 > This package is the [Zesty.io](https://www.zesty.io/) software development kit (SDK) for the [node.js](https://nodejs.org/en/) runtime
 
 ### what is zesty.io?
@@ -20,7 +22,7 @@ npm install @zesty-io/sdk
 
 ### development
 
-By providing a .env file and override values a developer can build the SDK code against alternate (non-production) services.
+By providing a `.env` file and override values a developer can build the SDK code against alternate (non-production) services.
 
 ```
 // These are the basic SDK values. They can be hard code into your SDK usage or can be loaded
