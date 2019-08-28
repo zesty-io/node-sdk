@@ -1,6 +1,6 @@
 # node-sdk
 
-[!version badge](https://img.shields.io/npm/v/@zesty-io/sdk)
+![version badge](https://img.shields.io/npm/v/@zesty-io/sdk)
 
 > This package is the [Zesty.io](https://www.zesty.io/) software development kit (SDK) for the [node.js](https://nodejs.org/en/) runtime
 
