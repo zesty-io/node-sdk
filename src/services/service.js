@@ -119,6 +119,11 @@ module.exports = class Service {
 
       // Use the "request" module to make request
       request(opts, (error, response, body) => {
+        if (Boolean(process.env.DEBUG)) {
+          console.error(error);
+          console.log(response);
+        }
+
         if (error) {
           reject(error);
         } else {
