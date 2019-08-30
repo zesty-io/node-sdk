@@ -80,10 +80,26 @@ test.serial("deleteStylesheet:200", async t => {
   t.is(res._meta.totalResults, 1); // Deletion should result in 1
 });
 
-// TODO publish stylesheet
+// FIXME API returns 500 when missing CDN service ID
+test("publishStylesheet:200", async t => {
+  const sheet = await t.context.instance.getStylesheet(TEST_CSS_ZUID);
+
+  t.is(sheet.statusCode, 200);
+  t.is(sheet.data.ZUID, TEST_CSS_ZUID);
+
+  const res = await t.context.instance.publishStylesheet(
+    TEST_CSS_ZUID,
+    sheet.data.version
+  );
+
+  t.is(res.statusCode, 200);
+});
+
 // TODO trigger cache purge
-// TODO fetch version
+
 // TODO less file creation
 // TODO less error responses
 // TODO scss/sass file creation
 // TODO scss/sass error responses
+
+// TODO fetch version

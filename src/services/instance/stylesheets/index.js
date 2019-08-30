@@ -8,8 +8,9 @@ module.exports = {
     // stylesheetsGETVersion: "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER",
     createStylesheet: "/web/stylesheets",
     updateStylesheet: "/web/stylesheets/STYLESHEET_ZUID",
-    deleteStylesheet: "/web/stylesheets/STYLESHEET_ZUID"
-    // stylesheetsPUTPublish: "/web/stylesheets/STYLESHEET_ZUID?action=publish"
+    deleteStylesheet: "/web/stylesheets/STYLESHEET_ZUID",
+    publishStylesheet:
+      "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER"
   },
   mixin: superclass =>
     class extends superclass {
@@ -78,6 +79,14 @@ module.exports = {
         return await this.deleteRequest(
           this.interpolate(this.API.deleteStylesheet, {
             STYLESHEET_ZUID: stylesheetZUID
+          })
+        );
+      }
+      async publishStylesheet(stylesheetZUID, version) {
+        return await this.postRequest(
+          this.interpolate(this.API.publishStylesheet, {
+            STYLESHEET_ZUID: stylesheetZUID,
+            VERSION_NUMBER: version
           })
         );
       }
