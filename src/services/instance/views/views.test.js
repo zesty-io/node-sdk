@@ -7,7 +7,7 @@ const moment = require("moment");
 const authContext = require("../../../../test/helpers/auth-context");
 
 const { TEST_VIEW_ZUID } = process.env;
-// const TEST_VIEW = fs.readFileSync(`./test/fixtures/view.txt`).toString();
+const TEST_VIEW = fs.readFileSync(`./test/fixtures/view.html`).toString();
 
 test.before(authContext);
 
@@ -22,4 +22,16 @@ test("fetchView:200", async t => {
   const res = await t.context.instance.getView(TEST_VIEW_ZUID);
   t.is(res.statusCode, 200);
   t.is(res.data.ZUID, TEST_VIEW_ZUID);
+});
+
+test("createView:201", async t => {
+  const res = await t.context.instance.createView({
+    code: TEST_VIEW,
+    filename: `test-${moment().valueOf()}.css`,
+    type: "ajax-html"
+  });
+
+  t.is(res.statusCode, 201);
+  t.is(res.data.version, 1); // Newly created resource should have a version of 1
+  t.truthy(res.data.ZUID);
 });
