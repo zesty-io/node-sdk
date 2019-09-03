@@ -90,6 +90,10 @@ module.exports = class Service {
   }
 
   request(uri, params) {
+    if (!uri) {
+      throw new Error("Missing required `uri`. Can not make request.");
+    }
+
     return new Promise((resolve, reject) => {
       const opts = {
         method: params.method,
