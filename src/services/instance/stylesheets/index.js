@@ -42,7 +42,7 @@ module.exports = {
         if (!supportedTypes.includes(payload.type)) {
           throw new Error(
             `The provided \`type\` (${
-              pyaload.type
+              payload.type
             }) property is not supported. Allowed types are ${supportedTypes.join(
               ", "
             )}`
