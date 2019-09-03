@@ -73,3 +73,18 @@ test.cb("updateView:200", t => {
         });
     });
 });
+
+// FIXME API returns 500 when missing CDN service ID
+test("publishView:200", async t => {
+  const view = await t.context.instance.getView(TEST_VIEW_ZUID);
+
+  t.is(view.statusCode, 200);
+  t.is(view.data.ZUID, TEST_VIEW_ZUID);
+
+  const res = await t.context.instance.publishView(
+    TEST_VIEW_ZUID,
+    view.data.version
+  );
+
+  t.is(res.statusCode, 200);
+});
