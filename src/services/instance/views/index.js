@@ -6,8 +6,8 @@ module.exports = {
     getView: "/web/views/VIEW_ZUID",
     // viewsGETVersions: "/web/views/VIEW_ZUID/versions",
     // viewsGETVersion: "/web/views/VIEW_ZUID/versions/VERSION_NUMBER",
-    createView: "/web/views"
-    // updateView: "/web/views/VIEW_ZUID",
+    createView: "/web/views",
+    updateView: "/web/views/VIEW_ZUID"
     // publishView: "/web/views/VIEW_ZUID?action=publish",
   },
   mixin: superclass =>
@@ -63,6 +63,18 @@ module.exports = {
       async createView(payload) {
         this.validate(payload);
         return await this.postRequest(this.API.createView, { payload });
+      }
+
+      async updateView(viewZUID, payload) {
+        // this.validate(payload);
+        return await this.putRequest(
+          this.interpolate(this.API.updateView, {
+            VIEW_ZUID: viewZUID
+          }),
+          {
+            payload
+          }
+        );
       }
     }
 };
