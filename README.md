@@ -48,6 +48,11 @@ TEST_PUBLISH_ZUID=
 TEST_HEAD_TAG_ZUID=
 ```
 
+#### Testing
+```
+npm test
+```
+
 ### license
 
 [GNU](https://www.gnu.org/licenses/gpl-3.0.en.html)
