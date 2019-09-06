@@ -14,7 +14,7 @@ module.exports = {
   },
   mixin: superclass =>
     class extends superclass {
-      validate(payload) {
+      validateStylesheet(payload) {
         const supportedTypes = [
           "text/css",
           "text/less",
@@ -61,7 +61,7 @@ module.exports = {
         );
       }
       async updateStylesheet(stylesheetZUID, payload) {
-        this.validate(payload);
+        this.validateStylesheet(payload);
         return await this.putRequest(
           this.interpolate(this.API.updateStylesheet, {
             STYLESHEET_ZUID: stylesheetZUID
@@ -72,7 +72,7 @@ module.exports = {
         );
       }
       async createStylesheet(payload) {
-        this.validate(payload);
+        this.validateStylesheet(payload);
         return await this.postRequest(this.API.createStylesheet, { payload });
       }
       async deleteStylesheet(stylesheetZUID) {

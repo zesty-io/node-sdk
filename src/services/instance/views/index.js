@@ -12,7 +12,7 @@ module.exports = {
   },
   mixin: superclass =>
     class extends superclass {
-      validate(payload) {
+      validateView(payload) {
         const supportedTypes = ["snippet", "ajax-json", "ajax-html", "404"];
 
         if (!payload.code) {
@@ -61,12 +61,12 @@ module.exports = {
         );
       }
       async createView(payload) {
-        this.validate(payload);
+        this.validateView(payload);
         return await this.postRequest(this.API.createView, { payload });
       }
 
       async updateView(viewZUID, payload) {
-        // this.validate(payload);
+        // this.validateView(payload);
         return await this.putRequest(
           this.interpolate(this.API.updateView, {
             VIEW_ZUID: viewZUID
