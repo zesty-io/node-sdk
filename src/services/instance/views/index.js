@@ -17,9 +17,10 @@ module.exports = {
 
         if (!payload.code) {
           throw new Error(
-            "Your provide payload is missing a required `code` property. This should be stylesheet code."
+            "Your provide payload is missing a required `code` property. This should be view code."
           );
         }
+
         if (!payload.filename) {
           throw new Error(
             "Your provide payload is missing a required `filename` property. This is the filename this code should belong to."
@@ -28,7 +29,9 @@ module.exports = {
 
         if (!payload.type) {
           throw new Error(
-            'Your provide payload is missing a required `type` property. This is the value to represent the files http `Content-Type`. e.g. "text/css", "text/less"'
+            `Your provide payload is missing a required \`type\` property. This determines the type of view it is. Allowed types are ${supportedTypes.join(
+              ", "
+            )}`
           );
         }
 

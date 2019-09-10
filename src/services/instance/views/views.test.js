@@ -12,6 +12,54 @@ const TEST_VIEW = fs.readFileSync(`./test/fixtures/view.html`).toString();
 
 test.before(authContext);
 
+test("validation", async t => {
+  const code = await t.throwsAsync(
+    t.context.instance.createView({
+      filename: `test-${moment().valueOf()}.html`,
+      type: "ajax-html"
+    })
+  );
+
+  const filename = await t.throwsAsync(
+    t.context.instance.createView({
+      code: "test",
+      type: "ajax-html"
+    })
+  );
+
+  const type = await t.throwsAsync(
+    t.context.instance.createView({
+      code: "test",
+      filename: `test-${moment().valueOf()}.html`
+    })
+  );
+
+  const invalidType = await t.throwsAsync(
+    t.context.instance.createView({
+      code: "test",
+      filename: `test-${moment().valueOf()}.html`,
+      type: "invalid-type"
+    })
+  );
+
+  t.is(
+    code.message,
+    "Your provide payload is missing a required `code` property. This should be view code."
+  );
+  t.is(
+    filename.message,
+    "Your provide payload is missing a required `filename` property. This is the filename this code should belong to."
+  );
+  t.is(
+    type.message,
+    "Your provide payload is missing a required `type` property. This determines the type of view it is. Allowed types are snippet, ajax-json, ajax-html, 404"
+  );
+  t.is(
+    invalidType.message,
+    "he provided `type` (invalid-type) property is not supported. Allowed types are snippet, ajax-json, ajax-html, 404"
+  );
+});
+
 test("fetchViews:200", async t => {
   const res = await t.context.instance.getViews();
   t.is(res.statusCode, 200);
