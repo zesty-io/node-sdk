@@ -3,9 +3,13 @@
 require("dotenv").config();
 
 const test = require("ava");
-
 const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
+
+const MODEL_ZUID = "6-8ca8dccef4-4w7r5w";
+const FIELD_NAME = "content";
+const PATTERN = "TOKEN";
+const REPLACEMENT = "REPLACED";
 
 test("findAndReplace > require all function parameters", async t => {
   await t.throwsAsync(
@@ -16,10 +20,10 @@ test("findAndReplace > require all function parameters", async t => {
 
 test("findAndReplace > only item and models allowed", async t => {
   const result = t.context.sdk.action.findAndReplace(
-    "8-8ca8dccef4-4w7r5w",
-    "content",
-    "TOKEN",
-    "REPLACED"
+    "8-8ca8dccef4-4w7r5w", // Invalid ZUID test
+    FIELD_NAME,
+    PATTERN,
+    REPLACEMENT
   );
 
   await t.throwsAsync(
@@ -31,10 +35,10 @@ test("findAndReplace > only item and models allowed", async t => {
 test("findAndReplace > on model items", async t => {
   try {
     const result = await t.context.sdk.action.findAndReplace(
-      "6-8ca8dccef4-4w7r5w",
-      "content",
-      "REPLACED $ CHAR PHRASE",
-      "REPLACED"
+      MODEL_ZUID,
+      FIELD_NAME,
+      PATTERN,
+      REPLACEMENT
     );
 
     // At least one item is updated
@@ -43,6 +47,14 @@ test("findAndReplace > on model items", async t => {
     // All update requests returned success response
     const successCount = result.filter(res => res.statusCode === 200);
     t.is(result.length, successCount.length);
+
+    // Reset test content
+    await t.context.sdk.action.findAndReplace(
+      MODEL_ZUID,
+      FIELD_NAME,
+      REPLACEMENT,
+      PATTERN
+    );
   } catch (error) {
     console.log(error);
     t.fail();
