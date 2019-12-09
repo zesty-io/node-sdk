@@ -55,7 +55,7 @@ test("validation", async t => {
   );
   t.is(
     invalidType.message,
-    "he provided `type` (invalid-type) property is not supported. Allowed types are snippet, ajax-json, ajax-html, 404"
+    "The provided `type` (invalid-type) property is not supported. Allowed types are snippet, ajax-json, ajax-html, 404"
   );
 });
 
