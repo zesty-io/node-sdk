@@ -7,14 +7,14 @@ const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
 test("getBins:200", async t => {
-  const res = await t.context.media.getBins();
+  const res = await t.context.sdk.media.getBins();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
 test("getBin:200", async t => {
-  const res = await t.context.media.getBin(process.env.TEST_BIN_ZUID);
+  const res = await t.context.sdk.media.getBin(process.env.TEST_BIN_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
@@ -25,7 +25,7 @@ test.skip("updateBin:200", async t => {
   const payload = new FormData();
   payload.append("name", "test");
 
-  const res = await t.context.media.updateBin(
+  const res = await t.context.sdk.media.updateBin(
     process.env.TEST_BIN_ZUID,
     payload
   );

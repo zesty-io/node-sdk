@@ -12,19 +12,21 @@ test.beforeEach(authContext);
 
 // Models
 test("fetchModels:200", async t => {
-  const res = await t.context.instance.getModels();
+  const res = await t.context.sdk.instance.getModels();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 test("fetchModel:200", async t => {
-  const res = await t.context.instance.getModel(process.env.TEST_MODEL_ZUID);
+  const res = await t.context.sdk.instance.getModel(
+    process.env.TEST_MODEL_ZUID
+  );
   t.is(res.statusCode, 200);
   t.truthy(typeof res.data === "object");
   t.is(res.data.ZUID, process.env.TEST_MODEL_ZUID);
 });
 test("fetchModel:404", async t => {
-  const res = await t.context.instance.getModel("6-0000-00000");
+  const res = await t.context.sdk.instance.getModel("6-0000-00000");
   t.is(res.statusCode, 404);
   t.truthy(typeof res.data === "object");
   t.is(Object.keys(res.data).length, 0);
