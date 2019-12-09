@@ -6,7 +6,7 @@ const authContext = require("../../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
 test("getAuditLogs:200", async t => {
-  const res = await t.context.instance.getAuditLogs();
+  const res = await t.context.sdk.instance.getAuditLogs();
 
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
@@ -14,7 +14,7 @@ test("getAuditLogs:200", async t => {
 });
 
 test("getAuditLog:200", async t => {
-  const res = await t.context.instance.getAuditLog(
+  const res = await t.context.sdk.instance.getAuditLog(
     process.env.TEST_AUDIT_LOG_ZUID
   );
   t.is(res.statusCode, 200);
@@ -23,11 +23,11 @@ test("getAuditLog:200", async t => {
 });
 
 test("searchAuditLogs:200", async t => {
-  const res = await t.context.instance.searchAuditLogs(
+  const res = await t.context.sdk.instance.searchAuditLogs(
     "?limit=5&order=created&dir=desc&action=4"
   );
 
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
-  t.is(res.data.length, 5);
+  t.truthy(res.data.length > 0);
 });

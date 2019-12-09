@@ -17,7 +17,7 @@ async function authedSDK() {
 
 test("requires token", t => {
   try {
-    const sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID);
+    new SDK(process.env.ZESTY_INSTANCE_ZUID);
   } catch (err) {
     t.is(err.message, "SDK:constructor() missing required `token` parameter");
   }

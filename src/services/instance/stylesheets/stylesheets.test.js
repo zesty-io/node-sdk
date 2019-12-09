@@ -27,20 +27,20 @@ const TEST_CSS = fs.readFileSync(`./test/fixtures/stylesheet.css`).toString();
 test.before(authContext);
 
 test("fetchStylesheets:200", async t => {
-  const res = await t.context.instance.getStylesheets();
+  const res = await t.context.sdk.instance.getStylesheets();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
 test("fetchStylesheet:200", async t => {
-  const res = await t.context.instance.getStylesheet(TEST_CSS_ZUID);
+  const res = await t.context.sdk.instance.getStylesheet(TEST_CSS_ZUID);
   t.is(res.statusCode, 200);
   t.is(res.data.ZUID, TEST_CSS_ZUID);
 });
 
 test("updateStylesheet:200", async t => {
-  const res = await t.context.instance.updateStylesheet(TEST_CSS_ZUID, {
+  const res = await t.context.sdk.instance.updateStylesheet(TEST_CSS_ZUID, {
     code: TEST_CSS,
     filename: `test-${moment().valueOf()}.css`,
     type: "text/css"
@@ -52,7 +52,7 @@ test("updateStylesheet:200", async t => {
 });
 
 test("createStylesheet:201", async t => {
-  const res = await t.context.instance.createStylesheet({
+  const res = await t.context.sdk.instance.createStylesheet({
     code: TEST_CSS,
     filename: `test-${moment().valueOf()}.css`,
     type: "text/css"
@@ -66,7 +66,7 @@ test("createStylesheet:201", async t => {
 // Ran serially to avoid non-unique filenames.
 // Using millisecond unix timestamps. Running tests async it seem like it may need nanosecond percision.
 test.serial("deleteStylesheet:200", async t => {
-  const stylesheet = await t.context.instance.createStylesheet({
+  const stylesheet = await t.context.sdk.instance.createStylesheet({
     code: TEST_CSS,
     filename: `test-${moment().valueOf()}.css`,
     type: "text/css"
@@ -74,7 +74,9 @@ test.serial("deleteStylesheet:200", async t => {
 
   t.truthy(stylesheet.data.ZUID);
 
-  const res = await t.context.instance.deleteStylesheet(stylesheet.data.ZUID);
+  const res = await t.context.sdk.instance.deleteStylesheet(
+    stylesheet.data.ZUID
+  );
 
   t.is(res.statusCode, 200);
   t.is(res._meta.totalResults, 1); // Deletion should result in 1
@@ -82,12 +84,12 @@ test.serial("deleteStylesheet:200", async t => {
 
 // FIXME API returns 500 when missing CDN service ID
 test("publishStylesheet:200", async t => {
-  const sheet = await t.context.instance.getStylesheet(TEST_CSS_ZUID);
+  const sheet = await t.context.sdk.instance.getStylesheet(TEST_CSS_ZUID);
 
   t.is(sheet.statusCode, 200);
   t.is(sheet.data.ZUID, TEST_CSS_ZUID);
 
-  const res = await t.context.instance.publishStylesheet(
+  const res = await t.context.sdk.instance.publishStylesheet(
     TEST_CSS_ZUID,
     sheet.data.version
   );

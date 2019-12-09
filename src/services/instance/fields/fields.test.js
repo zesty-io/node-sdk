@@ -7,7 +7,7 @@ test.beforeEach(authContext);
 
 // Fields
 test("fetchModelFields:200", async t => {
-  const res = await t.context.instance.getModelFields(
+  const res = await t.context.sdk.instance.getModelFields(
     process.env.TEST_MODEL_ZUID
   );
   t.is(res.statusCode, 200);
@@ -15,7 +15,7 @@ test("fetchModelFields:200", async t => {
   t.truthy(res.data.length > 0);
 });
 test("fetchModelField:200", async t => {
-  const res = await t.context.instance.getModelField(
+  const res = await t.context.sdk.instance.getModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID
   );
