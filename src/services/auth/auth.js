@@ -7,7 +7,7 @@ module.exports = class Auth {
     this.authURL =
       options.authURL ||
       process.env.ZESTY_AUTH_API ||
-      "https://svc.zesty.io/auth";
+      "https://auth.api.zesty.io";
   }
 
   async login(email, password) {
