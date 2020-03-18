@@ -5,7 +5,9 @@ const request = require("request");
 module.exports = class Auth {
   constructor(options = {}) {
     this.authURL =
-      options.authURL || process.env.ZESTY_AUTH_API || "https://auth.zesty.io";
+      options.authURL ||
+      process.env.ZESTY_AUTH_API ||
+      "https://auth.api.zesty.io";
   }
 
   async login(email, password) {
