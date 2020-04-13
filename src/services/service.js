@@ -105,10 +105,12 @@ module.exports = class Service {
         }
       };
 
+      // DEPRECATED
       if (params.usesCookieAuth) {
         opts.headers["Cookie"] = cookie.serialize(this.cookieName, this.token);
       }
 
+      // DEPRECATED
       if (params.usesXAuthHeader) {
         opts.headers["X-Auth"] = this.token;
       }
