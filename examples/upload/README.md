@@ -1,6 +1,6 @@
-# Example for Zesty.io SDK
+# Example File Upload
 
-> Example of uploading media to a Zesty.io instance bin using the [`node-sdk`](https://github.com/zesty-io/node-sdk)
+> This is an example of uploading media to a Zesty.io instance bin using the [`node-sdk`](https://github.com/zesty-io/node-sdk)
 
 
 ### Create an Environment File
