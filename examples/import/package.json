@@ -9,7 +9,7 @@
   "author": "Zesty.io",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^6.2.0",
-    "@zesty-io/sdk": "^0.0.1"
+    "dotenv": "^8.2.0",
+    "@zesty-io/sdk": "^0.0.11"
   }
 }
