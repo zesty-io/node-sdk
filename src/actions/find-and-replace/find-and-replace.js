@@ -25,7 +25,7 @@ module.exports = async function findAndReplace(
   let dirty = [];
 
   // Replace values
-  res.data.forEach(item => {
+  res.data.forEach((item) => {
     if (item.data && item.data[fieldName]) {
       // Coerce value to string to ensure we can run `replace`
       const value = String(item.data[fieldName]);
@@ -42,7 +42,7 @@ module.exports = async function findAndReplace(
 
   // Update dirty items
   return Promise.all(
-    dirty.map(item => {
+    dirty.map((item) => {
       console.log(`Updating item: ${item.meta.ZUID}`);
 
       return this.instance.updateItem(

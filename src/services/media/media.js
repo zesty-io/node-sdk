@@ -14,8 +14,8 @@ module.exports = class Media extends Service {
       `https://svc.zesty.io`;
 
     this.API = {
-      fetchBins: "/media-manager-service/site/SITE_ID/bins",
       fetchBin: "/media-manager-service/bin/BIN_ZUID",
+      fetchBins: "/media-manager-service/site/SITE_ID/bins",
       updateBin: "/media-manager-service/bin/BIN_ZUID",
 
       fetchFile: "/media-manager-service/file/FILE_ID",
@@ -23,14 +23,13 @@ module.exports = class Media extends Service {
       createFile:
         "/media-storage-service/upload/STORAGE_PROVIDER/STORAGE_LOCATION",
       updateFile: "/media-manager-service/file/FILE_ZUID",
-      deleteFile: "/media-manager-service/file/FILE_ZUID"
+      deleteFile: "/media-manager-service/file/FILE_ZUID",
 
-      // todo
-      // groupsGET: "/media-manager-service/group/GROUP_ID",
-      // groupsGETAll: "/media-manager-service/bin/BIN_ZUID/groups",
-      // groupsPOST: "/media-manager-service/group",
-      // groupsPATCH: "/media-manager-service/group/GROUP_ID",
-      // groupsDELETE: "/media-manager-service/group/GROUP_ID"
+      fetchGroup: "/media-manager-service/group/GROUP_ZUID",
+      fetchGroups: "/media-manager-service/bin/BIN_ZUID/groups",
+      createGroup: "/media-manager-service/group",
+      updateGroup: "/media-manager-service/group/GROUP_ZUID",
+      deleteGroup: "/media-manager-service/group/GROUP_ZUID",
     };
 
     // Needed to support lookup of instance ZID for legacy API support
@@ -57,16 +56,16 @@ module.exports = class Media extends Service {
       throw new Error("Failed to resolve instance ZUID");
     }
 
-    return await this.getRequest(
+    return this.getRequest(
       this.interpolate(this.API.fetchBins, {
-        SITE_ID: siteId
+        SITE_ID: siteId,
       })
     );
   }
   async getBin(binZUID) {
-    return await this.getRequest(
+    return this.getRequest(
       this.interpolate(this.API.fetchBin, {
-        BIN_ZUID: binZUID
+        BIN_ZUID: binZUID,
       })
     );
   }
@@ -74,28 +73,28 @@ module.exports = class Media extends Service {
   async updateBin(binZUID, data) {
     let payload = this.getFormData(data);
 
-    return await this.patchRequest(
+    return this.patchRequest(
       this.interpolate(this.API.updateBin, {
-        BIN_ZUID: binZUID
+        BIN_ZUID: binZUID,
       }),
       {
         isFormData: true,
-        payload
+        payload,
       }
     );
   }
 
   async getFile(fileZUID) {
-    return await this.getRequest(
+    return this.getRequest(
       this.interpolate(this.API.fetchFile, {
-        FILE_ZUID: fileZUID
+        FILE_ZUID: fileZUID,
       })
     );
   }
   async getFiles(binZUID) {
-    return await this.getRequest(
+    return this.getRequest(
       this.interpolate(this.API.fetchFiles, {
-        BIN_ZUID: binZUID
+        BIN_ZUID: binZUID,
       })
     );
   }
@@ -119,7 +118,7 @@ module.exports = class Media extends Service {
       userZUID,
       contentType: "",
       title: "",
-      fileName: ""
+      fileName: "",
     }
   ) {
     if (!binZUID) {
@@ -140,7 +139,7 @@ module.exports = class Media extends Service {
     payload.append("bin_id", binZUID);
     payload.append("file", stream);
 
-    // When no group is provide set it to the bin
+    // When no group is provided set it to the bin
     if (opts.groupZUID) {
       payload.append("group_id", opts.groupZUID);
     } else {
@@ -157,14 +156,14 @@ module.exports = class Media extends Service {
       payload.append("filename", opts.fileName);
     }
 
-    return await this.postRequest(
+    return this.postRequest(
       this.interpolate(this.API.createFile, {
         STORAGE_PROVIDER: bin.data[0].storage_driver,
-        STORAGE_LOCATION: bin.data[0].storage_name
+        STORAGE_LOCATION: bin.data[0].storage_name,
       }),
       {
         isFormData: true,
-        payload
+        payload,
       }
     );
   }
@@ -173,13 +172,13 @@ module.exports = class Media extends Service {
     if (!fileZUID) {
       throw new Error("Missing required `fileZUID` argument");
     }
-    return await this.patchRequest(
+    return this.patchRequest(
       this.interpolate(this.API.updateFile, {
-        FILE_ZUID: fileZUID
+        FILE_ZUID: fileZUID,
       }),
       {
         isFormData: true,
-        payload: this.getFormData(data)
+        payload: this.getFormData(data),
       }
     );
   }
@@ -188,9 +187,83 @@ module.exports = class Media extends Service {
     if (!fileZUID) {
       throw new Error("Missing required `fileZUID` argument");
     }
-    return await this.deleteRequest(
+    return this.deleteRequest(
       this.interpolate(this.API.deleteFile, {
-        FILE_ZUID: fileZUID
+        FILE_ZUID: fileZUID,
+      })
+    );
+  }
+
+  async getGroup(groupZUID) {
+    return this.getRequest(
+      this.interpolate(this.API.fetchGroup, {
+        GROUP_ZUID: groupZUID,
+      })
+    );
+  }
+
+  async getGroups(binZUID) {
+    return this.getRequest(
+      this.interpolate(this.API.fetchGroups, {
+        BIN_ZUID: binZUID,
+      })
+    );
+  }
+
+  async createGroup(
+    payload = {
+      name: "",
+      binZUID,
+      groupZUID,
+    }
+  ) {
+    if (!payload.binZUID) {
+      throw new Error("Missing required `payload.binZUID` argument");
+    }
+
+    return this.postRequest(this.API.createGroup, {
+      payload: {
+        name: payload.name,
+        bin_id: payload.binZUID,
+        group_id: payload.groupZUID,
+      },
+    });
+  }
+
+  async updateGroup(
+    groupZUID,
+    payload = {
+      name: "",
+    }
+  ) {
+    if (!groupZUID) {
+      throw new Error("Missing required `groupZUID` argument");
+    }
+    if (!payload.name) {
+      throw new Error("Missing required `payload.name` argument");
+    }
+
+    return this.patchRequest(
+      this.interpolate(this.API.updateGroup, {
+        GROUP_ZUID: groupZUID,
+      }),
+      {
+        payload: {
+          name: payload.name,
+          bin_id: payload.binZUID,
+          group_id: payload.groupZUID,
+        },
+      }
+    );
+  }
+
+  async deleteGroup(groupZUID) {
+    if (!groupZUID) {
+      throw new Error("Missing required `groupZUID` argument");
+    }
+    return this.deleteRequest(
+      this.interpolate(this.API.deleteGroup, {
+        GROUP_ZUID: groupZUID,
       })
     );
   }

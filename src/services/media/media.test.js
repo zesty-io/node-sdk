@@ -8,14 +8,16 @@ const moment = require("moment");
 const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
-test("getBins:200", async t => {
+const GROUP_ZUID = "2-9f16dcc-leu12";
+
+test("getBins:200", async (t) => {
   const res = await t.context.sdk.media.getBins();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
-test("getBin:200", async t => {
+test("getBin:200", async (t) => {
   const res = await t.context.sdk.media.getBin(process.env.TEST_BIN_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
@@ -23,11 +25,11 @@ test("getBin:200", async t => {
   t.is(res.data[0].id, process.env.TEST_BIN_ZUID);
 });
 
-test("updateBin:200", async t => {
+test("updateBin:200", async (t) => {
   const binName = `Test ${moment().valueOf()}`;
 
   const res = await t.context.sdk.media.updateBin(process.env.TEST_BIN_ZUID, {
-    name: binName
+    name: binName,
   });
 
   t.is(res.statusCode, 200);
@@ -37,14 +39,14 @@ test("updateBin:200", async t => {
   t.is(res.data[0].name, binName);
 });
 
-test("createFile:200", async t => {
+test("createFile:201", async (t) => {
   const stream = fs.createReadStream(
     path.resolve(__dirname, "../../../test/fixtures/midgar-transit-map.jpg")
   );
 
   const opts = {
     title: "Midgar Mass Transit Map",
-    fileName: "midgar-transit-map.jpg"
+    fileName: "midgar-transit-map.jpg",
   };
 
   const res = await t.context.sdk.media.createFile(
@@ -65,12 +67,12 @@ test("createFile:200", async t => {
   );
 });
 
-test("updateFile:200", async t => {
+test("updateFile:200", async (t) => {
   const fileName = `test-${moment().valueOf()}.jpg`;
 
   const res = await t.context.sdk.media.updateFile("3-9f06678-k83ia", {
     filename: fileName,
-    title: fileName
+    title: fileName,
   });
 
   t.is(res.statusCode, 200);
@@ -80,14 +82,14 @@ test("updateFile:200", async t => {
   t.is(res.data[0].url, `https://dg1wqtbj.media.zestyio.com/${fileName}`);
 });
 
-test("deleteFile:200", async t => {
+test("deleteFile:200", async (t) => {
   const stream = fs.createReadStream(
     path.resolve(__dirname, "../../../test/fixtures/midgar-transit-map.jpg")
   );
 
   const opts = {
     title: "Midgar Mass Transit Map",
-    fileName: "midgar-transit-map.jpg"
+    fileName: "midgar-transit-map.jpg",
   };
 
   const file = await t.context.sdk.media.createFile(
@@ -104,4 +106,47 @@ test("deleteFile:200", async t => {
   const res = await t.context.sdk.media.deleteFile(file.data[0].id);
 
   t.is(res.statusCode, 200);
+});
+
+test("group", async (t) => {
+  t.log(`createGroup`);
+  const payload = {
+    name: `test-${moment().valueOf()}`,
+    binZUID: process.env.TEST_BIN_ZUID,
+  };
+
+  const created = await t.context.sdk.media.createGroup(payload);
+  t.is(created.statusCode, 201);
+  t.truthy(Array.isArray(created.data));
+  t.truthy(created.data.length > 0);
+  t.truthy(created.data[0].id);
+  t.is(created.data[0].name, payload.name);
+
+  // Reparent group from bin to sub-group
+  t.log(`updateGroup`);
+  const updated = await t.context.sdk.media.updateGroup(created.data[0].id, {
+    name: "updated",
+    groupZUID: GROUP_ZUID,
+  });
+  t.is(updated.statusCode, 200);
+  t.truthy(Array.isArray(updated.data));
+  t.truthy(updated.data.length > 0);
+
+  t.log(`deleteGroup`);
+  const deleted = await t.context.sdk.media.deleteGroup(created.data[0].id);
+  t.is(deleted.statusCode, 200);
+});
+
+test("getGroups:200", async (t) => {
+  const res = await t.context.sdk.media.getGroups(process.env.TEST_BIN_ZUID);
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
+});
+
+test("getGroup:200", async (t) => {
+  const res = await t.context.sdk.media.getGroup(GROUP_ZUID);
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
 });

@@ -11,14 +11,14 @@ const FIELD_NAME = "content";
 const PATTERN = "TOKEN";
 const REPLACEMENT = "REPLACED";
 
-test("findAndReplace > require all function parameters", async t => {
+test("findAndReplace > require all function parameters", async (t) => {
   await t.throwsAsync(
     t.context.sdk.action.findAndReplace,
     "All function parameters are required. findAndReplace(zuid, fieldName, substr, newSubstr"
   );
 });
 
-test("findAndReplace > only item and models allowed", async t => {
+test("findAndReplace > only item and models allowed", async (t) => {
   const result = t.context.sdk.action.findAndReplace(
     "8-8ca8dccef4-4w7r5w", // Invalid ZUID test
     FIELD_NAME,
@@ -32,7 +32,7 @@ test("findAndReplace > only item and models allowed", async t => {
   );
 });
 
-test("findAndReplace > on model items", async t => {
+test("findAndReplace > on model items", async (t) => {
   try {
     const result = await t.context.sdk.action.findAndReplace(
       MODEL_ZUID,
@@ -45,7 +45,7 @@ test("findAndReplace > on model items", async t => {
     t.truthy(result.length > 0);
 
     // All update requests returned success response
-    const successCount = result.filter(res => res.statusCode === 200);
+    const successCount = result.filter((res) => res.statusCode === 200);
     t.is(result.length, successCount.length);
 
     // Reset test content
