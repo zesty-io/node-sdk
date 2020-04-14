@@ -1,12 +1,15 @@
 # node-sdk ![version badge](https://img.shields.io/npm/v/@zesty-io/sdk)
 
-> This package is the [Zesty.io](https://www.zesty.io/) software development kit (SDK) for the [node.js](https://nodejs.org/en/) runtime
+> [Zesty.io](https://www.zesty.io/) software development kit (SDK) for the [node.js](https://nodejs.org/en/) runtime
 
 ### what is zesty.io?
 
-[Zesty.io](https://www.zesty.io/) is a cloud web content management system (WCMS) that is API driven with open-source user interfaces. Our software is built to automate the configuration, optimization, and distribution of digital content so marketing teams and developers can focus on creating excellent digital experiences. [Learn more in our platform knowledge base](https://zesty.org/).
+[Zesty.io](https://www.zesty.io/) is a web content management system (WCMS) that is API driven with open-source user interfaces. Our software is built to automate the configuration, optimization, and distribution of digital content so marketing teams and developers can focus on creating excellent digital experiences. [Learn more in our platform knowledge base](https://zesty.org/).
 
-### pre-requisites
+
+## Usage
+
+### prerequisites
 
 - [Node.js 10.16 LTS](https://nodejs.org/dist/latest-v10.x/docs/api/)
 
@@ -16,15 +19,17 @@
 npm install @zesty-io/sdk
 ```
 
-## [Get started using the node-sdk](https://github.com/zesty-io/node-sdk/wiki)
+### sdk client reference
 
-### development
+Once you have the prerequisites meet and the sdk installed, review our guide to [getting started using the node-sdk](https://github.com/zesty-io/node-sdk/wiki)
 
-By providing a `.env` file and override values a developer can build the SDK code against alternate (non-production) services.
+
+## Development
+
+By providing a `.env` file a developer can override the default production settings and develop the SDK code against alternate (non-production) services.
 
 ```
-// These are the basic SDK values. They can be hard code into your SDK usage or can be loaded
-// from a .env file as such
+// These are the basic SDK values. 
 ZESTY_INSTANCE_ZUID=
 ZESTY_USER_EMAIL=
 ZESTY_USER_PASSWORD=
@@ -48,11 +53,11 @@ TEST_PUBLISH_ZUID=
 TEST_HEAD_TAG_ZUID=
 ```
 
-#### Testing
+#### testing
 ```
 npm test
 ```
 
-### license
+## License
 
 [GNU](https://www.gnu.org/licenses/gpl-3.0.en.html)
