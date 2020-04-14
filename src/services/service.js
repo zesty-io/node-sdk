@@ -41,7 +41,7 @@ module.exports = class Service {
 
     return this.request(uri, {
       ...params,
-      method: "GET"
+      method: "GET",
     });
   }
 
@@ -52,7 +52,7 @@ module.exports = class Service {
 
     return this.request(uri, {
       ...params,
-      method: "DELETE"
+      method: "DELETE",
     });
   }
 
@@ -63,7 +63,7 @@ module.exports = class Service {
 
     return this.request(uri, {
       ...params,
-      method: "PUT"
+      method: "PUT",
     });
   }
 
@@ -74,7 +74,7 @@ module.exports = class Service {
 
     return this.request(uri, {
       ...params,
-      method: "POST"
+      method: "POST",
     });
   }
 
@@ -85,7 +85,7 @@ module.exports = class Service {
 
     return this.request(uri, {
       ...params,
-      method: "PATCH"
+      method: "PATCH",
     });
   }
 
@@ -97,7 +97,7 @@ module.exports = class Service {
     const uri = `${this.baseAPI}${path}`;
     const opts = {
       method: params.method,
-      headers: {}
+      headers: {},
     };
 
     if (params.payload) {
@@ -124,18 +124,18 @@ module.exports = class Service {
     opts.headers["Authorization"] = `Bearer ${this.token}`;
 
     return fetch(uri, opts)
-      .then(res => {
-        return res.json().then(data => {
+      .then((res) => {
+        return res.json().then((data) => {
           if (res.status != 200 && res.status != 201) {
             console.error(data);
           }
           return {
             statusCode: res.status,
-            ...data
+            ...data,
           };
         });
       })
-      .then(json => {
+      .then((json) => {
         return params.responseFormatter ? params.responseFormatter(json) : json;
       });
   }
