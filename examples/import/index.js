@@ -15,8 +15,8 @@ const sdk = require("@zesty-io/sdk");
     process.env.ZESTY_INSTANCE_TOKEN
   );
 
-  const USER_ZUID = "5-5fd4c55-7ndknl"; // Change this to your users ZUID
-  const MODEL_ZUID = "6-c6ecf28ba3-n7g1qx"; // Change this to the model ZUID on your instance
+  const USER_ZUID = process.env.IMPORT_USER_ZUID; // Change this to your users ZUID
+  const MODEL_ZUID = process.env.IMPORT_MODEL_ZUID; // Change this to the model ZUID on your instance
 
   const res = await zesty.instance.createItem(MODEL_ZUID, {
     data: {

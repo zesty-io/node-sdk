@@ -1,8 +1,9 @@
 {
   "name": "import-example",
   "version": "1.0.0",
-  "description": "Example way to import data into zesty.io using the node npm wrapper",
+  "description": "Example of importing content into zesty.io using the node-sdk",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "node index.js"
   },

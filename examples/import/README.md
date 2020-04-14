@@ -1,6 +1,6 @@
-# Example for Zesty.io API
+# Example for Zesty.io SDK
 
-> Example of importing content into a Zesty.io instance using the [`node-sdk`]()
+> Example of importing content into a Zesty.io instance using the [`node-sdk`](https://github.com/zesty-io/node-sdk)
 
 
 ### Create an Environment File

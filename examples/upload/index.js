@@ -17,7 +17,7 @@ const sdk = require("@zesty-io/sdk");
     process.env.ZESTY_INSTANCE_TOKEN
   );
 
-  const BIN_ZUID = "1-76a04cf-dgpem"; // Change this to your media bin ZUID
+  const BIN_ZUID = process.env.UPLOAD_BIN_ZUID; // Change this to your media bin ZUID
 
   const stream = fs.createReadStream(
     path.resolve(__dirname, "./zesty-io-logo.svg") // You can change this to your own file
