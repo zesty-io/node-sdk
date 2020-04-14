@@ -1,6 +1,7 @@
 "use strict";
 
-const request = require("request");
+const fetch = require("node-fetch");
+const FormData = require("form-data");
 
 module.exports = class Auth {
   constructor(options = {}) {
@@ -24,28 +25,21 @@ module.exports = class Auth {
       };
     }
 
-    return new Promise((resolve, reject) => {
-      request.post(
-        {
-          url: `${this.authURL}/login`,
-          json: true,
-          formData: {
-            email,
-            password
-          }
-        },
-        (error, response, body) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve({
-              ...body,
-              statusCode: response.statusCode,
-              token: (body.meta && body.meta.token) || null
-            });
-          }
-        }
-      );
+    const form = new FormData();
+    form.append("email", email);
+    form.append("password", password);
+
+    return fetch(`${this.authURL}/login`, {
+      method: "POST",
+      body: form
+    }).then(res => {
+      return res.json().then(data => {
+        return {
+          ...data,
+          statusCode: res.status,
+          token: (data.meta && data.meta.token) || null
+        };
+      });
     });
   }
 
@@ -54,27 +48,19 @@ module.exports = class Auth {
       console.log("Auth:verifyToken() called without `token` argument");
       return { verified: false };
     }
-    return new Promise((resolve, reject) => {
-      request.get(
-        {
-          url: `${this.authURL}/verify`,
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          json: true
-        },
-        (error, response, body) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve({
-              ...body,
-              statusCode: response.statusCode,
-              verified: response.statusCode === 200 ? true : false
-            });
-          }
-        }
-      );
+
+    return fetch(`${this.authURL}/verify`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(res => {
+      return res.json().then(data => {
+        return {
+          ...data,
+          statusCode: res.status,
+          verified: res.status === 200 ? true : false
+        };
+      });
     });
   }
 };

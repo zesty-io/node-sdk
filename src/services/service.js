@@ -1,6 +1,6 @@
 "use strict";
 
-const request = require("request");
+const fetch = require("node-fetch");
 const cookie = require("cookie");
 
 module.exports = class Service {
@@ -89,59 +89,54 @@ module.exports = class Service {
     });
   }
 
-  request(uri, params) {
-    if (!uri) {
-      throw new Error("Missing required `uri`. Can not make request.");
+  request(path, params) {
+    if (!path) {
+      throw new Error("Missing required `path`. Can not make request.");
     }
 
-    return new Promise((resolve, reject) => {
-      const opts = {
-        method: params.method,
-        uri: `${this.baseAPI}${uri}`,
-        json: true,
-        headers: {},
-        auth: {
-          bearer: this.token
-        }
-      };
+    const uri = `${this.baseAPI}${path}`;
+    const opts = {
+      method: params.method,
+      headers: {}
+    };
 
-      // DEPRECATED
-      if (params.usesCookieAuth) {
-        opts.headers["Cookie"] = cookie.serialize(this.cookieName, this.token);
+    if (params.payload) {
+      if (params.isFormData) {
+        opts.body = params.payload;
+        opts.headers = params.payload.getHeaders();
+      } else {
+        opts.body = JSON.stringify(params.payload);
+        opts.headers["Content-Type"] = "application/json";
       }
+    }
 
-      // DEPRECATED
-      if (params.usesXAuthHeader) {
-        opts.headers["X-Auth"] = this.token;
-      }
+    // DEPRECATED
+    if (params.usesCookieAuth) {
+      opts.headers["Cookie"] = cookie.serialize(this.cookieName, this.token);
+    }
 
-      if (params.payload) {
-        if (params.isFormData) {
-          opts.formData = params.payload;
-        } else {
-          opts.body = params.payload;
-        }
-      }
+    // DEPRECATED
+    if (params.usesXAuthHeader) {
+      opts.headers["X-Auth"] = this.token;
+    }
 
-      // Use the "request" module to make request
-      request(opts, (error, response, body) => {
-        if (Boolean(process.env.DEBUG)) {
-          console.error(error);
-          console.log(response);
-        }
+    // Default authorization strategy
+    opts.headers["Authorization"] = `Bearer ${this.token}`;
 
-        if (error) {
-          reject(error);
-        } else {
-          // Add response status code
-          const enrichedBody = { statusCode: response.statusCode, ...body };
-          const formattedBody = params.responseFormatter
-            ? params.responseFormatter(enrichedBody)
-            : enrichedBody;
-
-          resolve(formattedBody);
-        }
+    return fetch(uri, opts)
+      .then(res => {
+        return res.json().then(data => {
+          if (res.status != 200 && res.status != 201) {
+            console.error(data);
+          }
+          return {
+            statusCode: res.status,
+            ...data
+          };
+        });
+      })
+      .then(json => {
+        return params.responseFormatter ? params.responseFormatter(json) : json;
       });
-    });
   }
 };
