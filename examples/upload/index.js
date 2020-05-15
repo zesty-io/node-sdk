@@ -12,10 +12,17 @@ const util = require("util");
 const sdk = require("@zesty-io/sdk");
 
 (async function main() {
-  const zesty = new sdk(
-    process.env.ZESTY_INSTANCE_ZUID,
-    process.env.ZESTY_INSTANCE_TOKEN
+  const auth = new sdk.Auth();
+  const session = await auth.login(
+    process.env.ZESTY_USER_EMAIL,
+    process.env.ZESTY_USER_PASSWORD
   );
+
+  if (!session.token) {
+    throw new Error(JSON.stringify(session));
+  }
+
+  const zesty = new sdk(process.env.ZESTY_INSTANCE_ZUID, session.token);
 
   const BIN_ZUID = process.env.UPLOAD_BIN_ZUID; // Change this to your media bin ZUID
 
