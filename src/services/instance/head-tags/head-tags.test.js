@@ -26,8 +26,6 @@ test("getHeadTag:200", async t => {
     process.env.TEST_HEAD_TAG_ZUID
   );
 
-  console.log(res);
-
   t.is(res.statusCode, 200);
   t.truthy(typeof res.data === "object");
   t.is(res.data.ZUID, process.env.TEST_HEAD_TAG_ZUID);
