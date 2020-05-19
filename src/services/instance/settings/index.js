@@ -3,7 +3,7 @@
 module.exports = {
   API: {
     fetchSettings: "/env/settings",
-    fetchSetting: "/env/settings/SETTINGS_ID"
+    fetchSetting: "/env/settings/SETTINGS_ZUID"
   },
   mixin: superclass =>
     class Setting extends superclass {
@@ -11,15 +11,15 @@ module.exports = {
         return await this.getRequest(this.API.fetchSettings);
       }
 
-      async getSetting(id) {
-        if (!id) {
+      async getSetting(ZUID) {
+        if (!ZUID) {
           throw new Error(
-            "SDK:Instance:getSetting() missing required `id` argument"
+            "SDK:Instance:getSetting() missing required `ZUID` argument"
           );
         }
         return await this.getRequest(
           this.interpolate(this.API.fetchSetting, {
-            SETTINGS_ID: id
+            SETTINGS_ZUID: ZUID
           })
         );
       }

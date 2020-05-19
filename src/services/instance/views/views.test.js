@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const http = require("http");
+const https = require("https");
 const fs = require("fs");
 const test = require("ava");
 const moment = require("moment");
@@ -86,7 +86,6 @@ test("createView:201", async t => {
 
 test.cb("updateView:200", t => {
   const now = moment().valueOf();
-
   t.context.sdk.instance
     .updateView(TEST_VIEW_ZUID, {
       code: `<h1>404 Page Not Found</h1><p>${now}</p>`
@@ -95,8 +94,8 @@ test.cb("updateView:200", t => {
       t.is(res.statusCode, 200);
       t.truthy(res.data.ZUID);
 
-      http
-        .get(`http://${TEST_PREVIEW}/this-page-does-not-exist`, res => {
+      https
+        .get(`${TEST_PREVIEW}/this-page-does-not-exist`, res => {
           t.is(res.statusCode, 404); // This is the 404 page we are request as such should expect a 404 response
 
           res.setEncoding("utf8");
