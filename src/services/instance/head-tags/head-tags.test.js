@@ -21,7 +21,7 @@ test("getHeadTags:200", async t => {
   t.truthy(res.data.length > 0);
 });
 
-test.skip("getHeadTag:200", async t => {
+test("getHeadTag:200", async t => {
   const res = await t.context.sdk.instance.getHeadTag(
     process.env.TEST_HEAD_TAG_ZUID
   );
