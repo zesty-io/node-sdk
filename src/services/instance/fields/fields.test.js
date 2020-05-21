@@ -24,3 +24,29 @@ test("fetchModelField:200", async t => {
   t.is(res.data.ZUID, process.env.TEST_FIELD_ZUID);
   t.is(res.data.contentModelZUID, process.env.TEST_MODEL_ZUID);
 });
+
+test("fetchModelFields: requires model ZUID", async t => {
+  try {
+    const res = await t.context.sdk.instance.getModelFields();
+  } catch (err) {
+    t.is(err.message, "SDK:Instance:getModelFields() missing required `modelZUID` argument");
+  }
+})
+
+test("fetchModelField: requires model ZUID", async t => {
+  try {
+    const res = await t.context.sdk.instance.getModelField();
+  } catch (err) {
+    t.is(err.message, "SDK:Instance:getModelField() missing required `modelZUID` argument");
+  }
+})
+
+test("fetchModelField: requires field ZUID", async t => {
+  try {
+    const res = await t.context.sdk.instance.getModelField(
+      process.env.TEST_MODEL_ZUID,
+    );
+  } catch (err) {
+    t.is(err.message, "SDK:Instance:getModelField() missing required `fieldZUID` argument");
+  }
+})
