@@ -14,11 +14,14 @@ module.exports = async t => {
     );
 
     if (!session.token) {
+      console.error(session)
       throw new Error(JSON.stringify(session));
     }
 
     t.context.sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
+    // t.context.sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID, process.env.ZESTY_TOKEN);
   } catch (error) {
+    console.error(error)
     throw error;
   }
 };

@@ -13,6 +13,7 @@ async function authedSDK() {
   );
 
   return new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
+  // return new SDK(process.env.ZESTY_INSTANCE_ZUID, process.env.ZESTY_TOKEN);
 }
 
 test("requires token", t => {
@@ -22,6 +23,17 @@ test("requires token", t => {
     t.is(err.message, "SDK:constructor() missing required `token` parameter");
   }
 });
+
+test("intialize invalid token", async t => {
+  try {
+    const sdk = await authedSDK();
+    const res = await sdk.init("BAD TOKEN")
+  } catch (err) {
+    t.is(err.statusCode, 401);
+    t.is(err.status, "Unauthorized");
+  }
+});
+
 
 test("authenticated", async t => {
   const sdk = await authedSDK();
