@@ -18,3 +18,8 @@ test("getInstanceUsers:200", async t => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
+
+test("getSiteId:200", async t => {
+  const res = await t.context.sdk.account.getSiteId();
+  t.is(res, parseInt(process.env.ZESTY_SITE_ID));
+})
