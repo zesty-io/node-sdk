@@ -55,7 +55,7 @@ test("login:400", async t => {
   );
 });
 
-test("login:401||403", async t => {
+test.skip("login:401||403", async t => {
   // const badUsername = `BADUSERNAME+${moment().valueOf()}@MAIL.COM`
   const res = await auth.login(`BADUSERNAME+${moment().valueOf()}@MAIL.COM`, "BAD PASSWORD");
 

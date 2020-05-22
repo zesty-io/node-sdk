@@ -18,13 +18,13 @@ const TEST_ITEM_JSON = JSON.parse(
 
 test.beforeEach(authContext);
 
-test("fetchItems:200", async t => {
+test.serial("fetchItems:200", async t => {
   const res = await t.context.sdk.instance.getItems(TEST_MODEL_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
-test("fetchItem:200", async t => {
+test.serial("fetchItem:200", async t => {
   const res = await t.context.sdk.instance.getItem(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID
@@ -34,7 +34,7 @@ test("fetchItem:200", async t => {
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
   t.is(res.data.meta.contentModelZUID, TEST_MODEL_ZUID);
 });
-test("getItemPublishings:200", async t => {
+test.serial("getItemPublishings:200", async t => {
   const res = await t.context.sdk.instance.getItemPublishings(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID
@@ -44,7 +44,7 @@ test("getItemPublishings:200", async t => {
   t.truthy(res.data.length > 0);
   t.is(res.data[0].itemZUID, TEST_ITEM_ZUID);
 });
-test("getItemPublishing:200", async t => {
+test.serial("getItemPublishing:200", async t => {
   const res = await t.context.sdk.instance.getItemPublishing(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
@@ -52,7 +52,7 @@ test("getItemPublishing:200", async t => {
   );
   t.is(res.statusCode, 200);
 });
-test("getItemVersions:200", async t => {
+test.serial("getItemVersions:200", async t => {
   const res = await t.context.sdk.instance.getItemVersions(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID
@@ -61,7 +61,7 @@ test("getItemVersions:200", async t => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
-test("getItemVersion:200", async t => {
+test.serial("getItemVersion:200", async t => {
   const res = await t.context.sdk.instance.getItemVersion(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
@@ -73,7 +73,7 @@ test("getItemVersion:200", async t => {
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
   t.is(Number(res.data.meta.version), Number(TEST_ITEM_VERSION));
 });
-test("createItem:200", async t => {
+test.serial("createItem:200", async t => {
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const res = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
@@ -88,7 +88,7 @@ test("createItem:200", async t => {
   t.truthy(res.data.ZUID);
 });
 
-test("updateItem:200", async t => {
+test.serial("updateItem:200", async t => {
   const res = await t.context.sdk.instance.updateItem(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
@@ -99,7 +99,7 @@ test("updateItem:200", async t => {
   t.is(res.data.ZUID, TEST_ITEM_ZUID);
 });
 
-test("publishItem:200", async t => {
+test.serial("publishItem:200", async t => {
   // Create a new item
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
@@ -134,7 +134,7 @@ test("publishItem:200", async t => {
   t.is(Number(published.data.version_num), Number(item.meta.version));
 });
 
-test("unpublishItem:200", async t => {
+test.serial("unpublishItem:200", async t => {
   // Create a new item
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
@@ -178,7 +178,7 @@ test("unpublishItem:200", async t => {
   t.is(unpublished.message, "Entry updated");
 });
 
-test("findItem:200", async t => {
+test.serial("findItem:200", async t => {
   const res = await t.context.sdk.instance.findItem(TEST_ITEM_ZUID);
 
   t.is(res.statusCode, 200);
@@ -190,7 +190,7 @@ test("findItem:200", async t => {
 });
 
 // Upsert: update existing item
-test("upsertItem:200", async t => {
+test.serial("upsertItem:200", async t => {
   const EXISTING_PATH = "node-sdk-updateitem";
   const res = await t.context.sdk.instance.upsertItem(
     TEST_MODEL_ZUID,
@@ -203,7 +203,7 @@ test("upsertItem:200", async t => {
 });
 
 // Upsert: create new item
-test("upsertItem:201", async t => {
+test.serial("upsertItem:201", async t => {
   const title = `node-sdk:upsertItem:${moment().valueOf()}`;
   const pathPart = t.context.sdk.instance.formatPath(title);
   const res = await t.context.sdk.instance.upsertItem(
@@ -229,7 +229,7 @@ test("upsertItem:201", async t => {
   t.truthy(res.data.ZUID);
 });
 
-test("deleteItem:200", async t => {
+test.serial("deleteItem:200", async t => {
   const title = `node-sdk:deleteItem:${moment().valueOf()}`;
   const item = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {

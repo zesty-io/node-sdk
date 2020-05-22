@@ -22,6 +22,14 @@ test("getAuditLog:200", async t => {
   t.is(res.data.ZUID, process.env.TEST_AUDIT_LOG_ZUID);
 });
 
+test("getAuditLog no audit ZUID", async t => {
+  try {
+    const res = await t.context.sdk.instance.getAuditLog();  
+  } catch (err) {
+    t.is(err.message, "SDK:Instance:AuditLogs:getAuditLog() missing required `auditZUID` argument") 
+  }
+});
+
 test("searchAuditLogs:200", async t => {
   const res = await t.context.sdk.instance.searchAuditLogs(
     "?limit=5&order=created&dir=desc&action=4"

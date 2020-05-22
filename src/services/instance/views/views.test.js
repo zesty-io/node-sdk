@@ -11,7 +11,7 @@ const TEST_VIEW = fs.readFileSync(`./test/fixtures/view.html`).toString();
 const authContext = require("../../../../test/helpers/auth-context");
 test.before(authContext);
 
-test("validation", async t => {
+test.serial("validation", async t => {
   const code = await t.throwsAsync(
     t.context.sdk.instance.createView({
       filename: `test-${moment().valueOf()}.html`,
@@ -59,20 +59,20 @@ test("validation", async t => {
   );
 });
 
-test("fetchViews:200", async t => {
+test.serial("fetchViews:200", async t => {
   const res = await t.context.sdk.instance.getViews();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
-test("fetchView:200", async t => {
+test.serial("fetchView:200", async t => {
   const res = await t.context.sdk.instance.getView(TEST_VIEW_ZUID);
   t.is(res.statusCode, 200);
   t.is(res.data.ZUID, TEST_VIEW_ZUID);
 });
 
-test("createView:201", async t => {
+test.serial("createView:201", async t => {
   const res = await t.context.sdk.instance.createView({
     code: TEST_VIEW,
     filename: `test-${moment().valueOf()}.html`,
@@ -121,7 +121,7 @@ test.cb("updateView:200", t => {
 });
 
 // FIXME API returns 500 when missing CDN service ID
-test("publishView:200", async t => {
+test.serial("publishView:200", async t => {
   const view = await t.context.sdk.instance.getView(TEST_VIEW_ZUID);
 
   t.is(view.statusCode, 200);
