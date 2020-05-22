@@ -6,10 +6,10 @@ const test = require("ava");
 const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
-const MODEL_ZUID = "6-a0f4b7b0f8-fcwk35";
 const FIELD_NAME = "content";
 const PATTERN = "TOKEN";
 const REPLACEMENT = "REPLACED";
+const BAD_ZUID = "8-8ca8dccef4-4w7r5w";
 
 test("findAndReplace > require all function parameters", async (t) => {
   await t.throwsAsync(
@@ -20,7 +20,7 @@ test("findAndReplace > require all function parameters", async (t) => {
 
 test("findAndReplace > only item and models allowed", async (t) => {
   const result = t.context.sdk.action.findAndReplace(
-    "8-8ca8dccef4-4w7r5w", // Invalid ZUID test
+    BAD_ZUID, // Invalid ZUID test
     FIELD_NAME,
     PATTERN,
     REPLACEMENT
@@ -35,7 +35,7 @@ test("findAndReplace > only item and models allowed", async (t) => {
 test("findAndReplace > on model items", async (t) => {
   try {
     const result = await t.context.sdk.action.findAndReplace(
-      MODEL_ZUID,
+      process.env.SEARCH_REPLACE_MODEL_ZUID,
       FIELD_NAME,
       PATTERN,
       REPLACEMENT
@@ -50,7 +50,7 @@ test("findAndReplace > on model items", async (t) => {
 
     // Reset test content
     await t.context.sdk.action.findAndReplace(
-      MODEL_ZUID,
+      process.env.SEARCH_REPLACE_MODEL_ZUID,
       FIELD_NAME,
       REPLACEMENT,
       PATTERN
