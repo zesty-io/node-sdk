@@ -55,13 +55,14 @@ test("login:400", async t => {
   );
 });
 
-test.skip("login:401||403", async t => {
-  // const badUsername = `BADUSERNAME+${moment().valueOf()}@MAIL.COM`
+test("login:401||403", async t => {
+  // creates a unique bad username everytime so this test can be run 
+  // multiple times without fear of getting locked out
   const res = await auth.login(`BADUSERNAME+${moment().valueOf()}@MAIL.COM`, "BAD PASSWORD");
 
   // After 5 failed login attempts the auth service locks the account and returns
   // a 403 status code. We check for both status codes otherwise this test is inconsistent
-  // when rain over 5 times within 5 minutes.
+  // when ran over 5 times within 5 minutes.
   t.truthy(res.statusCode == 401 || res.statusCode == 403);
 });
 

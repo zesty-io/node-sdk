@@ -13,7 +13,6 @@ async function authedSDK() {
   );
 
   return new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
-  // return new SDK(process.env.ZESTY_INSTANCE_ZUID, process.env.ZESTY_TOKEN);
 }
 
 test("requires token", t => {

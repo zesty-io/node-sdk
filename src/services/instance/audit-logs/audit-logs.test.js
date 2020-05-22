@@ -22,6 +22,7 @@ test("getAuditLog:200", async t => {
   t.is(res.data.ZUID, process.env.TEST_AUDIT_LOG_ZUID);
 });
 
+// tests audit log retrieval without an audit ZUID 
 test("getAuditLog no audit ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getAuditLog();  

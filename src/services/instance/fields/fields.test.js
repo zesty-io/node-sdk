@@ -25,6 +25,7 @@ test("fetchModelField:200", async t => {
   t.is(res.data.contentModelZUID, process.env.TEST_MODEL_ZUID);
 });
 
+//  tests model fields retrieval without specificying a model ZUID
 test("fetchModelFields: requires model ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getModelFields();
@@ -33,6 +34,7 @@ test("fetchModelFields: requires model ZUID", async t => {
   }
 })
 
+//  tests single model field retrieval without specificying a model ZUID
 test("fetchModelField: requires model ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getModelField();
@@ -41,6 +43,7 @@ test("fetchModelField: requires model ZUID", async t => {
   }
 })
 
+//  tests single model field retrieval without specificying a field ZUID
 test("fetchModelField: requires field ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getModelField(

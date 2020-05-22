@@ -19,8 +19,6 @@ module.exports = async t => {
     }
 
     t.context.sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
-    // t.context.sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID, process.env.ZESTY_TOKEN);
-
   } catch (error) {
     throw error;
   }

@@ -7,15 +7,17 @@ const test = require("ava");
 const Models = require("./instance/models")
 const Service = require("./service")
 
-test("requires API URL", async t => {
+//  test service constructor without specifying API URL
+test("constructor():missing API URL", async t => {
   try {
     new Service();
   } catch (err) {
     t.is(err.message, "SDK:Service:constructor() missing required `baseAPI` argument on instantiation");  
   }
-})
+});
 
-test("requires token", async t => {
+//  test service constructor without specifying token
+test("constructor():missing token", async t => {
   try {
     new Service(process.env.ZESTY_INSTANCE_API);
   } catch (err) {
@@ -23,8 +25,8 @@ test("requires token", async t => {
   }
 });
 
-test("service constructor", async t => {
-  // Can make requests
+//  test sending a request from the service
+test("getRequest:200", async t => {
   const instanceService = new Service(process.env.ZESTY_INSTANCE_API, process.env.ZESTY_TOKEN);
 
   const res = await instanceService.getRequest(
@@ -32,8 +34,5 @@ test("service constructor", async t => {
       Models.API.fetchModels  
     )
   )
-
   t.is(res.statusCode, 200)
-
-  // Response has statusCode
 });

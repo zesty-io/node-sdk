@@ -31,7 +31,7 @@ test.serial("getHeadTag:200", async t => {
   t.is(res.data.ZUID, process.env.TEST_HEAD_TAG_ZUID);
 });
 
-
+// test single headtag retrieval without specifying head tag ZUID
 test.serial("getHeadTag with no headTagZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getHeadTag();  
