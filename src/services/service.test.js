@@ -8,7 +8,7 @@ const Models = require("./instance/models")
 const Service = require("./service")
 
 //  test service constructor without specifying API URL
-test("constructor():missing API URL", async t => {
+test.serial("constructor():missing API URL", async t => {
   try {
     new Service();
   } catch (err) {
@@ -17,7 +17,7 @@ test("constructor():missing API URL", async t => {
 });
 
 //  test service constructor without specifying token
-test("constructor():missing token", async t => {
+test.serial("constructor():missing token", async t => {
   try {
     new Service(process.env.ZESTY_INSTANCE_API);
   } catch (err) {
@@ -26,7 +26,7 @@ test("constructor():missing token", async t => {
 });
 
 //  test sending a request from the service
-test("getRequest:200", async t => {
+test.serial("getRequest:200", async t => {
   const instanceService = new Service(process.env.ZESTY_INSTANCE_API, process.env.ZESTY_TOKEN);
 
   const res = await instanceService.getRequest(

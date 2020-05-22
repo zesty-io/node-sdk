@@ -26,20 +26,20 @@ const TEST_CSS = fs.readFileSync(`./test/fixtures/stylesheet.css`).toString();
 
 test.before(authContext);
 
-test("fetchStylesheets:200", async t => {
+test.serial("fetchStylesheets:200", async t => {
   const res = await t.context.sdk.instance.getStylesheets();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
-test("fetchStylesheet:200", async t => {
+test.serial("fetchStylesheet:200", async t => {
   const res = await t.context.sdk.instance.getStylesheet(TEST_CSS_ZUID);
   t.is(res.statusCode, 200);
   t.is(res.data.ZUID, TEST_CSS_ZUID);
 });
 
-test("updateStylesheet:200", async t => {
+test.serial("updateStylesheet:200", async t => {
   const res = await t.context.sdk.instance.updateStylesheet(TEST_CSS_ZUID, {
     code: TEST_CSS,
     filename: `test-${moment().valueOf()}.css`,
@@ -51,7 +51,7 @@ test("updateStylesheet:200", async t => {
   t.truthy(res.data.ZUID);
 });
 
-test("createStylesheet:201", async t => {
+test.serial("createStylesheet:201", async t => {
   const res = await t.context.sdk.instance.createStylesheet({
     code: TEST_CSS,
     filename: `test-${moment().valueOf()}.css`,
@@ -83,7 +83,7 @@ test.serial("deleteStylesheet:200", async t => {
 });
 
 // FIXME API returns 500 when missing CDN service ID
-test("publishStylesheet:200", async t => {
+test.serial("publishStylesheet:200", async t => {
   const sheet = await t.context.sdk.instance.getStylesheet(TEST_CSS_ZUID);
 
   t.is(sheet.statusCode, 200);

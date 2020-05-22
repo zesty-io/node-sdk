@@ -8,14 +8,14 @@ const moment = require("moment");
 const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
-test("getBins:200", async (t) => {
+test.serial("getBins:200", async (t) => {
   const res = await t.context.sdk.media.getBins();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
-test("getBin:200", async (t) => {
+test.serial("getBin:200", async (t) => {
   const res = await t.context.sdk.media.getBin(process.env.TEST_BIN_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
@@ -23,7 +23,7 @@ test("getBin:200", async (t) => {
   t.is(res.data[0].id, process.env.TEST_BIN_ZUID);
 });
 
-test("updateBin:200", async (t) => {
+test.serial("updateBin:200", async (t) => {
   const binName = `Test ${moment().valueOf()}`;
 
   const res = await t.context.sdk.media.updateBin(process.env.TEST_BIN_ZUID, {
@@ -37,7 +37,7 @@ test("updateBin:200", async (t) => {
   t.is(res.data[0].name, binName);
 });
 
-test("createFile:201", async (t) => {
+test.serial("createFile:201", async (t) => {
   const stream = fs.createReadStream(
     path.resolve(__dirname, "../../../test/fixtures/midgar-transit-map.jpg")
   );
@@ -65,7 +65,7 @@ test("createFile:201", async (t) => {
   );
 });
 
-test("updateFile:200", async (t) => {
+test.serial("updateFile:200", async (t) => {
   const fileName = `test-${moment().valueOf()}.jpg`;
 
   const res = await t.context.sdk.media.updateFile(process.env.TEST_FILE_ZUID, {
@@ -80,7 +80,7 @@ test("updateFile:200", async (t) => {
   t.is(res.data[0].url, `https://dg1wqtbj.media.zestyio.com/${fileName}`);
 });
 
-test("deleteFile:200", async (t) => {
+test.serial("deleteFile:200", async (t) => {
   const stream = fs.createReadStream(
     path.resolve(__dirname, "../../../test/fixtures/midgar-transit-map.jpg")
   );
@@ -106,7 +106,7 @@ test("deleteFile:200", async (t) => {
   t.is(res.statusCode, 200);
 });
 
-test("group", async (t) => {
+test.serial("group", async (t) => {
   t.log(`createGroup`);
   const payload = {
     name: `test-${moment().valueOf()}`,
@@ -135,14 +135,14 @@ test("group", async (t) => {
   t.is(deleted.statusCode, 200);
 });
 
-test("getGroups:200", async (t) => {
+test.serial("getGroups:200", async (t) => {
   const res = await t.context.sdk.media.getGroups(process.env.TEST_BIN_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
-test("getGroup:200", async (t) => {
+test.serial("getGroup:200", async (t) => {
   const res = await t.context.sdk.media.getGroup(process.env.TEST_GROUP_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
