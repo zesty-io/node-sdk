@@ -17,7 +17,7 @@ const badAuth = new Auth({
 // instead we let them throw failing the test. Ava will
 // print the uncaught error to the console
 
-test("login:200", async t => {
+test.serial("login:200", async t => {
   const res = await auth.login(
     process.env.ZESTY_USER_EMAIL,
     process.env.ZESTY_USER_PASSWORD
@@ -27,7 +27,7 @@ test("login:200", async t => {
   t.not("", res.token);
 });
 
-test("verifyToken:200", async t => {
+test.serial("verifyToken:200", async t => {
   const session = await auth.login(
     process.env.ZESTY_USER_EMAIL,
     process.env.ZESTY_USER_PASSWORD
@@ -42,7 +42,7 @@ test("verifyToken:200", async t => {
  * Causes account lock breaking tests
  */
 
-test("login:400", async t => {
+test.serial("login:400", async t => {
   const missingEmail = await auth.login(null, null);
   t.is(missingEmail.statusCode, 400);
   t.is(missingEmail.message, "Auth:login() missing required argument `email`");
@@ -55,7 +55,7 @@ test("login:400", async t => {
   );
 });
 
-test("login:401||403", async t => {
+test.serial("login:401||403", async t => {
   // creates a unique bad username everytime so this test can be run 
   // multiple times without fear of getting locked out
   const res = await auth.login(`BADUSERNAME+${moment().valueOf()}@MAIL.COM`, "BAD PASSWORD");
@@ -66,7 +66,7 @@ test("login:401||403", async t => {
   t.truthy(res.statusCode == 401 || res.statusCode == 403);
 });
 
-test("login:error", async t => {
+test.serial("login:error", async t => {
   try {
     const res = await badAuth.login(
       process.env.ZESTY_USER_EMAIL,
@@ -78,19 +78,19 @@ test("login:error", async t => {
   }
 });
 
-test("verifyToken:401", async t => {
+test.serial("verifyToken:401", async t => {
   const res = await auth.verifyToken("BADTOKEN");
 
   t.is(res.statusCode, 401);
   t.is(res.verified, false);
 });
 
-test("verifyToken:missing token", async t => {
+test.serial("verifyToken:missing token", async t => {
   const res = await auth.verifyToken();
   t.is(res.verified, false);
 });
 
-test("verifyToken:error", async t => {
+test.serial("verifyToken:error", async t => {
   try {
     const res = await badAuth.verifyToken("BADTOKEN");
     t.fail();

@@ -6,7 +6,7 @@ const authContext = require("../../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
 // Fields
-test("fetchModelFields:200", async t => {
+test.serial("fetchModelFields:200", async t => {
   const res = await t.context.sdk.instance.getModelFields(
     process.env.TEST_MODEL_ZUID
   );
@@ -14,7 +14,7 @@ test("fetchModelFields:200", async t => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
-test("fetchModelField:200", async t => {
+test.serial("fetchModelField:200", async t => {
   const res = await t.context.sdk.instance.getModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID
@@ -26,7 +26,7 @@ test("fetchModelField:200", async t => {
 });
 
 //  tests model fields retrieval without specificying a model ZUID
-test("fetchModelFields: requires model ZUID", async t => {
+test.serial("fetchModelFields: requires model ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getModelFields();
   } catch (err) {
@@ -35,7 +35,7 @@ test("fetchModelFields: requires model ZUID", async t => {
 })
 
 //  tests single model field retrieval without specificying a model ZUID
-test("fetchModelField: requires model ZUID", async t => {
+test.serial("fetchModelField: requires model ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getModelField();
   } catch (err) {
@@ -44,7 +44,7 @@ test("fetchModelField: requires model ZUID", async t => {
 })
 
 //  tests single model field retrieval without specificying a field ZUID
-test("fetchModelField: requires field ZUID", async t => {
+test.serial("fetchModelField: requires field ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getModelField(
       process.env.TEST_MODEL_ZUID,

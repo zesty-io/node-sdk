@@ -14,7 +14,6 @@ module.exports = async t => {
     );
 
     if (!session.token) {
-      console.error(session)
       throw new Error(JSON.stringify(session));
     }
 
