@@ -15,7 +15,7 @@ async function authedSDK() {
   return new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
 }
 
-test.serial("requires token", t => {
+test.serial("constructor():requires token", t => {
   try {
     new SDK(process.env.ZESTY_INSTANCE_ZUID);
   } catch (err) {
@@ -23,7 +23,8 @@ test.serial("requires token", t => {
   }
 });
 
-test.serial("intialize invalid token", async t => {
+// tests SDK initialization with a bad token
+test.serial("constructor():intialize with invalid token", async t => {
   try {
     const sdk = await authedSDK();
     const res = await sdk.init("BAD TOKEN")

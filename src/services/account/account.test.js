@@ -19,6 +19,7 @@ test.serial("getInstanceUsers:200", async t => {
   t.truthy(res.data.length > 0);
 });
 
+// tests getting site ID from local instance object
 test.serial("getSiteId:200", async t => {
   const res = await t.context.sdk.account.getSiteId();
   t.is(res, parseInt(process.env.ZESTY_SITE_ID));

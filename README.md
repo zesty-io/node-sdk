@@ -51,12 +51,18 @@ TEST_FIELD_ZUID=
 TEST_AUDIT_LOG_ZUID=
 TEST_PUBLISH_ZUID=
 TEST_HEAD_TAG_ZUID=
+TEST_SETTING_ZUID=
+TEST_FILE_ZUID=
+TEST_GROUP_ZUID=
+SEARCH_REPLACE_MODEL_ZUID=
 ```
 
 #### testing
 ```
 npm test
 ```
+
+All tests are being run in a serial manner in order to ensure each test shares a global execution state, specifically to ensure all tests share the same authenticated state.
 
 ## License
 
