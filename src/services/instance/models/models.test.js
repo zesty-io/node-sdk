@@ -32,3 +32,12 @@ test.serial("fetchModel:404", async t => {
   t.is(Object.keys(res.data).length, 0);
   t.is(res.message, "No Results Found for ZUID: 6-0000-00000");
 });
+
+// test get model without a ZUID
+test.serial("getModel without a model ZUID", async t => {
+  try {
+    const res = await t.context.sdk.instance.getModel();
+  } catch (err) {
+    t.is(err.message, "SDK:Instance:getModel() missing required `modelZUID` argument");
+  }
+})
