@@ -49,13 +49,7 @@ module.exports = {
       async getViews() {
         return await this.getRequest(this.API.getViews);
       }
-      async getView(viewZUID) {
-        return await this.getRequest(
-          this.interpolate(this.API.getView, {
-            VIEW_ZUID: viewZUID
-          })
-        );
-      }
+      
       async getView(viewZUID) {
         return await this.getRequest(
           this.interpolate(this.API.getView, {

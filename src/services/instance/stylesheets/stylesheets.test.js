@@ -26,6 +26,79 @@ const TEST_CSS = fs.readFileSync(`./test/fixtures/stylesheet.css`).toString();
 
 test.before(authContext);
 
+// validateStylesheet payload with no code
+test.serial("validateStylesheet payload with no code", async t => {
+  const payload = {};
+  try {
+    const res = await t.context.sdk.instance.validateStylesheet(
+      payload
+    )
+  } catch (err) {
+    t.is(err.message, "Your provide payload is missing a required `code` property. This should be stylesheet code.");
+  }
+});
+
+// validateStylesheet payload with no filename
+test.serial("validateStylesheet payload with no filename", async t => {
+  const payload = {
+    code: TEST_CSS,
+  };
+
+  try {
+    const res = await t.context.sdk.instance.validateStylesheet(
+      payload
+    )
+  } catch (err) {
+    t.is(err.message, "Your provide payload is missing a required `filename` property. This is the filename this code should belong to.");
+  }
+});
+
+// validateStylesheet payload with no type
+test.serial("validateStylesheet payload with no type", async t => {
+  const payload = {
+    code: TEST_CSS,
+    filename: `test-${moment().valueOf()}.css`
+  };
+
+  try {
+    const res = await t.context.sdk.instance.validateStylesheet(
+      payload
+    )
+  } catch (err) {
+    t.is(err.message, 'Your provide payload is missing a required `type` property. This is the value to represent the files http `Content-Type`. e.g. "text/css", "text/less"');
+  }
+});
+
+// validateStylesheet payload with unsupported type
+test.serial("validateStylesheet payload with unsupported type", async t => {
+  const supportedTypes = [
+    "text/css",
+    "text/less",
+    "text/scss",
+    "text/sass"
+  ];
+  
+  const payload = {
+    code: TEST_CSS,
+    filename: `test-${moment().valueOf()}.css`,
+    type: "BAD_TYPE"
+  };
+
+  try {
+    const res = await t.context.sdk.instance.validateStylesheet(
+      payload
+    )
+  } catch (err) {
+    t.is(err.message, 
+      `The provided \`type\` (${
+        payload.type
+      }) property is not supported. Allowed types are ${supportedTypes.join(
+        ", "
+      )}`
+    );
+  }
+});
+
 test.serial("fetchStylesheets:200", async t => {
   const res = await t.context.sdk.instance.getStylesheets();
   t.is(res.statusCode, 200);
