@@ -62,7 +62,7 @@ SEARCH_REPLACE_MODEL_ZUID=
 npm test
 ```
 
-All tests are being run in a serial manner in order to ensure each test shares a global execution state, specifically to ensure all tests share the same authenticated state.
+All tests are being run in a serial manner (using the `serial` statement) to ensure each test uses a shared global state. This change fixes the intermittent of `401 Unauthenticated` issue because each test fails to get authenticated. The documentation is referenced [here](https://github.com/avajs/ava/blob/master/docs/08-common-pitfalls.md).
 
 ## License
 

@@ -8,6 +8,8 @@ const moment = require("moment");
 const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
+const MEDIA_HOST = "https://dg1wqtbj.media.zestyio.com"
+
 test.serial("getBins:200", async (t) => {
   const res = await t.context.sdk.media.getBins();
   t.is(res.statusCode, 200);
@@ -61,7 +63,7 @@ test.serial("createFile:201", async (t) => {
   t.is(res.data[0].type, "file");
   t.is(
     res.data[0].url,
-    `https://dg1wqtbj.media.zestyio.com/${res.data[0].filename}`
+    `${MEDIA_HOST}/${res.data[0].filename}`
   );
 });
 
@@ -124,7 +126,7 @@ test.serial("updateFile:200", async (t) => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
   t.is(res.data[0].filename, fileName);
-  t.is(res.data[0].url, `https://dg1wqtbj.media.zestyio.com/${fileName}`);
+  t.is(res.data[0].url, `${MEDIA_HOST}/${fileName}`);
 });
 
 // test successfully updating a file with no file ZUID
