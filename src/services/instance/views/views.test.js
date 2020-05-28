@@ -15,12 +15,16 @@ test.before(authContext);
 // VIEWS
 // 
 
+// 
+// VIEW PAYLOAD VALIDATION
+// 
+
 //  test view payload validation
 //  validates payload for the following:
 //  - missing code 
 //  - missing filename
 //  - missing type
-//  - invalid type
+//  - invalid / unsupported type
 test.serial("validation", async t => {
   const code = await t.throwsAsync(
     t.context.sdk.instance.createView({

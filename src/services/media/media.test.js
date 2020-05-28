@@ -370,6 +370,7 @@ test.serial("getGroup:200", async (t) => {
   t.truthy(res.data.length > 0);
 });
 
+// test failed attempt to get a media group using an invalid group ID
 test.serial("getGroup:400", async (t) => {
   const res = await t.context.sdk.media.getGroup();
   t.is(res.statusCode, 400);
