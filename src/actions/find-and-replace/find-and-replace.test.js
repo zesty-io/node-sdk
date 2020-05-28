@@ -9,18 +9,24 @@ test.beforeEach(authContext);
 const FIELD_NAME = "content";
 const PATTERN = "TOKEN";
 const REPLACEMENT = "REPLACED";
-const BAD_ZUID = "8-8ca8dccef4-4w7r5w";
+const BAD_INSTANCE_ZUID = "8-8ca8dccef4-4w7r5w";
 
-test("findAndReplace > require all function parameters", async (t) => {
+// 
+// FIND AND REPLACE 
+// 
+
+// tests failed attempt to call findAndReplace with no function params
+test.serial("findAndReplace > require all function parameters", async (t) => {
   await t.throwsAsync(
     t.context.sdk.action.findAndReplace,
     "All function parameters are required. findAndReplace(zuid, fieldName, substr, newSubstr"
   );
 });
 
-test("findAndReplace > only item and models allowed", async (t) => {
+//  tests failed attempt to call findAndReplace on invalid content items
+test.serial("findAndReplace > only item and models allowed", async (t) => {
   const result = t.context.sdk.action.findAndReplace(
-    BAD_ZUID, // Invalid ZUID test
+    BAD_INSTANCE_ZUID, // Invalid instance ZUID test
     FIELD_NAME,
     PATTERN,
     REPLACEMENT
@@ -28,11 +34,12 @@ test("findAndReplace > only item and models allowed", async (t) => {
 
   await t.throwsAsync(
     result,
-    "Find and replace actions are only allowed on content items and models. Unsupported zuid 8-8ca8dccef4-4w7r5w provided."
+    `Find and replace actions are only allowed on content items and models. Unsupported zuid ${BAD_INSTANCE_ZUID} provided.`
   );
 });
 
-test("findAndReplace > on model items", async (t) => {
+// tests successful findAndReplace on a given content model's item
+test.serial("findAndReplace > on model items", async (t) => {
   try {
     const result = await t.context.sdk.action.findAndReplace(
       process.env.SEARCH_REPLACE_MODEL_ZUID,
