@@ -55,7 +55,6 @@ test.before(authContext);
 // - missing filename
 // - missing type
 // - invalid / unsupported type
-
 test.serial("validation", async t => {
   const code = await t.throwsAsync(
     t.context.sdk.instance.createStylesheet({})
@@ -135,6 +134,13 @@ test.serial("fetchStylesheet:200", async t => {
 });
 
 // test failed stylesheet retrieval with a bad stylesheet ZUID
+// test successful stylesheet retrieval
+test.serial("fetchStylesheet:400", async t => {
+  const res = await t.context.sdk.instance.getStylesheet(
+    "BAD_STYLESHEET_ZUID"
+  );
+  t.is(res.statusCode, 400);
+});
 
 // 
 // STYLESHEET UPDATE 
@@ -184,7 +190,7 @@ test.serial("createStylesheet:201 create LESS file", async t => {
   t.truthy(res.data.ZUID);
 });
 
-// TODO less error responses
+// test failed LESS stylesheet creation with bad LESS syntax
 test.skip("createStylesheet:400 create bad LESS file", async t => {
   const res = await t.context.sdk.instance.createStylesheet({
     code: TEST_BAD_LESS,
@@ -193,7 +199,6 @@ test.skip("createStylesheet:400 create bad LESS file", async t => {
   });
 
   t.is(res.statusCode, 400);
-
 });
 
 // test successful SASS stylesheet creation
@@ -209,7 +214,7 @@ test.serial("createStylesheet:201 create SASS file", async t => {
   t.truthy(res.data.ZUID);
 });
 
-// test failed SASS stylesheet creation
+// test failed SASS stylesheet creation with bad SASS syntax
 test.skip("createStylesheet:400 bad SASS file", async t => {
   const res = await t.context.sdk.instance.createStylesheet({
     code: TEST_BAD_SASS,
@@ -233,7 +238,7 @@ test.serial("createStylesheet:201 create SCSS file", async t => {
   t.truthy(res.data.ZUID);
 });
 
-// test failed SCSS stylesheet creation
+// test failed SCSS stylesheet creation with bad SCSS syntax
 test.skip("createStylesheet:400 bad SCSS file", async t => {
   const res = await t.context.sdk.instance.createStylesheet({
     code: TEST_BAD_SCSS,
@@ -242,8 +247,6 @@ test.skip("createStylesheet:400 bad SCSS file", async t => {
   });
 
   t.is(res.statusCode, 400);
-  // t.is(res.data.version, 1); // Newly created resource should have a version of 1
-  // t.truthy(res.data.ZUID);
 });
 
 
@@ -289,10 +292,6 @@ test.serial("publishStylesheet:200", async t => {
   t.is(res.statusCode, 200);
 });
 
-// TODO trigger cache purge
-// current API functions do not support cache purge
+// TODO trigger cache purge - there is no SDK functionality to support cache purge
 
-// TODO fetch version
-
-
-
+// TODO fetch version - there is no SDK functionality to support resource version retrieval
