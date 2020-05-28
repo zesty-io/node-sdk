@@ -15,8 +15,7 @@ async function authedSDK() {
   return new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
 }
 
-// test attempt to create an authenticated SDK context
-// without using a token
+// test failed attempt to create an unauthenticated SDK context without using a token
 test.serial("constructor():requires token", t => {
   try {
     new SDK(process.env.ZESTY_INSTANCE_ZUID);
@@ -25,8 +24,7 @@ test.serial("constructor():requires token", t => {
   }
 });
 
-// test attempt to create an authenticated SDK context
-// using an invalid token
+// test failed attempt to create an SDK context using an invalid token
 test.serial("constructor():intialize with invalid token", async t => {
   try {
     const sdk = await authedSDK();

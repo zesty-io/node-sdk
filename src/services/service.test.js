@@ -7,7 +7,7 @@ const test = require("ava");
 const Models = require("./instance/models")
 const Service = require("./service")
 
-//  test service constructor without specifying API URL
+//  test failed attempt to create a service without an API URL
 test.serial("constructor():missing API URL", async t => {
   try {
     new Service();
@@ -16,7 +16,7 @@ test.serial("constructor():missing API URL", async t => {
   }
 });
 
-//  test service constructor without specifying token
+//  test failed attempt to create a service without a token
 test.serial("constructor():missing token", async t => {
   try {
     new Service(process.env.ZESTY_INSTANCE_API);
@@ -25,7 +25,7 @@ test.serial("constructor():missing token", async t => {
   }
 });
 
-//  test sending a request from the service
+//  test successful sending of a request from service
 test.serial("getRequest:200", async t => {
   const instanceService = new Service(process.env.ZESTY_INSTANCE_API, process.env.ZESTY_TOKEN);
 
