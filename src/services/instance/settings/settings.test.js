@@ -9,7 +9,15 @@ const {
 
 test.beforeEach(authContext);
 
-// Settings
+// 
+//  SETTINGS
+// 
+
+// 
+// SETTINGS GET
+// 
+
+// test successful settings retrieval
 test.serial("fetchSettings:200", async t => {
   const res = await t.context.sdk.instance.getSettings();
 
@@ -17,6 +25,12 @@ test.serial("fetchSettings:200", async t => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length);
 });
+
+// 
+// SETTING GET
+// 
+
+// test successful setting retrieval
 test.serial("fetchSetting:200", async t => {
   const res = await t.context.sdk.instance.getSetting(TEST_SETTING_ZUID);
 
@@ -25,7 +39,7 @@ test.serial("fetchSetting:200", async t => {
   t.is(res.data.ZUID, TEST_SETTING_ZUID);
 });
 
-// get setting without a ZUID
+// test failed setting retrieval with no setting ZUID
 test.serial("getSetting without setting ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getSetting();

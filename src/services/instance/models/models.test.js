@@ -1,22 +1,31 @@
 require("dotenv").config();
 
-// const fs = require("fs");
 const test = require("ava");
 const authContext = require("../../../../test/helpers/auth-context");
 
-// const ITEM_JSON = JSON.parse(
-//   fs.readFileSync(`./test/fixtures/${ITEM_ZUID}.json`).toString()
-// );
-
 test.beforeEach(authContext);
 
-// Models
+// 
+// CONTENT MODELS
+// 
+
+// 
+// GET CONTENT MODELS
+// 
+
+// test successful models retieval
 test.serial("fetchModels:200", async t => {
   const res = await t.context.sdk.instance.getModels();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
+
+// 
+// GET CONTENT MDOEL
+// 
+
+// test successful model retrieval
 test.serial("fetchModel:200", async t => {
   const res = await t.context.sdk.instance.getModel(
     process.env.TEST_MODEL_ZUID
@@ -25,6 +34,8 @@ test.serial("fetchModel:200", async t => {
   t.truthy(typeof res.data === "object");
   t.is(res.data.ZUID, process.env.TEST_MODEL_ZUID);
 });
+
+// test failed model retrieval with a bad content model ZUID
 test.serial("fetchModel:404", async t => {
   const res = await t.context.sdk.instance.getModel("6-0000-00000");
   t.is(res.statusCode, 404);
@@ -33,7 +44,7 @@ test.serial("fetchModel:404", async t => {
   t.is(res.message, "No Results Found for ZUID: 6-0000-00000");
 });
 
-// test get model without a ZUID
+// test failed model retrieval with a no content model ZUID
 test.serial("getModel without a model ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getModel();
