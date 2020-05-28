@@ -57,6 +57,7 @@ module.exports = {
           })
         );
       }
+      
       async createView(payload) {
         this.validateView(payload);
         return await this.postRequest(this.API.createView, { payload });

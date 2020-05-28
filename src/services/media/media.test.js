@@ -13,6 +13,11 @@ const MEDIA_HOST = "https://dg1wqtbj.media.zestyio.com"
 // 
 // MEDIA BINS
 // note - to test failed media bins retrieval an invalid site ID would be required
+// I have not figured out how to do that yet
+// 
+
+// 
+// MEDIA BINS GET
 // 
 
 // test successful media bins retrieval
@@ -22,6 +27,10 @@ test.serial("getBins:200", async (t) => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
+
+// 
+// MEDIA BIN GET
+// 
 
 // test successful media bin retrieval
 test.serial("getBin:200", async (t) => {
@@ -38,6 +47,10 @@ test.serial("getBin:400", async (t) => {
   t.is(res.statusCode, 400);
   t.is(res.message, "Invalid bin id");
 })
+
+// 
+// MEDIA BIN UPDATE
+// 
 
 // test successful media bin update
 test.serial("updateBin:200", async (t) => {
