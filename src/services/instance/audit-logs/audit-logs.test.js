@@ -22,6 +22,18 @@ test.serial("getAuditLogs:200", async t => {
   t.truthy(res.data.length > 0);
 });
 
+// test successful audit log search
+test.serial("searchAuditLogs:200", async t => {
+  const res = await t.context.sdk.instance.searchAuditLogs(
+    "?limit=5&order=created&dir=desc&action=4"
+  );
+
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
+});
+
+
 // 
 // AUDIT LOG GET
 // 
@@ -43,15 +55,4 @@ test.serial("getAuditLog no audit ZUID", async t => {
   } catch (err) {
     t.is(err.message, "SDK:Instance:AuditLogs:getAuditLog() missing required `auditZUID` argument") 
   }
-});
-
-// test successful audit log search
-test.serial("searchAuditLogs:200", async t => {
-  const res = await t.context.sdk.instance.searchAuditLogs(
-    "?limit=5&order=created&dir=desc&action=4"
-  );
-
-  t.is(res.statusCode, 200);
-  t.truthy(Array.isArray(res.data));
-  t.truthy(res.data.length > 0);
 });
