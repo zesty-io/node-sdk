@@ -190,16 +190,18 @@ test.serial("createStylesheet:201 create LESS file", async t => {
   t.truthy(res.data.ZUID);
 });
 
+// weienwong - test is commented out because creating a stylesheet file 
+//  with bad LESS syntax will break tests
 // test failed LESS stylesheet creation with bad LESS syntax
-test.skip("createStylesheet:400 create bad LESS file", async t => {
-  const res = await t.context.sdk.instance.createStylesheet({
-    code: TEST_BAD_LESS,
-    filename: `test-${moment().valueOf()}.less`,
-    type: "text/less"
-  });
+// test.skip("createStylesheet:400 create bad LESS file", async t => {
+//   const res = await t.context.sdk.instance.createStylesheet({
+//     code: TEST_BAD_LESS,
+//     filename: `test-${moment().valueOf()}.less`,
+//     type: "text/less"
+//   });
 
-  t.is(res.statusCode, 400);
-});
+//   t.is(res.statusCode, 400);
+// });
 
 // test successful SASS stylesheet creation
 test.serial("createStylesheet:201 create SASS file", async t => {
@@ -214,16 +216,18 @@ test.serial("createStylesheet:201 create SASS file", async t => {
   t.truthy(res.data.ZUID);
 });
 
+// weienwong - test is commented out because creating a stylesheet file 
+//  with bad SASS syntax will break tests
 // test failed SASS stylesheet creation with bad SASS syntax
-test.skip("createStylesheet:400 bad SASS file", async t => {
-  const res = await t.context.sdk.instance.createStylesheet({
-    code: TEST_BAD_SASS,
-    filename: `test-${moment().valueOf()}.sass`,
-    type: "text/sass"
-  });
+// test.skip("createStylesheet:400 bad SASS file", async t => {
+//   const res = await t.context.sdk.instance.createStylesheet({
+//     code: TEST_BAD_SASS,
+//     filename: `test-${moment().valueOf()}.sass`,
+//     type: "text/sass"
+//   });
 
-  t.is(res.statusCode, 400);
-});
+//   t.is(res.statusCode, 400);
+// });
 
 // test successful SCSS stylesheet creation
 test.serial("createStylesheet:201 create SCSS file", async t => {
@@ -238,16 +242,18 @@ test.serial("createStylesheet:201 create SCSS file", async t => {
   t.truthy(res.data.ZUID);
 });
 
+// weienwong - test is commented out because creating a stylesheet file 
+//  with bad SCSS syntax will break tests
 // test failed SCSS stylesheet creation with bad SCSS syntax
-test.skip("createStylesheet:400 bad SCSS file", async t => {
-  const res = await t.context.sdk.instance.createStylesheet({
-    code: TEST_BAD_SCSS,
-    filename: `test-${moment().valueOf()}.scss`,
-    type: "text/scss"
-  });
+// test.skip("createStylesheet:400 bad SCSS file", async t => {
+//   const res = await t.context.sdk.instance.createStylesheet({
+//     code: TEST_BAD_SCSS,
+//     filename: `test-${moment().valueOf()}.scss`,
+//     type: "text/scss"
+//   });
 
-  t.is(res.statusCode, 400);
-});
+//   t.is(res.statusCode, 400);
+// });
 
 
 // 
