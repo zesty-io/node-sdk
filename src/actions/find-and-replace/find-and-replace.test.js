@@ -42,7 +42,7 @@ test.serial("findAndReplace > only item and models allowed", async (t) => {
 test.serial("findAndReplace > on model items", async (t) => {
   try {
     const result = await t.context.sdk.action.findAndReplace(
-      process.env.SEARCH_REPLACE_MODEL_ZUID,
+      process.env.TEST_SEARCH_REPLACE_MODEL_ZUID,
       FIELD_NAME,
       PATTERN,
       REPLACEMENT
@@ -57,7 +57,7 @@ test.serial("findAndReplace > on model items", async (t) => {
 
     // Reset test content
     await t.context.sdk.action.findAndReplace(
-      process.env.SEARCH_REPLACE_MODEL_ZUID,
+      process.env.TEST_SEARCH_REPLACE_MODEL_ZUID,
       FIELD_NAME,
       REPLACEMENT,
       PATTERN
