@@ -692,6 +692,7 @@ test.serial("upsertItem without a payload",  async t => {
   );
 });
 
+// test successful item delete
 test.serial("deleteItem:200", async t => {
   const title = `node-sdk:deleteItem:${moment().valueOf()}`;
   const item = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
