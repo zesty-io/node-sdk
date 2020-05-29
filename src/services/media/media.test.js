@@ -8,8 +8,6 @@ const moment = require("moment");
 const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
-const MEDIA_HOST = "https://dg1wqtbj.media.zestyio.com"
-
 // 
 // MEDIA BINS
 // note - to test failed media bins retrieval an invalid site ID would be required
@@ -99,7 +97,7 @@ test.serial("createFile:201", async (t) => {
   t.is(res.data[0].type, "file");
   t.is(
     res.data[0].url,
-    `${MEDIA_HOST}/${res.data[0].filename}`
+    `${process.env.TEST_MEDIA_HOST}/${res.data[0].filename}`
   );
 });
 
@@ -168,7 +166,7 @@ test.serial("updateFile:200", async (t) => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
   t.is(res.data[0].filename, fileName);
-  t.is(res.data[0].url, `${MEDIA_HOST}/${fileName}`);
+  t.is(res.data[0].url, `${process.env.TEST_MEDIA_HOST}/${fileName}`);
 });
 
 // test failed media file update with no file ZUID
