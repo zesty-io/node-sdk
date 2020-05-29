@@ -79,7 +79,7 @@ test.serial("getItem with no item ZUID", async t => {
       TEST_MODEL_ZUID
     )
   );
-  noItemZUID.is(
+  t.is(
     noItemZUID.message,
     "SDK:Instance:getItem() missing required `itemZUID` argument"
   );
@@ -570,7 +570,7 @@ test.serial("unpublishedItem without a publish ZUID", async t => {
   const item = found.data[0];
   
   const noPublishZUID = await t.throwsAsync(
-    t.context.sdk.unpublishItem(
+    t.context.sdk.instance.unpublishItem(
       TEST_MODEL_ZUID,
       created.data.ZUID
     )
