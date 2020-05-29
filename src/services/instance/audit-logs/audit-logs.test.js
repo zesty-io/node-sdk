@@ -5,6 +5,15 @@ const authContext = require("../../../../test/helpers/auth-context");
 
 test.beforeEach(authContext);
 
+// 
+// AUDIT LOGS
+// 
+
+// 
+// AUDIT LOGS GET
+// 
+
+// test successful audit logs retrieval 
 test.serial("getAuditLogs:200", async t => {
   const res = await t.context.sdk.instance.getAuditLogs();
 
@@ -13,6 +22,11 @@ test.serial("getAuditLogs:200", async t => {
   t.truthy(res.data.length > 0);
 });
 
+// 
+// AUDIT LOG GET
+// 
+
+// test successful audit log retrieval
 test.serial("getAuditLog:200", async t => {
   const res = await t.context.sdk.instance.getAuditLog(
     process.env.TEST_AUDIT_LOG_ZUID

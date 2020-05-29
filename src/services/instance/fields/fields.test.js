@@ -5,7 +5,15 @@ const authContext = require("../../../../test/helpers/auth-context");
 
 test.beforeEach(authContext);
 
-// Fields
+// 
+// FIELDS
+// 
+
+// 
+// FIELDS GET
+// 
+
+// test successful fields retrieval
 test.serial("fetchModelFields:200", async t => {
   const res = await t.context.sdk.instance.getModelFields(
     process.env.TEST_MODEL_ZUID
@@ -14,6 +22,23 @@ test.serial("fetchModelFields:200", async t => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
+
+//  tests model fields retrieval with no model ZUID
+test.serial("fetchModelFields: requires model ZUID", async t => {
+  const noModelZUID = await t.throwsAsync(
+    t.context.sdk.instance.getModelFields()
+  );
+  t.is(
+    noModelZUID.message,
+    "SDK:Instance:getModelFields() missing required `modelZUID` argument"
+  );
+})
+
+// 
+// FIELD GET
+// 
+
+// test successful field retrieval
 test.serial("fetchModelField:200", async t => {
   const res = await t.context.sdk.instance.getModelField(
     process.env.TEST_MODEL_ZUID,
@@ -25,31 +50,26 @@ test.serial("fetchModelField:200", async t => {
   t.is(res.data.contentModelZUID, process.env.TEST_MODEL_ZUID);
 });
 
-//  tests model fields retrieval without specificying a model ZUID
-test.serial("fetchModelFields: requires model ZUID", async t => {
-  try {
-    const res = await t.context.sdk.instance.getModelFields();
-  } catch (err) {
-    t.is(err.message, "SDK:Instance:getModelFields() missing required `modelZUID` argument");
-  }
-})
-
 //  tests single model field retrieval without specificying a model ZUID
 test.serial("fetchModelField: requires model ZUID", async t => {
-  try {
-    const res = await t.context.sdk.instance.getModelField();
-  } catch (err) {
-    t.is(err.message, "SDK:Instance:getModelField() missing required `modelZUID` argument");
-  }
-})
+  const noModel = await t.throwsAsync(
+    t.context.sdk.instance.getModelField()
+  ); 
+  t.is(
+    noModel.message,
+    "SDK:Instance:getModelField() missing required `modelZUID` argument"
+  );
+});
 
 //  tests single model field retrieval without specificying a field ZUID
 test.serial("fetchModelField: requires field ZUID", async t => {
-  try {
-    const res = await t.context.sdk.instance.getModelField(
+  const noFieldZUID = await t.throwsAsync(
+    t.context.sdk.instance.getModelField(
       process.env.TEST_MODEL_ZUID,
-    );
-  } catch (err) {
-    t.is(err.message, "SDK:Instance:getModelField() missing required `fieldZUID` argument");
-  }
+    )
+  );
+  t.is(
+    noFieldZUID.message,
+    "SDK:Instance:getModelField() missing required `fieldZUID` argument"
+  );
 })
