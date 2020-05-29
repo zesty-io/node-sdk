@@ -33,6 +33,6 @@ test.serial("getRequest:200", async t => {
     instanceService.interpolate(
       Models.API.fetchModels  
     )
-  )
+  );
   t.is(res.statusCode, 200)
 });
