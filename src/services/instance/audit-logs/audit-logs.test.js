@@ -36,7 +36,7 @@ test.serial("getAuditLog:200", async t => {
   t.is(res.data.ZUID, process.env.TEST_AUDIT_LOG_ZUID);
 });
 
-// tests audit log retrieval without an audit ZUID 
+// test successful audit log retrieval without an audit ZUID 
 test.serial("getAuditLog no audit ZUID", async t => {
   try {
     const res = await t.context.sdk.instance.getAuditLog();  
@@ -45,6 +45,7 @@ test.serial("getAuditLog no audit ZUID", async t => {
   }
 });
 
+// test successful audit log search
 test.serial("searchAuditLogs:200", async t => {
   const res = await t.context.sdk.instance.searchAuditLogs(
     "?limit=5&order=created&dir=desc&action=4"
