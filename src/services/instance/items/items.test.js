@@ -26,7 +26,7 @@ test.beforeEach(authContext);
 // CONTENT ITEMS GET
 // 
 
-// test content items retrieval 
+// test successful content items retrieval 
 test.serial("fetchItems:200", async t => {
   const res = await t.context.sdk.instance.getItems(TEST_MODEL_ZUID);
   t.is(res.statusCode, 200);
@@ -34,7 +34,7 @@ test.serial("fetchItems:200", async t => {
   t.truthy(res.data.length > 0);
 });
 
-// test content items retrieval with no content model ZUID
+// test successful content items retrieval with no content model ZUID
 test.serial("getItems with no modelZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.getItems()
@@ -49,7 +49,7 @@ test.serial("getItems with no modelZUID", async t => {
 // CONTENT ITEM GET
 // 
 
-// test content item retrieval
+// test successful content item retrieval
 test.serial("fetchItem:200", async t => {
   const res = await t.context.sdk.instance.getItem(
     TEST_MODEL_ZUID,
@@ -61,7 +61,7 @@ test.serial("fetchItem:200", async t => {
   t.is(res.data.meta.contentModelZUID, TEST_MODEL_ZUID);
 });
 
-// test single item retrieval with no content model ZUID
+// test failed item retrieval with no content model ZUID
 test.serial("getItem with no model ZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.getItem()
@@ -72,7 +72,7 @@ test.serial("getItem with no model ZUID", async t => {
   );
 });
 
-// test single item retrieval with no content item ZUID
+// test failed item retrieval with no content item ZUID
 test.serial("getItem with no item ZUID", async t => {
   const noItemZUID = await t.throwsAsync(
     t.context.sdk.instance.getItem(
@@ -89,7 +89,7 @@ test.serial("getItem with no item ZUID", async t => {
 // CONTENT ITEM PUBLISHINGS GET
 // 
 
-// test item publishings retrieval
+// test successful item publishings retrieval
 test.serial("getItemPublishings:200", async t => {
   const res = await t.context.sdk.instance.getItemPublishings(
     TEST_MODEL_ZUID,
@@ -101,7 +101,7 @@ test.serial("getItemPublishings:200", async t => {
   t.is(res.data[0].itemZUID, TEST_ITEM_ZUID);
 });
 
-// test item publishings retrieval with no content model ZUID
+// test failed item publishings retrieval with no content model ZUID
 test.serial("getItemPublishings with no model ZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemPublishings()
@@ -112,7 +112,7 @@ test.serial("getItemPublishings with no model ZUID", async t => {
   );
 });
 
-// test item publishings retrieval with no content item ZUID
+// test failed item publishings retrieval with no content item ZUID
 test.serial("getItemPublishings with no item ZUID", async t => {
   const noItemZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemPublishings(
@@ -129,7 +129,7 @@ test.serial("getItemPublishings with no item ZUID", async t => {
 // CONTENT ITEM PUBLISHING GET
 // 
 
-// test item publishing retrieval
+// test successful item publishing retrieval
 test.serial("getItemPublishing:200", async t => {
   const res = await t.context.sdk.instance.getItemPublishing(
     TEST_MODEL_ZUID,
@@ -139,7 +139,7 @@ test.serial("getItemPublishing:200", async t => {
   t.is(res.statusCode, 200);
 });
 
-//  test item publishing without a model ZUID
+//  test failed item publishing without a model ZUID
 test.serial("getItemPublishing with no model ZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemPublishing()
@@ -150,7 +150,7 @@ test.serial("getItemPublishing with no model ZUID", async t => {
   );
 });
 
-//  test item publishing without an item ZUID
+//  test failed item publishing without an item ZUID
 test.serial("getItemPublishing with no itemZUID", async t => {
   const noItemZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemPublishing(
@@ -163,7 +163,7 @@ test.serial("getItemPublishing with no itemZUID", async t => {
   );
 });
 
-//  test item publishing without a publish ZUID
+//  test failed item publishing without a publish ZUID
 test.serial("getItemPublishing with no publishZUID", async t => {
   const noPublishZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemPublishing(
@@ -181,7 +181,7 @@ test.serial("getItemPublishing with no publishZUID", async t => {
 // CONTENT ITEM VERSIONS GET
 // 
 
-// test item versions retrieval
+// test successful item versions retrieval
 test.serial("getItemVersions:200", async t => {
   const res = await t.context.sdk.instance.getItemVersions(
     TEST_MODEL_ZUID,
@@ -192,7 +192,7 @@ test.serial("getItemVersions:200", async t => {
   t.truthy(res.data.length > 0);
 });
 
-// test item versions retrieval without specifying a model ZUID
+// test failed item versions retrieval without specifying a model ZUID
 test.serial("getItemVersions without model ZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemVersions()
@@ -203,7 +203,7 @@ test.serial("getItemVersions without model ZUID", async t => {
   )
 });
 
-// test item versions retrieval without specifying an item ZUID
+// test failed item versions retrieval without specifying an item ZUID
 test.serial("getItemVersions without item ZUID", async t => {
   const noItemZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemVersions(
@@ -220,7 +220,7 @@ test.serial("getItemVersions without item ZUID", async t => {
 // CONTENT ITEM VERSION GET
 // 
 
-// test item version retrieval
+// test successful item version retrieval
 test.serial("getItemVersion:200", async t => {
   const res = await t.context.sdk.instance.getItemVersion(
     TEST_MODEL_ZUID,
@@ -234,7 +234,7 @@ test.serial("getItemVersion:200", async t => {
   t.is(Number(res.data.meta.version), Number(TEST_ITEM_VERSION));
 });
 
-// test item version retrieval without specifying a model ZUID
+// test failed item version retrieval without specifying a model ZUID
 test.serial("getItemVersion with missing model ZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemVersion()
@@ -245,7 +245,7 @@ test.serial("getItemVersion with missing model ZUID", async t => {
   );
 });
 
-// test item version retrieval without specifying an item ZUID
+// test failed item version retrieval without specifying an item ZUID
 test.serial("getItemVersion with missing item ZUID", async t => {
   const noItemZUID = await t.throwsAsync(
     t.context.sdk.instance.getItemVersion(
@@ -258,7 +258,7 @@ test.serial("getItemVersion with missing item ZUID", async t => {
   );
 });
 
-// test item version retrieval without specifying a version
+// test failed item version retrieval without specifying a version
 test.serial("getItemVersion with missing version", async t => {
   const noVersion = await t.throwsAsync(
     t.context.sdk.instance.getItemVersion(
@@ -292,7 +292,7 @@ test.serial("createItem:200", async t => {
   t.truthy(res.data.ZUID);
 });
 
-// test item creation without a model ZUID
+// test failed item creation without a model ZUID
 test.serial("createItem with missing model ZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.createItem()
@@ -303,7 +303,7 @@ test.serial("createItem with missing model ZUID", async t => {
   );
 });
 
-// test item creation without a payload
+// test failed item creation without a payload
 test.serial("createItem with missing payload", async t => {
   const noPayload = await t.throwsAsync(
     t.context.sdk.instance.createItem(
@@ -460,6 +460,7 @@ test.serial("publishItem without a version", async t => {
   // pluck first record
   const item = found.data[0];
 
+  // attempt to publish a newly created item with no version number
   const noVersion = await t.throwsAsync(
     t.context.sdk.instance.publishItem(
       TEST_MODEL_ZUID,
@@ -613,6 +614,7 @@ test.serial("findItem without a query", async t => {
 // 
 
 // test successful upsert: update existing item
+// upsert will update an existing item because pathPart already exists
 test.serial("upsertItem:200", async t => {
   const EXISTING_PATH = "node-sdk-updateitem";
   const res = await t.context.sdk.instance.upsertItem(
@@ -625,7 +627,8 @@ test.serial("upsertItem:200", async t => {
   t.is(res.data.ZUID, TEST_ITEM_ZUID);
 });
 
-// Upsert: create new item
+// test successful upsert of a new item
+// upsert will create new item because path is unique
 test.serial("upsertItem:201", async t => {
   const title = `node-sdk:upsertItem:${moment().valueOf()}`;
   const pathPart = t.context.sdk.instance.formatPath(title);
@@ -694,6 +697,7 @@ test.serial("upsertItem without a payload",  async t => {
 
 // test successful item delete
 test.serial("deleteItem:200", async t => {
+  // create a new item
   const title = `node-sdk:deleteItem:${moment().valueOf()}`;
   const item = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
@@ -707,6 +711,7 @@ test.serial("deleteItem:200", async t => {
   t.is(item.statusCode, 201);
   t.truthy(item.data.ZUID);
 
+  // delete item
   const res = await t.context.sdk.instance.deleteItem(
     TEST_MODEL_ZUID,
     item.data.ZUID

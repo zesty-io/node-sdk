@@ -50,9 +50,11 @@ test.serial("getAuditLog:200", async t => {
 
 // test successful audit log retrieval without an audit ZUID 
 test.serial("getAuditLog no audit ZUID", async t => {
-  try {
-    const res = await t.context.sdk.instance.getAuditLog();  
-  } catch (err) {
-    t.is(err.message, "SDK:Instance:AuditLogs:getAuditLog() missing required `auditZUID` argument") 
-  }
+  const noAuditLogZUID = await t.throwsAsync(
+    t.context.sdk.instance.getAuditLog()
+  );
+  t.is(
+    noAuditLogZUID.message,
+    "SDK:Instance:AuditLogs:getAuditLog() missing required `auditZUID` argument"
+  );
 });

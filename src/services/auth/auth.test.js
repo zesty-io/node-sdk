@@ -33,6 +33,7 @@ test.serial("login:200", async t => {
     process.env.ZESTY_USER_PASSWORD
   );
 
+  // test checks that token is not null
   t.is(res.statusCode, 200);
   t.not("", res.token);
 });
@@ -55,7 +56,10 @@ test.serial("login:400", async t => {
 test.serial("login:401||403", async t => {
   // creates a unique bad username everytime so this test can be run 
   // multiple times without fear of getting locked out
-  const res = await auth.login(`BADUSERNAME+${moment().valueOf()}@MAIL.COM`, "BAD PASSWORD");
+  const res = await auth.login(
+    `BADUSERNAME+${moment().valueOf()}@MAIL.COM`, 
+    "BAD PASSWORD"
+  );
 
   // After 5 failed login attempts the auth service locks the account and returns
   // a 403 status code. We check for both status codes otherwise this test is inconsistent

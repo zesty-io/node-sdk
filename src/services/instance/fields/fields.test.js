@@ -23,7 +23,7 @@ test.serial("fetchModelFields:200", async t => {
   t.truthy(res.data.length > 0);
 });
 
-//  tests model fields retrieval with no model ZUID
+//  tests failed model fields retrieval with no model ZUID
 test.serial("fetchModelFields: requires model ZUID", async t => {
   const noModelZUID = await t.throwsAsync(
     t.context.sdk.instance.getModelFields()
@@ -50,7 +50,7 @@ test.serial("fetchModelField:200", async t => {
   t.is(res.data.contentModelZUID, process.env.TEST_MODEL_ZUID);
 });
 
-//  tests single model field retrieval without specificying a model ZUID
+//  tests failed single model field retrieval without specificying a model ZUID
 test.serial("fetchModelField: requires model ZUID", async t => {
   const noModel = await t.throwsAsync(
     t.context.sdk.instance.getModelField()
@@ -61,7 +61,7 @@ test.serial("fetchModelField: requires model ZUID", async t => {
   );
 });
 
-//  tests single model field retrieval without specificying a field ZUID
+//  tests failed single model field retrieval without specificying a field ZUID
 test.serial("fetchModelField: requires field ZUID", async t => {
   const noFieldZUID = await t.throwsAsync(
     t.context.sdk.instance.getModelField(
