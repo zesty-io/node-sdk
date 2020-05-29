@@ -5,6 +5,10 @@ require("dotenv").config();
 const test = require("ava");
 const SDK = require("./sdk");
 
+// 
+// SDK
+// 
+
 async function authedSDK() {
   const auth = new SDK.Auth();
   const session = await auth.login(
@@ -14,6 +18,10 @@ async function authedSDK() {
 
   return new SDK(process.env.ZESTY_INSTANCE_ZUID, session.token);
 }
+
+// 
+// SDK CONSTRUCTOR
+// 
 
 // test failed attempt to create an unauthenticated SDK context without using a token
 test.serial("constructor():requires token", t => {
@@ -34,6 +42,10 @@ test.serial("constructor():intialize with invalid token", async t => {
     t.is(err.status, "Unauthorized");
   }
 });
+
+// 
+// SDK AUTHENTICATION
+// 
 
 // test successful creation of an SDK context
 test.serial("authenticated", async t => {
