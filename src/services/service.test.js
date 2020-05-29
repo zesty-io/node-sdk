@@ -7,6 +7,14 @@ const test = require("ava");
 const Models = require("./instance/models")
 const Service = require("./service")
 
+// 
+// SERVICE
+// 
+
+// 
+// SERVICE CONSTRUCTOR
+// 
+
 //  test failed attempt to create a service without an API URL
 test.serial("constructor():missing API URL", async t => {
   try {
@@ -24,6 +32,10 @@ test.serial("constructor():missing token", async t => {
     t.is(err.message, "SDK:Service:constructor() missing required `token` argument on instantiation. All API requests have to be authenticated");  
   }
 });
+
+// 
+// SERVICE GET REQUEST
+// 
 
 //  test successful sending of a request from service
 test.serial("getRequest:200", async t => {
