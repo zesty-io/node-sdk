@@ -42,3 +42,13 @@ test.serial("getSiteId:200", async t => {
   const res = await t.context.sdk.account.getSiteId();
   t.is(res, parseInt(process.env.ZESTY_SITE_ID));
 })
+
+// test successful retrieval of a manually set site ID
+test.serial("getSiteId:200 with manual id being set", async t => {
+  t.context.sdk.account.siteId = 123;
+  const res = await t.context.sdk.account.getSiteId();
+  t.is(
+    res, 
+    123
+  );
+})

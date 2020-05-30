@@ -7,6 +7,8 @@ const moment = require("moment");
 
 const Auth = require("./auth");
 
+
+
 // 
 // AUTH
 // 
@@ -16,6 +18,66 @@ const auth = new Auth({
 });
 const badAuth = new Auth({
   authURL: "http://localhost:9999"
+});
+
+// test auth construction
+
+test.serial("auth:constructor()", async t => {
+  const authURL = "localhost:9999"
+  const newAuth = new Auth({
+    authURL 
+  });
+  
+  t.is(
+    newAuth.authURL,
+    authURL
+  );
+});
+
+
+test.serial("auth:constructor() with no options", async t => {
+  const newAuth = new Auth();
+  
+  t.is(
+    newAuth.authURL,
+    process.env.ZESTY_AUTH_API
+  );
+});
+
+test.serial("auth:constructor() with empty options", async t => {
+  const newAuth = new Auth({
+    authURL: null
+  });
+  
+  t.is(
+    newAuth.authURL,
+    process.env.ZESTY_AUTH_API
+  );
+});
+
+test.serial("auth:constructor() with undefined authURL string options", async t => {
+  const newAuth = new Auth({
+    authURL: undefined
+  });
+  
+  t.is(
+    newAuth.authURL,
+    process.env.ZESTY_AUTH_API
+  );
+});
+
+
+test.serial("auth:constructor() with empty authURL string options", async t => {
+  const authOptions = {
+
+  }
+  
+  const newAuth = new Auth(authOptions);
+  
+  t.is(
+    newAuth.authURL,
+    process.env.ZESTY_AUTH_API
+  );
 });
 
 // NOTE: We explicitly do not catch promise rejections,

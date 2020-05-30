@@ -43,6 +43,18 @@ test.serial("constructor():intialize with invalid token", async t => {
   }
 });
 
+
+// 
+// SDK INIT
+// 
+
+// test successful SDK init
+test.serial("init", async t => {
+  const sdk = await authedSDK();
+  const res = await sdk.init(sdk.token);
+
+  t.truthy(sdk.action);
+})
 // 
 // SDK AUTHENTICATION
 // 

@@ -48,3 +48,63 @@ test.serial("getRequest:200", async t => {
   );
   t.is(res.statusCode, 200)
 });
+
+
+// 
+// SERVICE INTERPOLATE
+// 
+
+// test interpolate
+test.serial("interpolate", t => {
+  const url = "website.com/PATH"
+  const instanceService = new Service(process.env.ZESTY_INSTANCE_API, process.env.ZESTY_TOKEN);
+  const newURL =  instanceService.interpolate(
+    url,
+    {
+      PATH: "abc" 
+    }
+  )
+  t.is(
+    newURL,
+    "website.com/abc"
+  )
+})
+
+test.serial("interpolate with no URL", t => {
+  const url = "website.com/PATH"
+  const instanceService = new Service(process.env.ZESTY_INSTANCE_API, process.env.ZESTY_TOKEN);
+  try {
+    const newURL =  instanceService.interpolate(
+      null,
+      {
+        PATH: "abc" 
+      }
+    );  
+  } catch (err) {
+    t.is(
+      err.message,
+      "A url must be provided to interpolate"
+    );  
+  }
+})
+
+//
+// SERVICE REQUEST
+//  
+
+// test failed attempty to send a request with no path
+test.serial("request with no path", t => {
+  const instanceService = new Service(
+    process.env.ZESTY_INSTANCE_API, 
+    process.env.ZESTY_TOKEN
+  );
+
+  try {
+    const res = instanceService.request()
+  } catch (err) {
+    t.is(
+      err.message,
+      "Missing required `path`. Can not make request."
+    );
+  }
+})
