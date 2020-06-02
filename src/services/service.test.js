@@ -54,7 +54,7 @@ test.serial("getRequest:200", async t => {
 // SERVICE INTERPOLATE
 // 
 
-// test interpolate
+// test successful interpolate
 test.serial("interpolate", t => {
   const url = "website.com/PATH"
   const instanceService = new Service(process.env.ZESTY_INSTANCE_API, process.env.ZESTY_TOKEN);
@@ -70,8 +70,8 @@ test.serial("interpolate", t => {
   )
 })
 
+// test failed url interpolation
 test.serial("interpolate with no URL", t => {
-  const url = "website.com/PATH"
   const instanceService = new Service(process.env.ZESTY_INSTANCE_API, process.env.ZESTY_TOKEN);
   try {
     const newURL =  instanceService.interpolate(
@@ -92,7 +92,7 @@ test.serial("interpolate with no URL", t => {
 // SERVICE REQUEST
 //  
 
-// test failed attempty to send a request with no path
+// test failed attempt to send a request with no path
 test.serial("request with no path", t => {
   const instanceService = new Service(
     process.env.ZESTY_INSTANCE_API, 

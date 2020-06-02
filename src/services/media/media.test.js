@@ -10,8 +10,7 @@ test.beforeEach(authContext);
 
 // 
 // MEDIA BINS
-// note - to test failed media bins retrieval an invalid site ID would be required
-// I have not figured out how to do that yet
+// note - to test failed media bins retrieval an invalid site ID, an invalid site ID would need to be set on the account context
 // 
 
 // 
