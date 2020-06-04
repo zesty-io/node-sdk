@@ -21,9 +21,9 @@ module.exports = class Account extends Service {
       createWebhook: `/webhooks`,
       getInstanceWebhook: `/instances/${instanceZUID}/webhooks`,
       getWebhook: `/webhooks/WEBHOOK_ZUID`,
-
-      // do delete later
     };
+
+    // WEBHOOK CONSTANTS
 
     // event actions
     this.CREATE = 1
@@ -74,12 +74,12 @@ module.exports = class Account extends Service {
   }){
       
     // validate event action
-    if (opts.eventAction != CREATE &&
-      opts.eventAction != UPDATE &&
-      opts.eventAction != DELETE &&
-      opts.eventAction != PUBLISH &&
-      opts.eventAction != UNPUBLISH &&
-      opts.eventAction != UNDO_DELETE) {
+    if (opts.eventAction != this.CREATE &&
+      opts.eventAction != this.UPDATE &&
+      opts.eventAction != this.DELETE &&
+      opts.eventAction != this.PUBLISH &&
+      opts.eventAction != this.UNPUBLISH &&
+      opts.eventAction != this.UNDO_DELETE) {
         throw new Error(
           "Invalid eventAction value"
         );
@@ -96,8 +96,8 @@ module.exports = class Account extends Service {
     // validate resource type
 
     // validate content-type
-    if (opts.contentType != JSON && 
-      opts.contentType != formEncoded) {
+    if (opts.contentType != this.JSON && 
+      opts.contentType != this.formEncoded) {
         throw new Error(
           `Unsupported content-type: ${opts.contentType}`
         );
@@ -116,9 +116,6 @@ module.exports = class Account extends Service {
   // get all webhooks for the current instance
   async getWebhooks() {
     // validate the scoped resource
-    // it either has to be one of the following:
-    //  - "accounts"
-    //  - an instance ZUID
     const instance = this.getInstance();
     const instanceZUID = instance.ZUID;
 
