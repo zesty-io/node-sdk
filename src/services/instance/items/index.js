@@ -284,7 +284,7 @@ module.exports = {
       }
 
       async deleteItem(modelZUID, itemZUID) {
-        return await this.getRequest(
+        return await this.deleteRequest(
           this.interpolate(this.API.deleteItem, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID
