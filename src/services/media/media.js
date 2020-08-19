@@ -18,7 +18,7 @@ module.exports = class Media extends Service {
       fetchBins: "/media-manager-service/site/SITE_ID/bins",
       updateBin: "/media-manager-service/bin/BIN_ZUID",
 
-      fetchFile: "/media-manager-service/file/FILE_ID",
+      fetchFile: "/media-manager-service/file/FILE_ZUID",
       fetchFiles: "/media-manager-service/bin/BIN_ZUID/files",
       createFile:
         "/media-storage-service/upload/STORAGE_PROVIDER/STORAGE_LOCATION",
