@@ -20,8 +20,8 @@ module.exports = {
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
 
-    publishItem: "/content/items/ITEM_ZUID/publish-schedule",
-    unpublishItem: "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
+    publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings"
+    unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
 
     // NOTE should this be in a separate `Search` module?
     findItem: "/search/items?q=SEARCH_TERM" // Undocumented
