@@ -201,7 +201,7 @@ module.exports = {
         );
       }
 
-      async publishItem(modelZUID, itemZUID, version) {
+      async publishItem(modelZUID, itemZUID, version, publishAt="now",unpublishAt="never" ) {
         if (!modelZUID) {
           throw new Error(
             "SDK:Instance:publishItem() missing required `modelZUID` argument"
@@ -226,8 +226,8 @@ module.exports = {
           {
             payload: {
               version: version,
-              publishAt: "now",
-              unpublishAt: "never"
+              publishAt: publishAt,
+              unpublishAt: unpublishAt
             }
           }
         );
