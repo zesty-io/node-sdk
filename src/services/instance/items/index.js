@@ -20,7 +20,7 @@ module.exports = {
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
 
-    publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings"
+    publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
     unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
 
     // NOTE should this be in a separate `Search` module?
