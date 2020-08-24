@@ -224,7 +224,7 @@ module.exports = {
             ITEM_ZUID: itemZUID
           }),
           {
-            payload: 
+            payload: {
               version: version,
               publishAt: "now",
               unpublishAt: "never"
