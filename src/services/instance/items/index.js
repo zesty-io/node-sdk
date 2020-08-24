@@ -19,6 +19,10 @@ module.exports = {
     updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
+
+    publishItem: "/content/items/ITEM_ZUID/publish-schedule",
+    unpublishItem: "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
+
     // NOTE should this be in a separate `Search` module?
     findItem: "/search/items?q=SEARCH_TERM" // Undocumented
   },
@@ -214,13 +218,12 @@ module.exports = {
           );
         }
 
-        return await this.legacy.postRequest(
-          this.legacy.interpolate(this.legacy.API.publishItem, {
+        return await this.postRequest(
+          this.interpolate(this.API.publishItem, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID
           }),
           {
-            usesCookieAuth: true,
             payload: {
               version_num: version
             }
