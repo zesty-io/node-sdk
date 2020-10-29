@@ -49,6 +49,7 @@ module.exports = {
       async getViews() {
         return await this.getRequest(this.API.getViews);
       }
+      
       async getView(viewZUID) {
         return await this.getRequest(
           this.interpolate(this.API.getView, {
@@ -56,13 +57,7 @@ module.exports = {
           })
         );
       }
-      async getView(viewZUID) {
-        return await this.getRequest(
-          this.interpolate(this.API.getView, {
-            VIEW_ZUID: viewZUID
-          })
-        );
-      }
+      
       async createView(payload) {
         this.validateView(payload);
         return await this.postRequest(this.API.createView, { payload });

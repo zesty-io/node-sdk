@@ -26,7 +26,7 @@ module.exports = {
           );
         }
         return await this.getRequest(
-          this.interpolate(this.API.fetchAuditLog, {
+          this.interpolate(this.API.getHeadTag, {
             HEADTAG_ZUID: headTagZUID
           })
         );

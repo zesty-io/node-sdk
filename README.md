@@ -53,12 +53,19 @@ TEST_FIELD_ZUID=
 TEST_AUDIT_LOG_ZUID=
 TEST_PUBLISH_ZUID=
 TEST_HEAD_TAG_ZUID=
+TEST_SETTING_ZUID=
+TEST_FILE_ZUID=
+TEST_GROUP_ZUID=
+TEST_SEARCH_REPLACE_MODEL_ZUID=
+TEST_MEDIA_HOST=
 ```
 
 #### testing
 ```
 npm test
 ```
+
+All tests are being run in a serial manner (using the `serial` statement) to ensure each test uses a shared global state. This change fixes the intermittent of `401 Unauthenticated` issue because each test fails to get authenticated. The documentation is referenced [here](https://github.com/avajs/ava/blob/master/docs/08-common-pitfalls.md).
 
 ## License
 
