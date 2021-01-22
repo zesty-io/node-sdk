@@ -10,7 +10,7 @@ const {
   TEST_MODEL_ZUID,
   TEST_ITEM_ZUID,
   TEST_ITEM_VERSION,
-  TEST_PUBLISH_ZUID
+  TEST_PUBLISH_ZUID,
 } = process.env;
 const TEST_ITEM_JSON = JSON.parse(
   fs.readFileSync(`./test/fixtures/${TEST_ITEM_ZUID}.json`).toString()
@@ -18,13 +18,13 @@ const TEST_ITEM_JSON = JSON.parse(
 
 test.beforeEach(authContext);
 
-test("fetchItems:200", async t => {
+test("fetchItems:200", async (t) => {
   const res = await t.context.sdk.instance.getItems(TEST_MODEL_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
-test("fetchItem:200", async t => {
+test("fetchItem:200", async (t) => {
   const res = await t.context.sdk.instance.getItem(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID
@@ -34,7 +34,7 @@ test("fetchItem:200", async t => {
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
   t.is(res.data.meta.contentModelZUID, TEST_MODEL_ZUID);
 });
-test("getItemPublishings:200", async t => {
+test("getItemPublishings:200", async (t) => {
   const res = await t.context.sdk.instance.getItemPublishings(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID
@@ -44,7 +44,7 @@ test("getItemPublishings:200", async t => {
   t.truthy(res.data.length > 0);
   t.is(res.data[0].itemZUID, TEST_ITEM_ZUID);
 });
-test("getItemPublishing:200", async t => {
+test("getItemPublishing:200", async (t) => {
   const res = await t.context.sdk.instance.getItemPublishing(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
@@ -52,7 +52,7 @@ test("getItemPublishing:200", async t => {
   );
   t.is(res.statusCode, 200);
 });
-test("getItemVersions:200", async t => {
+test("getItemVersions:200", async (t) => {
   const res = await t.context.sdk.instance.getItemVersions(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID
@@ -61,7 +61,7 @@ test("getItemVersions:200", async t => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
-test("getItemVersion:200", async t => {
+test("getItemVersion:200", async (t) => {
   const res = await t.context.sdk.instance.getItemVersion(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
@@ -73,22 +73,22 @@ test("getItemVersion:200", async t => {
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
   t.is(Number(res.data.meta.version), Number(TEST_ITEM_VERSION));
 });
-test("createItem:200", async t => {
+test("createItem:200", async (t) => {
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const res = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      title: title
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(title)
-    }
+      pathPart: t.context.sdk.instance.formatPath(title),
+    },
   });
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
 });
 
-test("updateItem:200", async t => {
+test("updateItem:200", async (t) => {
   const res = await t.context.sdk.instance.updateItem(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
@@ -99,16 +99,16 @@ test("updateItem:200", async t => {
   t.is(res.data.ZUID, TEST_ITEM_ZUID);
 });
 
-test("publishItem:200", async t => {
+test("publishItem:200", async (t) => {
   // Create a new item
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      title: title
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(title)
-    }
+      pathPart: t.context.sdk.instance.formatPath(title),
+    },
   });
 
   t.is(created.statusCode, 201);
@@ -134,16 +134,16 @@ test("publishItem:200", async t => {
   t.is(Number(published.data.version_num), Number(item.meta.version));
 });
 
-test("unpublishItem:200", async t => {
+test("unpublishItem:200", async (t) => {
   // Create a new item
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      title: title
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(title)
-    }
+      pathPart: t.context.sdk.instance.formatPath(title),
+    },
   });
 
   t.is(created.statusCode, 201);
@@ -178,7 +178,7 @@ test("unpublishItem:200", async t => {
   t.is(unpublished.message, "Entry updated");
 });
 
-test("findItem:200", async t => {
+test("findItem:200", async (t) => {
   const res = await t.context.sdk.instance.findItem(TEST_ITEM_ZUID);
 
   t.is(res.statusCode, 200);
@@ -190,7 +190,7 @@ test("findItem:200", async t => {
 });
 
 // Upsert: update existing item
-test("upsertItem:200", async t => {
+test("upsertItem:200", async (t) => {
   const EXISTING_PATH = "node-sdk-updateitem";
   const res = await t.context.sdk.instance.upsertItem(
     TEST_MODEL_ZUID,
@@ -203,7 +203,7 @@ test("upsertItem:200", async t => {
 });
 
 // Upsert: create new item
-test("upsertItem:201", async t => {
+test("upsertItem:201", async (t) => {
   const title = `node-sdk:upsertItem:${moment().valueOf()}`;
   const pathPart = t.context.sdk.instance.formatPath(title);
   const res = await t.context.sdk.instance.upsertItem(
@@ -211,17 +211,17 @@ test("upsertItem:201", async t => {
     pathPart,
     {
       data: {
-        title
+        title,
       },
       meta: {
         contentModelZUID: "6-aa7788-9dhmdf",
         masterZUID: "7-780b5a8-823sn7",
-        ZUID: "7-780b5a8-823sn7"
+        ZUID: "7-780b5a8-823sn7",
       },
       web: {
         createdByUserZUID: "5-44ccc74-tr1vmph",
-        pathPart
-      }
+        pathPart,
+      },
     }
   );
 
@@ -229,15 +229,15 @@ test("upsertItem:201", async t => {
   t.truthy(res.data.ZUID);
 });
 
-test("deleteItem:200", async t => {
+test("deleteItem:200", async (t) => {
   const title = `node-sdk:deleteItem:${moment().valueOf()}`;
   const item = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      title: title
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(title)
-    }
+      pathPart: t.context.sdk.instance.formatPath(title),
+    },
   });
 
   t.is(item.statusCode, 201);
