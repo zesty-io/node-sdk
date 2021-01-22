@@ -5,7 +5,7 @@ const UTC_FORMAT = "YYYY-MM-DD HH:mm:ss";
 
 module.exports = {
   API: {
-    fetchItems: "/content/models/MODEL_ZUID/items",
+    fetchItems: "/content/models/MODEL_ZUID/items?page=PAGE&limit=LIMIT",
     fetchItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     fetchItemPublishings:
       "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
@@ -20,16 +20,17 @@ module.exports = {
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
     // NOTE should this be in a separate `Search` module?
-    findItem: "/search/items?q=SEARCH_TERM" // Undocumented
+    findItem: "/search/items?q=SEARCH_TERM", // Undocumented
   },
   legacy: {
     API: {
       // TODO migrate legacy endpoints to new api
       publishItem: "/content/items/ITEM_ZUID/publish-schedule",
-      unpublishItem: "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID"
-    }
+      unpublishItem:
+        "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
+    },
   },
-  mixin: superclass =>
+  mixin: (superclass) =>
     class Item extends superclass {
       async getItems(modelZUID) {
         if (!modelZUID) {
@@ -37,11 +38,40 @@ module.exports = {
             "SDK:Instance:getItems() missing required `modelZUID` argument"
           );
         }
-        return await this.getRequest(
-          this.interpolate(this.API.fetchItems, {
-            MODEL_ZUID: modelZUID
-          })
-        );
+
+        let run = true;
+        let results = [];
+        let page = 1;
+        let limit = 100;
+        let res;
+
+        // Because the API is paginated we need to page
+        // through this models items building up the complete
+        // set of items to return
+        while (run) {
+          res = await this.getRequest(
+            this.interpolate(this.API.fetchItems, {
+              MODEL_ZUID: modelZUID,
+              PAGE: page,
+              LIMIT: limit,
+            })
+          );
+
+          if (res.statusCode !== 200) {
+            throw res;
+          }
+
+          if (!res.data.length) {
+            run = false;
+          } else {
+            page++;
+            results.push(...res.data);
+          }
+        }
+
+        res.data = results;
+
+        return res;
       }
       async getItem(modelZUID, itemZUID) {
         if (!modelZUID) {
@@ -57,7 +87,7 @@ module.exports = {
         return await this.getRequest(
           this.interpolate(this.API.fetchItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -75,7 +105,7 @@ module.exports = {
         return await this.getRequest(
           this.interpolate(this.API.fetchItemPublishings, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -99,7 +129,7 @@ module.exports = {
           this.interpolate(this.API.fetchItemPublishing, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID,
-            PUBLISH_ZUID: publishZUID
+            PUBLISH_ZUID: publishZUID,
           })
         );
       }
@@ -117,7 +147,7 @@ module.exports = {
         return await this.getRequest(
           this.interpolate(this.API.fetchItemVersions, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -141,7 +171,7 @@ module.exports = {
           this.interpolate(this.API.fetchItemVersion, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID,
-            VERSION_NUMBER: version
+            VERSION_NUMBER: version,
           })
         );
       }
@@ -162,10 +192,10 @@ module.exports = {
 
         return await this.postRequest(
           this.interpolate(this.API.createItem, {
-            MODEL_ZUID: modelZUID
+            MODEL_ZUID: modelZUID,
           }),
           {
-            payload
+            payload,
           }
         );
       }
@@ -189,10 +219,10 @@ module.exports = {
         return await this.putRequest(
           this.interpolate(this.API.updateItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           }),
           {
-            payload
+            payload,
           }
         );
       }
@@ -217,13 +247,13 @@ module.exports = {
         return await this.legacy.postRequest(
           this.legacy.interpolate(this.legacy.API.publishItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           }),
           {
             usesCookieAuth: true,
             payload: {
-              version_num: version
-            }
+              version_num: version,
+            },
           }
         );
       }
@@ -259,14 +289,14 @@ module.exports = {
         const url = this.legacy.interpolate(this.legacy.API.unpublishItem, {
           MODEL_ZUID: modelZUID,
           ITEM_ZUID: itemZUID,
-          PUBLISHING_ZUID: publishZUID
+          PUBLISHING_ZUID: publishZUID,
         });
 
         return await this.legacy.patchRequest(url, {
           usesCookieAuth: true,
           payload: {
-            take_offline_at: offlineAt
-          }
+            take_offline_at: offlineAt,
+          },
         });
       }
 
@@ -278,7 +308,7 @@ module.exports = {
         }
         return await this.getRequest(
           this.interpolate(this.API.findItem, {
-            SEARCH_TERM: query
+            SEARCH_TERM: query,
           })
         );
       }
@@ -287,7 +317,7 @@ module.exports = {
         return await this.deleteRequest(
           this.interpolate(this.API.deleteItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -312,7 +342,7 @@ module.exports = {
         const res = await this.findItem(path);
 
         if (Array.isArray(res.data) && res.data.length) {
-          const item = res.data.find(item => item.web.pathPart === path);
+          const item = res.data.find((item) => item.web.pathPart === path);
           if (item) {
             // Ensure required masterZUID is set for updates
             payload.meta.masterZUID = item.meta.ZUID;
@@ -325,5 +355,5 @@ module.exports = {
           return await this.createItem(modelZUID, payload);
         }
       }
-    }
+    },
 };
