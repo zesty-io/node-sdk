@@ -129,9 +129,24 @@ test("publishItem:200", async (t) => {
     item.meta.version
   );
 
-  t.is(published.statusCode, 200);
+  t.is(published.statusCode, 201);
   t.is(published.data.item_zuid, item.meta.ZUID);
   t.is(Number(published.data.version_num), Number(item.meta.version));
+});
+
+test("publishItems:200", async (t) => {
+  const res = await t.context.sdk.instance.getItems(TEST_MODEL_ZUID);
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length > 0);
+
+  const responses = await t.context.sdk.instance.publishItems(res.data);
+  t.log("respones: ", responses.length);
+
+  t.truthy(Array.isArray(responses));
+
+  // did we get back the same amount of responses as the total items on the model
+  t.is(responses.length, res.data.length);
 });
 
 test("unpublishItem:200", async (t) => {
@@ -164,7 +179,7 @@ test("unpublishItem:200", async (t) => {
     item.meta.version
   );
 
-  t.is(published.statusCode, 200);
+  t.is(published.statusCode, 201);
   t.is(published.data.item_zuid, item.meta.ZUID);
   t.is(Number(published.data.version_num), Number(item.meta.version));
 
