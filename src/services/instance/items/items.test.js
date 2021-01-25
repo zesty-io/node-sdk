@@ -130,8 +130,8 @@ test("publishItem:200", async (t) => {
   );
 
   t.is(published.statusCode, 201);
-  t.is(published.data.item_zuid, item.meta.ZUID);
-  t.is(Number(published.data.version_num), Number(item.meta.version));
+  t.is(published.data.data.item_zuid, item.meta.ZUID);
+  t.is(Number(published.data.data.version_num), Number(item.meta.version));
 });
 
 test("publishItems:200", async (t) => {
@@ -180,13 +180,13 @@ test("unpublishItem:200", async (t) => {
   );
 
   t.is(published.statusCode, 201);
-  t.is(published.data.item_zuid, item.meta.ZUID);
-  t.is(Number(published.data.version_num), Number(item.meta.version));
+  t.is(published.data.data.item_zuid, item.meta.ZUID);
+  t.is(Number(published.data.data.version_num), Number(item.meta.version));
 
   // Unpublish item
   const unpublished = await t.context.sdk.instance.unpublishItem(
     TEST_MODEL_ZUID,
-    published.data.item_zuid
+    published.data.data.item_zuid
   );
 
   t.is(unpublished.statusCode, 200);

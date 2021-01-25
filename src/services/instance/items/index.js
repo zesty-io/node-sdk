@@ -27,7 +27,6 @@ module.exports = {
   legacy: {
     API: {
       // TODO migrate legacy endpoints to new api
-      publishItem: "/content/items/ITEM_ZUID/publish-schedule",
       unpublishItem:
         "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
     },
@@ -259,8 +258,6 @@ module.exports = {
             },
           }
         );
-
-        // return res.data;
       }
 
       async publishItems(items) {
@@ -285,13 +282,13 @@ module.exports = {
         let index = 0;
 
         // console.log("items: ", items.length);
-        // console.log("iterations: ", iterations);
+        console.log("publish groups: ", iterations);
 
         while (run) {
           const start = index * limit;
           const chunk = items.slice(start, start + limit);
 
-          console.log("index: ", index);
+          console.log("publish group: ", index);
           // console.log("START", start);
 
           const requests = chunk.map((item) => {
