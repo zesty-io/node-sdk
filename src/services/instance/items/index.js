@@ -21,11 +21,12 @@ module.exports = {
 
     // NOTE should this be in a separate `Search` module?
     findItem: "/search/items?q=SEARCH_TERM", // Undocumented
+
+    publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
   },
   legacy: {
     API: {
       // TODO migrate legacy endpoints to new api
-      publishItem: "/content/items/ITEM_ZUID/publish-schedule",
       unpublishItem:
         "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
     },
@@ -42,7 +43,7 @@ module.exports = {
         let run = true;
         let results = [];
         let page = 1;
-        let limit = 100;
+        let limit = 1000;
         let res;
 
         // Because the API is paginated we need to page
@@ -244,18 +245,75 @@ module.exports = {
           );
         }
 
-        return await this.legacy.postRequest(
-          this.legacy.interpolate(this.legacy.API.publishItem, {
+        return await this.postRequest(
+          this.interpolate(this.API.publishItem, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID,
           }),
           {
-            usesCookieAuth: true,
             payload: {
-              version_num: version,
+              version: version,
+              publishAt: "now",
+              unpublishAt: "never",
             },
           }
         );
+      }
+
+      async publishItems(items) {
+        if (!Array.isArray(items)) {
+          throw new Error(
+            "SDK:Instance:publishItems() requires `items` argument to be an array"
+          );
+        }
+        if (!items.length) {
+          throw new Error(
+            "SDK:Instance:publishItems() `items` array did not contain any items"
+          );
+        }
+
+        // GCP begins rejecting requests from a single IP
+        // after a certain threshold. 100 seems to be the magic number
+        const limit = 100;
+        const iterations = Math.floor(items.length / limit);
+
+        let results = [];
+        let run = true;
+        let index = 0;
+
+        console.log("publish groups: ", iterations);
+
+        while (run) {
+          const start = index * limit;
+          const chunk = items.slice(start, start + limit);
+
+          console.log("publish group: ", index);
+
+          const requests = chunk.map((item) => {
+            return this.publishItem(
+              item.meta.contentModelZUID,
+              item.meta.ZUID,
+              item.meta.version
+            );
+          });
+
+          await Promise.allSettled(requests).catch((err) => {
+            console.error(err);
+            run = false;
+          });
+
+          // capture all requests to be returned
+          results.push(...requests);
+
+          if (iterations === index) {
+            run = false;
+            break;
+          }
+
+          index++;
+        }
+
+        return results;
       }
 
       async unpublishItem(
