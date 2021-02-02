@@ -297,7 +297,7 @@ module.exports = {
             );
           });
 
-          await Promise.allSettled(requests).catch((err) => {
+          await Promise.all(requests).catch((err) => {
             console.error(err);
             run = false;
           });
