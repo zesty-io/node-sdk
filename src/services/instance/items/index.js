@@ -281,7 +281,6 @@ module.exports = {
         let run = true;
         let index = 0;
 
-        // console.log("items: ", items.length);
         console.log("publish groups: ", iterations);
 
         while (run) {
@@ -289,7 +288,6 @@ module.exports = {
           const chunk = items.slice(start, start + limit);
 
           console.log("publish group: ", index);
-          // console.log("START", start);
 
           const requests = chunk.map((item) => {
             return this.publishItem(
@@ -299,9 +297,7 @@ module.exports = {
             );
           });
 
-          // console.log("REQS", requests.length);
-
-          await Promise.all(requests).catch((err) => {
+          await Promise.allSettled(requests).catch((err) => {
             console.error(err);
             run = false;
           });
