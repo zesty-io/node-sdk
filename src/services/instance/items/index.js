@@ -19,10 +19,11 @@ module.exports = {
     updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
+    publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
+    unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
+
     // NOTE should this be in a separate `Search` module?
     findItem: "/search/items?q=SEARCH_TERM", // Undocumented
-
-    publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
   },
   legacy: {
     API: {
@@ -228,7 +229,13 @@ module.exports = {
         );
       }
 
-      async publishItem(modelZUID, itemZUID, version) {
+      async publishItem(
+        modelZUID,
+        itemZUID,
+        version,
+        publishAt = "now",
+        unpublishAt = "never"
+      ) {
         if (!modelZUID) {
           throw new Error(
             "SDK:Instance:publishItem() missing required `modelZUID` argument"
@@ -253,8 +260,8 @@ module.exports = {
           {
             payload: {
               version: version,
-              publishAt: "now",
-              unpublishAt: "never",
+              publishAt: publishAt,
+              unpublishAt: unpublishAt,
             },
           }
         );
