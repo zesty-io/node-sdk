@@ -28,6 +28,8 @@ Once you have the prerequisites meet and the sdk installed, review our guide to 
 
 By providing a `.env` file a developer can override the default production settings and develop the SDK code against alternate (non-production) services.
 
+*When developing against alternate environments you will need to use credentials (token / user) from that alternate env. e.g. Testing against stage requries using a instance access token that exists on the stage isntance.*
+
 ```
 // These are the basic SDK values. 
 ZESTY_INSTANCE_ZUID=

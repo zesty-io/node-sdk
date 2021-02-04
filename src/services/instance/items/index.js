@@ -5,7 +5,7 @@ const UTC_FORMAT = "YYYY-MM-DD HH:mm:ss";
 
 module.exports = {
   API: {
-    fetchItems: "/content/models/MODEL_ZUID/items",
+    fetchItems: "/content/models/MODEL_ZUID/items?page=PAGE&limit=LIMIT",
     fetchItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     fetchItemPublishings:
       "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
@@ -24,16 +24,18 @@ module.exports = {
     unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
 
     // NOTE should this be in a separate `Search` module?
-    findItem: "/search/items?q=SEARCH_TERM" // Undocumented
+    findItem: "/search/items?q=SEARCH_TERM", // Undocumented
+
+    publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
   },
   legacy: {
     API: {
       // TODO migrate legacy endpoints to new api
-      publishItem: "/content/items/ITEM_ZUID/publish-schedule",
-      unpublishItem: "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID"
-    }
+      unpublishItem:
+        "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
+    },
   },
-  mixin: superclass =>
+  mixin: (superclass) =>
     class Item extends superclass {
       async getItems(modelZUID) {
         if (!modelZUID) {
@@ -41,11 +43,40 @@ module.exports = {
             "SDK:Instance:getItems() missing required `modelZUID` argument"
           );
         }
-        return await this.getRequest(
-          this.interpolate(this.API.fetchItems, {
-            MODEL_ZUID: modelZUID
-          })
-        );
+
+        let run = true;
+        let results = [];
+        let page = 1;
+        let limit = 1000;
+        let res;
+
+        // Because the API is paginated we need to page
+        // through this models items building up the complete
+        // set of items to return
+        while (run) {
+          res = await this.getRequest(
+            this.interpolate(this.API.fetchItems, {
+              MODEL_ZUID: modelZUID,
+              PAGE: page,
+              LIMIT: limit,
+            })
+          );
+
+          if (res.statusCode !== 200) {
+            throw res;
+          }
+
+          if (!res.data.length) {
+            run = false;
+          } else {
+            page++;
+            results.push(...res.data);
+          }
+        }
+
+        res.data = results;
+
+        return res;
       }
       async getItem(modelZUID, itemZUID) {
         if (!modelZUID) {
@@ -61,7 +92,7 @@ module.exports = {
         return await this.getRequest(
           this.interpolate(this.API.fetchItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -79,7 +110,7 @@ module.exports = {
         return await this.getRequest(
           this.interpolate(this.API.fetchItemPublishings, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -103,7 +134,7 @@ module.exports = {
           this.interpolate(this.API.fetchItemPublishing, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID,
-            PUBLISH_ZUID: publishZUID
+            PUBLISH_ZUID: publishZUID,
           })
         );
       }
@@ -121,7 +152,7 @@ module.exports = {
         return await this.getRequest(
           this.interpolate(this.API.fetchItemVersions, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -145,7 +176,7 @@ module.exports = {
           this.interpolate(this.API.fetchItemVersion, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID,
-            VERSION_NUMBER: version
+            VERSION_NUMBER: version,
           })
         );
       }
@@ -166,10 +197,10 @@ module.exports = {
 
         return await this.postRequest(
           this.interpolate(this.API.createItem, {
-            MODEL_ZUID: modelZUID
+            MODEL_ZUID: modelZUID,
           }),
           {
-            payload
+            payload,
           }
         );
       }
@@ -193,10 +224,10 @@ module.exports = {
         return await this.putRequest(
           this.interpolate(this.API.updateItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           }),
           {
-            payload
+            payload,
           }
         );
       }
@@ -221,16 +252,72 @@ module.exports = {
         return await this.postRequest(
           this.interpolate(this.API.publishItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           }),
           {
             payload: {
               version: version,
               publishAt: publishAt,
               unpublishAt: unpublishAt
-            }
+            },
           }
         );
+      }
+
+      async publishItems(items) {
+        if (!Array.isArray(items)) {
+          throw new Error(
+            "SDK:Instance:publishItems() requires `items` argument to be an array"
+          );
+        }
+        if (!items.length) {
+          throw new Error(
+            "SDK:Instance:publishItems() `items` array did not contain any items"
+          );
+        }
+
+        // GCP begins rejecting requests from a single IP
+        // after a certain threshold. 100 seems to be the magic number
+        const limit = 100;
+        const iterations = Math.floor(items.length / limit);
+
+        let results = [];
+        let run = true;
+        let index = 0;
+
+        console.log("publish groups: ", iterations);
+
+        while (run) {
+          const start = index * limit;
+          const chunk = items.slice(start, start + limit);
+
+          console.log("publish group: ", index);
+
+          const requests = chunk.map((item) => {
+            return this.publishItem(
+              item.meta.contentModelZUID,
+              item.meta.ZUID,
+              item.meta.version
+            );
+          });
+
+          await Promise.all(requests).catch((err) => {
+            console.error(err);
+            run = false;
+          });
+
+          // capture all requests to be returned
+          results.push(...requests);
+
+          if (iterations === index) {
+            run = false;
+            break;
+          }
+
+          index++;
+        }
+
+        return results;
       }
 
       async unpublishItem(
@@ -265,7 +352,7 @@ module.exports = {
         const url = this.legacy.interpolate(this.legacy.API.unpublishItem, {
           MODEL_ZUID: modelZUID,
           ITEM_ZUID: itemZUID,
-          PUBLISHING_ZUID: publishZUID
+          PUBLISHING_ZUID: publishZUID,
         });
  
         // !!TODO needs to consume new API
@@ -273,8 +360,8 @@ module.exports = {
         return await this.legacy.patchRequest(url, {
           usesCookieAuth: true,
           payload: {
-            take_offline_at: offlineAt
-          }
+            take_offline_at: offlineAt,
+          },
         });
       }
 
@@ -286,7 +373,7 @@ module.exports = {
         }
         return await this.getRequest(
           this.interpolate(this.API.findItem, {
-            SEARCH_TERM: query
+            SEARCH_TERM: query,
           })
         );
       }
@@ -295,7 +382,7 @@ module.exports = {
         return await this.deleteRequest(
           this.interpolate(this.API.deleteItem, {
             MODEL_ZUID: modelZUID,
-            ITEM_ZUID: itemZUID
+            ITEM_ZUID: itemZUID,
           })
         );
       }
@@ -320,7 +407,7 @@ module.exports = {
         const res = await this.findItem(path);
 
         if (Array.isArray(res.data) && res.data.length) {
-          const item = res.data.find(item => item.web.pathPart === path);
+          const item = res.data.find((item) => item.web.pathPart === path);
           if (item) {
             // Ensure required masterZUID is set for updates
             payload.meta.masterZUID = item.meta.ZUID;
@@ -333,5 +420,5 @@ module.exports = {
           return await this.createItem(modelZUID, payload);
         }
       }
-    }
+    },
 };

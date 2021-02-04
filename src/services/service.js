@@ -125,15 +125,20 @@ module.exports = class Service {
 
     return fetch(uri, opts)
       .then((res) => {
-        return res.json().then((data) => {
-          if (res.status != 200 && res.status != 201) {
-            console.error(data);
-          }
-          return {
-            statusCode: res.status,
-            ...data,
-          };
-        });
+        if (res.status < 500) {
+          return res.json().then((data) => {
+            if (res.status != 200 && res.status != 201) {
+              console.error(data);
+            }
+            return {
+              statusCode: res.status,
+              ...data,
+            };
+          });
+        } else {
+          // 500 responses do not return a json structure
+          return res;
+        }
       })
       .then((json) => {
         return params.responseFormatter ? params.responseFormatter(json) : json;
