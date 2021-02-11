@@ -91,11 +91,12 @@ module.exports = class Service {
 
   httpBuildQuery(obj, prefix) {
     const queryStr = [];
+    let param;
 
-    for (p in obj) {
-      if (obj.hasOwnProperty(p)) {
-        const k = prefix ? `${prefix}[${p}]` : p,
-          v = obj[p];
+    for (param in obj) {
+      if (obj.hasOwnProperty(param)) {
+        const k = prefix ? `${prefix}[${param}]` : param,
+          v = obj[param];
 
         if (v !== null && typeof v === "object") {
           queryStr.push(this.httpBuildQuery(v, k))
