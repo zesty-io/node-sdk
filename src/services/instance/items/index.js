@@ -234,7 +234,8 @@ module.exports = {
         itemZUID,
         version,
         publishAt = "now",
-        unpublishAt = "never"
+        unpublishAt = "never",
+        query = {}
       ) {
         if (!modelZUID) {
           throw new Error(
@@ -263,6 +264,7 @@ module.exports = {
               publishAt: publishAt,
               unpublishAt: unpublishAt,
             },
+            query: query,
           }
         );
       }

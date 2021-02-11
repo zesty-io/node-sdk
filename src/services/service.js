@@ -89,12 +89,32 @@ module.exports = class Service {
     });
   }
 
+  httpBuildQuery(obj, prefix) {
+    const queryStr = [];
+
+    for (p in obj) {
+      if (obj.hasOwnProperty(p)) {
+        const k = prefix ? `${prefix}[${p}]` : p,
+          v = obj[p];
+
+        if (v !== null && typeof v === "object") {
+          queryStr.push(this.httpBuildQuery(v, k))
+        } else {
+          queryStr.push(encodeURIComponent(k) + "=" + encodeURIComponent(v))
+        }
+      }
+    }
+
+    return queryStr.join("&");
+  }
+
   request(path, params) {
     if (!path) {
       throw new Error("Missing required `path`. Can not make request.");
     }
 
-    const uri = `${this.baseAPI}${path}`;
+    const query = (params.query) ? "?" + this.httpBuildQuery(params.query) : "";
+    const uri = `${this.baseAPI}${path}${query}`;
     const opts = {
       method: params.method,
       headers: {},
