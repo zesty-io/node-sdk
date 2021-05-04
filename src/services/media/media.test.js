@@ -8,8 +8,6 @@ const moment = require("moment");
 const authContext = require("../../../test/helpers/auth-context");
 test.beforeEach(authContext);
 
-const GROUP_ZUID = "2-9f16dcc-leu12";
-
 test("getBins:200", async (t) => {
   const res = await t.context.sdk.media.getBins();
   t.is(res.statusCode, 200);
@@ -70,7 +68,7 @@ test("createFile:201", async (t) => {
 test("updateFile:200", async (t) => {
   const fileName = `test-${moment().valueOf()}.jpg`;
 
-  const res = await t.context.sdk.media.updateFile("3-9f06678-k83ia", {
+  const res = await t.context.sdk.media.updateFile(process.env.TEST_FILE_ZUID, {
     filename: fileName,
     title: fileName,
   });
@@ -126,7 +124,7 @@ test("group", async (t) => {
   t.log(`updateGroup`);
   const updated = await t.context.sdk.media.updateGroup(created.data[0].id, {
     name: "updated",
-    groupZUID: GROUP_ZUID,
+    groupZUID: process.env.TEST_GROUP_ZUID,
   });
   t.is(updated.statusCode, 200);
   t.truthy(Array.isArray(updated.data));
@@ -145,7 +143,7 @@ test("getGroups:200", async (t) => {
 });
 
 test("getGroup:200", async (t) => {
-  const res = await t.context.sdk.media.getGroup(GROUP_ZUID);
+  const res = await t.context.sdk.media.getGroup(process.env.TEST_GROUP_ZUID);
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
