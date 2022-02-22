@@ -5,7 +5,8 @@ const UTC_FORMAT = "YYYY-MM-DD HH:mm:ss";
 
 module.exports = {
   API: {
-    fetchItems: "/content/models/MODEL_ZUID/items?page=PAGE&limit=LIMIT",
+    fetchItems:
+      "/content/models/MODEL_ZUID/items?page=PAGE&limit=LIMIT&lang=LANG",
     fetchItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     fetchItemPublishings:
       "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
@@ -34,7 +35,12 @@ module.exports = {
   },
   mixin: (superclass) =>
     class Item extends superclass {
-      async getItems(modelZUID) {
+      async getItems(
+        modelZUID,
+        opt = {
+          lang: "en-US",
+        }
+      ) {
         if (!modelZUID) {
           throw new Error(
             "SDK:Instance:getItems() missing required `modelZUID` argument"
@@ -56,6 +62,7 @@ module.exports = {
               MODEL_ZUID: modelZUID,
               PAGE: page,
               LIMIT: limit,
+              LANG: opt.lang,
             })
           );
 
