@@ -15,13 +15,13 @@ module.exports = class Auth {
     if (!email) {
       return {
         statusCode: 400,
-        message: "Auth:login() missing required argument `email`"
+        message: "Auth:login() missing required argument `email`",
       };
     }
     if (!password) {
       return {
         statusCode: 400,
-        message: "Auth:login() missing required argument `password`"
+        message: "Auth:login() missing required argument `password`",
       };
     }
 
@@ -31,13 +31,13 @@ module.exports = class Auth {
 
     return fetch(`${this.authURL}/login`, {
       method: "POST",
-      body: form
-    }).then(res => {
-      return res.json().then(data => {
+      body: form,
+    }).then((res) => {
+      return res.json().then((data) => {
         return {
           ...data,
           statusCode: res.status,
-          token: (data.meta && data.meta.token) || null
+          token: (data.meta && data.meta.token) || null,
         };
       });
     });
@@ -51,16 +51,21 @@ module.exports = class Auth {
 
     return fetch(`${this.authURL}/verify`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then(res => {
-      return res.json().then(data => {
-        return {
-          ...data,
-          statusCode: res.status,
-          verified: res.status === 200 ? true : false
-        };
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        return res.json().then((data) => {
+          return {
+            ...data,
+            statusCode: res.status,
+            verified: res.status === 200 ? true : false,
+          };
+        });
+      })
+      .catch((err) => {
+        console.log("verifyToken: catch: ", err);
+        throw err;
       });
-    });
   }
 };

@@ -19,7 +19,6 @@ module.exports = class Service {
 
     this.baseAPI = baseAPI;
     this.token = token;
-
     this.cookieName = process.env.ZESTY_COOKIE || "APP_SID";
   }
 
