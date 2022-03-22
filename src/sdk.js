@@ -12,10 +12,6 @@ module.exports = class SDK {
     this.instanceZUID = instanceZUID;
     this.options = options;
 
-    this.auth = new Auth({
-      authURL: this.options.authURL
-    });
-
     if (token) {
       this.init(token);
     } else {
@@ -23,9 +19,10 @@ module.exports = class SDK {
     }
   }
 
-  async init(token) {
+  init(token) {
     this.token = token;
 
+    this.auth = new Auth(this.options);
     this.account = new Account(this.instanceZUID, this.token, this.options);
     this.instance = new Instance(this.instanceZUID, this.token, this.options);
     this.media = new Media(this.instanceZUID, this.token, this.options);
@@ -39,13 +36,39 @@ module.exports = class SDK {
       }
     }
 
-    return this.auth.verifyToken(this.token).then(res => {
-      if (res.statusCode !== 200) {
-        throw res;
-      } else {
-        return res;
-      }
-    });
+    // return this.auth
+    //   .verifyToken(this.token)
+    //   .then((res) => {
+    //     if (res.statusCode !== 200) {
+    //       throw res;
+    //     } else {
+    //       return res;
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("init: catch: ", err);
+    //     throw err;
+    //   });
+  }
+
+  setToken(token) {
+    if (!token) {
+      throw Error("Missing token");
+    }
+    this.init(token);
+  }
+
+  setInstance(instanceZUID) {
+    if (!instanceZUID) {
+      throw Error("Missing instanceZUID");
+    }
+    this.instanceZUID = instanceZUID;
+    this.init(this.token);
+  }
+
+  setOptions(options = {}) {
+    this.options = options;
+    this.init(this.token);
   }
 };
 

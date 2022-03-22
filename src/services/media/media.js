@@ -6,12 +6,12 @@ const Account = require("../account");
 
 module.exports = class Media extends Service {
   constructor(instanceZUID, token, options = {}) {
-    super(instanceZUID, token, options);
-
-    this.baseAPI =
+    const baseAPI =
       options.mediaAPIURL ||
       process.env.ZESTY_MEDIA_API ||
       `https://svc.zesty.io`;
+
+    super(baseAPI, token);
 
     this.API = {
       fetchBin: "/media-manager-service/bin/BIN_ZUID",

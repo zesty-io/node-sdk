@@ -23,7 +23,7 @@ class MixinBuilder {
     return mixins.reduce((c, mixin) => mixin(c), this.superclass);
   }
 }
-let mix = superclass => new MixinBuilder(superclass);
+let mix = (superclass) => new MixinBuilder(superclass);
 
 /**
   Instance Class
@@ -41,12 +41,6 @@ module.exports = class Instance extends mix(Service).with(
   Views.mixin
 ) {
   constructor(instanceZUID, token, options = {}) {
-    if (!instanceZUID) {
-      throw new Error(
-        "SDK:Instance:constructor() missing required `instanceZUID` argument on instantiation"
-      );
-    }
-
     const baseAPI =
       options.instancesAPIURL ||
       process.env.ZESTY_INSTANCE_API ||
@@ -65,7 +59,7 @@ module.exports = class Instance extends mix(Service).with(
     // TODO retire these endpoints
     this.legacy = new Service(sitesServiceURL, token);
     this.legacy.API = {
-      ...Items.legacy.API
+      ...Items.legacy.API,
     };
 
     this.API = {
@@ -76,7 +70,7 @@ module.exports = class Instance extends mix(Service).with(
       ...AuditLogs.API,
       ...HeadTags.API,
       ...Stylesheets.API,
-      ...Views.API
+      ...Views.API,
     };
   }
 
