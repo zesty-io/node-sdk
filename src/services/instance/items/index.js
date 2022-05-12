@@ -6,7 +6,7 @@ const UTC_FORMAT = "YYYY-MM-DD HH:mm:ss";
 module.exports = {
   API: {
     fetchItems:
-      "/content/models/MODEL_ZUID/items?page=PAGE&limit=LIMIT&lang=LANG",
+      "/content/models/MODEL_ZUID/items?page=PAGE&limit=LIMIT&lang=LANG&_active=ACTIVE",
     fetchItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     fetchItemPublishings:
       "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
@@ -39,6 +39,9 @@ module.exports = {
         modelZUID,
         opt = {
           lang: "en-US",
+          limit: 5000,
+          page: 1,
+          _active: 0
         }
       ) {
         if (!modelZUID) {
@@ -49,8 +52,7 @@ module.exports = {
 
         let run = true;
         let results = [];
-        let page = 1;
-        let limit = 1000;
+        let currentPage = opt.page;
         let res;
 
         // Because the API is paginated we need to page
@@ -60,8 +62,9 @@ module.exports = {
           res = await this.getRequest(
             this.interpolate(this.API.fetchItems, {
               MODEL_ZUID: modelZUID,
-              PAGE: page,
-              LIMIT: limit,
+              ACTIVE: opt._active,
+              PAGE: currentPage,
+              LIMIT: opt.limit,
               LANG: opt.lang,
             })
           );
@@ -73,7 +76,7 @@ module.exports = {
           if (!res.data.length) {
             run = false;
           } else {
-            page++;
+            currentPage++;
             results.push(...res.data);
           }
         }
