@@ -1,6 +1,6 @@
 {
   "name": "@zesty-io/sdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Zesty.io software development kit for node.js runtime",
   "main": "src/sdk.js",
   "repository": {
