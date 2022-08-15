@@ -10,7 +10,8 @@ module.exports = {
     updateStylesheet: "/web/stylesheets/STYLESHEET_ZUID",
     deleteStylesheet: "/web/stylesheets/STYLESHEET_ZUID",
     publishStylesheet:
-      "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER"
+      "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER",
+    createStylesheetVariable: "/web/stylesheets/variables"
   },
   mixin: superclass =>
     class extends superclass {
@@ -89,6 +90,15 @@ module.exports = {
             VERSION_NUMBER: version
           })
         );
+      }
+      async createStylesheetVariable(payload){
+        if (!payload) {
+          throw new Error(
+            "SDK:Instance:createStylesheetVariable() missing required `payload` argument"
+          );
+        }
+
+        return await this.postRequest(this.API.createStylesheetVariable, { payload })
       }
     }
 };
