@@ -3,7 +3,8 @@
 module.exports = {
   API: {
     fetchModelFields: "/content/models/MODEL_ZUID/fields",
-    fetchModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID"
+    fetchModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID",
+    createFieldPath: "/content/models/MODEL_ZUID/fields"
   },
   mixin: superclass =>
     class Field extends superclass {
@@ -36,6 +37,30 @@ module.exports = {
             MODEL_ZUID: modelZUID,
             FIELD_ZUID: fieldZUID
           })
+        );
+      }
+
+      async createField(modelZUID, payload){
+
+        if (!modelZUID) {
+          throw new Error(
+            "SDK:Instance:createField() missing required `modelZUID` argument"
+          );
+        }
+
+        if(!payload){
+          throw new Error(
+            "SDK:Instance:createField() missing required `payload` argument"
+          );
+        }
+
+        return await this.postRequest(
+          this.interpolate(this.API.createFieldPath, {
+            MODEL_ZUID: modelZUID,
+          }),{
+            payload
+          }
+          
         );
       }
     }
