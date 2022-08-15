@@ -97,6 +97,21 @@ test("publishStylesheet:200", async t => {
   t.is(res.statusCode, 200);
 });
 
+test("createStylesheetVariable:201", async t => {
+
+  const name = `create_variable_${moment().valueOf()}`
+
+  const res = await t.context.sdk.instance.createStylesheetVariable({
+    referenceName: 'refName_' + name,
+    name : name,
+    value : "This is from test",
+    type : "text",
+    category: 1
+  })
+
+  t.is(res.statusCode, 201)
+
+})
 // TODO trigger cache purge
 
 // TODO less file creation
