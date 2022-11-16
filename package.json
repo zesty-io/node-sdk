@@ -30,13 +30,13 @@
   "dependencies": {
     "cookie": "0.4.0",
     "form-data": "3.0.0",
-    "moment": "2.29.4",
-    "node-fetch": "^2.6.0"
+    "moment": "^2.29.4",
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "ava": "2.4.0",
     "dotenv": "8.2.0",
-    "husky": "4.2.5",
+    "husky": "^8.0.1",
     "nyc": "15.0.1",
     "prettier": "2.0.4",
     "pretty-quick": "2.0.1"

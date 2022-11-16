@@ -25,7 +25,7 @@ test("getInstanceUsers:200", async (t) => {
   t.truthy(res.data.length > 0);
 });
 
-test("createInstance:201", async (t) => {
+test.skip("createInstance:201", async (t) => { //test
   const name = `TEST - create instance ${Date.now()}`;
   const res = await t.context.sdk.account.createInstance({ name });
   t.is(res.statusCode, 201);

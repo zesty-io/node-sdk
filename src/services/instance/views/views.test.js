@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const http = require("http");
+const https = require('https');
 const fs = require("fs");
 const test = require("ava");
 const moment = require("moment");
@@ -95,8 +95,8 @@ test.cb("updateView:200", t => {
       t.is(res.statusCode, 200);
       t.truthy(res.data.ZUID);
 
-      http
-        .get(`http://${TEST_PREVIEW}/this-page-does-not-exist`, res => {
+      https
+        .get(`https://${TEST_PREVIEW}/this-page-does-not-exist`, res => {
           t.is(res.statusCode, 404); // This is the 404 page we are request as such should expect a 404 response
 
           res.setEncoding("utf8");
