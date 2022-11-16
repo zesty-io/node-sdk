@@ -68,4 +68,45 @@ module.exports = class Auth {
         throw err;
       });
   }
+
+  async verify2Fa(token, mfatoken) {
+    if (!token) {
+      return {
+        status: 400,
+        message: "Auth:verify2Fa() called without `token` argument",
+        verified: false,
+      };
+    }
+
+    if (!mfatoken) {
+      return {
+        status: 400,
+        message: "Auth:verify2Fa() called without `mfatoken` argument",
+        verified: false,
+      };
+    }
+
+    const form = new FormData();
+    form.append("token", mfatoken);
+
+    return fetch(`${this.authURL}/verify-2fa`, {
+      method: "POST",
+      body: form,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        return res.json().then((data) => {
+          return {
+            ...data,
+            verified: data.code === 200 ? true : false,
+          };
+        });
+      })
+      .catch((err) => {
+        console.log("verify2Fa: catch: ", err);
+        throw err;
+      });
+  }
 };
