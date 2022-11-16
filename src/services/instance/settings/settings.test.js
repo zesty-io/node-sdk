@@ -15,12 +15,12 @@ test("fetchSettings:200", async t => {
   t.truthy(res.data.length);
 });
 test("fetchSetting:200", async t => {
-  const SETTING_ID = 1;
+  const SETTING_ID = "29-875da54-677865"; //1
   const res = await t.context.sdk.instance.getSetting(SETTING_ID);
 
   t.is(res.statusCode, 200);
   t.truthy(typeof res.data === "object");
-  t.is(res.data.ID, SETTING_ID);
+  t.is(res.data.ZUID, SETTING_ID);
 });
 
 test("createSetting:201", async t => {
