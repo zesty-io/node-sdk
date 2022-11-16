@@ -36,6 +36,24 @@ test("verifyToken:200", async (t) => {
   t.is(res.verified, true);
 });
 
+test.skip("verify2FaAuto:200", async (t) => {
+  const session = await auth.login(
+    process.env.ZESTY_USER_EMAIL,
+    process.env.ZESTY_USER_PASSWORD
+  );
+
+  var done = false;
+  console.log("Confirm Authy within 10 secs.");
+  do {
+    const res = await auth.verify2FaAuto(session.token);
+    if (res.status === "OK") {
+      t.is(res.code, 200);
+      t.is(res.verified, true);
+      done = true;
+    }
+  } while (!done);
+});
+
 test("verify2Fa:200", async (t) => {
   const session = await auth.login(
     process.env.ZESTY_USER_EMAIL,
@@ -43,7 +61,7 @@ test("verify2Fa:200", async (t) => {
   );
 
   //add your otp token
-  var mfatoken = "0000000000";
+  var mfatoken = "1699168";
   const res = await auth.verify2Fa(session.token, mfatoken);
   t.is(res.code, 200);
   t.is(res.verified, true);
@@ -55,7 +73,7 @@ test("verify2Fa:200", async (t) => {
 
 test("verify2Fa:400", async (t) => {
   const missingToken = await auth.verify2Fa(null, null);
-  t.is(missingToken.status, 400);
+  t.is(missingToken.code, 400);
   t.is(
     missingToken.message,
     "Auth:verify2Fa() called without `token` argument"
@@ -66,7 +84,7 @@ test("verify2Fa:400", async (t) => {
     process.env.ZESTY_USER_PASSWORD
   );
   const missingMfaToken = await auth.verify2Fa(session.token, null);
-  t.is(missingMfaToken.status, 400);
+  t.is(missingMfaToken.code, 400);
   t.is(
     missingMfaToken.message,
     "Auth:verify2Fa() called without `mfatoken` argument"
