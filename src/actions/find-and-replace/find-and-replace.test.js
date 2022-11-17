@@ -14,6 +14,7 @@ const REPLACEMENT = "REPLACED";
 test("findAndReplace > require all function parameters", async (t) => {
   await t.throwsAsync(
     t.context.sdk.action.findAndReplace,
+    undefined,
     "All function parameters are required. findAndReplace(zuid, fieldName, substr, newSubstr"
   );
 });
@@ -28,6 +29,7 @@ test("findAndReplace > only item and models allowed", async (t) => {
 
   await t.throwsAsync(
     result,
+    undefined,
     "Find and replace actions are only allowed on content items and models. Unsupported zuid 8-8ca8dccef4-4w7r5w provided."
   );
 });

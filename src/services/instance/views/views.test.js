@@ -84,7 +84,7 @@ test("createView:201", async t => {
   t.truthy(res.data.ZUID);
 });
 
-test.cb("updateView:200", t => {
+test("updateView:200", t => {
   const now = moment().valueOf();
 
   t.context.sdk.instance
