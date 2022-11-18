@@ -22,7 +22,8 @@
     "release": "npm test && npm publish --access public"
   },
   "engines": {
-    "node": ">=10.16.3"
+    "node": ">=18.12.1",
+    "npm": ">= 8.19.2"
   },
   "files": [
     "/src"
@@ -42,6 +43,7 @@
     "pretty-quick": "2.0.1"
   },
   "ava": {
+    "failWithoutAssertions": false,
     "files": [
       "src/**/**/**/*.test.js"
     ]
