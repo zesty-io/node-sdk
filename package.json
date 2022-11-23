@@ -18,11 +18,12 @@
   "homepage": "https://github.com/zesty-io/node-sdk#readme",
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "test": "npx nyc ava --verbose",
+    "test": "npx nyc ava --verbose --timeout=2m",
     "release": "npm test && npm publish --access public"
   },
   "engines": {
-    "node": ">=10.16.3"
+    "node": ">=18.12.1",
+    "npm": ">= 8.19.2"
   },
   "files": [
     "/src"
@@ -34,7 +35,7 @@
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "ava": "2.4.0",
+    "ava": "^5.1.0",
     "dotenv": "8.2.0",
     "husky": "^8.0.1",
     "nyc": "15.0.1",
@@ -42,8 +43,8 @@
     "pretty-quick": "2.0.1"
   },
   "ava": {
-    "helpers": [
-      "test/helpers/**/*"
+    "files": [
+      "src/**/**/**/*.test.js"
     ]
   }
 }

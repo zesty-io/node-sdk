@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const https = require('https');
+const https = require("https");
 const fs = require("fs");
 const test = require("ava");
 const moment = require("moment");
@@ -9,27 +9,28 @@ const { TEST_VIEW_ZUID, TEST_PREVIEW } = process.env;
 const TEST_VIEW = fs.readFileSync(`./test/fixtures/view.html`).toString();
 
 const authContext = require("../../../../test/helpers/auth-context");
+const { resolve } = require("path");
 test.before(authContext);
 
-test("validation", async t => {
+test("validation", async (t) => {
   const code = await t.throwsAsync(
     t.context.sdk.instance.createView({
       filename: `test-${moment().valueOf()}.html`,
-      type: "ajax-html"
+      type: "ajax-html",
     })
   );
 
   const filename = await t.throwsAsync(
     t.context.sdk.instance.createView({
       code: "test",
-      type: "ajax-html"
+      type: "ajax-html",
     })
   );
 
   const type = await t.throwsAsync(
     t.context.sdk.instance.createView({
       code: "test",
-      filename: `test-${moment().valueOf()}.html`
+      filename: `test-${moment().valueOf()}.html`,
     })
   );
 
@@ -37,7 +38,7 @@ test("validation", async t => {
     t.context.sdk.instance.createView({
       code: "test",
       filename: `test-${moment().valueOf()}.html`,
-      type: "invalid-type"
+      type: "invalid-type",
     })
   );
 
@@ -59,24 +60,24 @@ test("validation", async t => {
   );
 });
 
-test("fetchViews:200", async t => {
+test("fetchViews:200", async (t) => {
   const res = await t.context.sdk.instance.getViews();
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
 
-test("fetchView:200", async t => {
+test("fetchView:200", async (t) => {
   const res = await t.context.sdk.instance.getView(TEST_VIEW_ZUID);
   t.is(res.statusCode, 200);
   t.is(res.data.ZUID, TEST_VIEW_ZUID);
 });
 
-test("createView:201", async t => {
+test("createView:201", async (t) => {
   const res = await t.context.sdk.instance.createView({
     code: TEST_VIEW,
     filename: `test-${moment().valueOf()}.html`,
-    type: "ajax-html"
+    type: "ajax-html",
   });
 
   t.is(res.statusCode, 201);
@@ -84,45 +85,46 @@ test("createView:201", async t => {
   t.truthy(res.data.ZUID);
 });
 
-test.cb("updateView:200", t => {
+test("updateView:200", (t) => {
   const now = moment().valueOf();
 
-  t.context.sdk.instance
+  return t.context.sdk.instance
     .updateView(TEST_VIEW_ZUID, {
-      code: `<h1>404 Page Not Found</h1><p>${now}</p>`
+      code: `<h1>404 Page Not Found</h1><p>${now}</p>`,
     })
-    .then(res => {
+    .then((res) => {
       t.is(res.statusCode, 200);
       t.truthy(res.data.ZUID);
 
-      https
-        .get(`https://${TEST_PREVIEW}/this-page-does-not-exist`, res => {
-          t.is(res.statusCode, 404); // This is the 404 page we are request as such should expect a 404 response
+      return new Promise((resolve, reject) => {
+        https
+          .get(`https://${TEST_PREVIEW}/this-page-does-not-exist`, (res) => {
+            t.is(res.statusCode, 404); // This is the 404 page we are request as such should expect a 404 response
 
-          res.setEncoding("utf8");
+            res.setEncoding("utf8");
 
-          let rawData = "";
-          res.on("data", chunk => {
-            rawData += chunk;
+            let rawData = "";
+            res.on("data", (chunk) => {
+              rawData += chunk;
+            });
+
+            res.on("end", () => {
+              try {
+                resolve(t.truthy(rawData.includes(now)));
+              } catch (err) {
+                reject(err);
+              }
+            });
+          })
+          .on("error", (err) => {
+            reject(err);
           });
-
-          res.on("end", () => {
-            try {
-              t.truthy(rawData.includes(now));
-              t.end();
-            } catch (err) {
-              t.fail(err);
-            }
-          });
-        })
-        .on("error", err => {
-          t.fail(err);
-        });
+      });
     });
 });
 
 // FIXME API returns 500 when missing CDN service ID
-test("publishView:200", async t => {
+test("publishView:200", async (t) => {
   const view = await t.context.sdk.instance.getView(TEST_VIEW_ZUID);
 
   t.is(view.statusCode, 200);
