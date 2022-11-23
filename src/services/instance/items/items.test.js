@@ -141,7 +141,7 @@ test("publishItems:200", async (t) => {
   t.truthy(res.data.length > 0);
 
   const responses = await t.context.sdk.instance.publishItems(res.data);
-  t.log("respones: ", responses.length);
+  t.log("responses: ", responses.length);
 
   t.truthy(Array.isArray(responses));
 

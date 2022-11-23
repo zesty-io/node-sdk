@@ -107,7 +107,6 @@ test("deleteFile:200", async (t) => {
 });
 
 test("group", async (t) => {
-  t.log(`createGroup`);
   const payload = {
     name: `test-${moment().valueOf()}`,
     binZUID: process.env.TEST_BIN_ZUID,
@@ -121,7 +120,6 @@ test("group", async (t) => {
   t.is(created.data[0].name, payload.name);
 
   // Reparent group from bin to sub-group
-  t.log(`updateGroup`);
   const updated = await t.context.sdk.media.updateGroup(created.data[0].id, {
     name: "updated",
     groupZUID: process.env.TEST_GROUP_ZUID,
@@ -130,7 +128,6 @@ test("group", async (t) => {
   t.truthy(Array.isArray(updated.data));
   t.truthy(updated.data.length > 0);
 
-  t.log(`deleteGroup`);
   const deleted = await t.context.sdk.media.deleteGroup(created.data[0].id);
   t.is(deleted.statusCode, 200);
 });
