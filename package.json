@@ -43,7 +43,6 @@
     "pretty-quick": "2.0.1"
   },
   "ava": {
-    "failWithoutAssertions": false,
     "files": [
       "src/**/**/**/*.test.js"
     ]
