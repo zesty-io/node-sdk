@@ -11,7 +11,7 @@
 
 ### prerequisites
 
-- [Node.js 10.16 LTS](https://nodejs.org/dist/latest-v10.x/docs/api/)
+- [Node.js 18.12 LTS](https://nodejs.org/dist/latest-v18.x/docs/api/)
 
 ### installing
 
@@ -47,12 +47,16 @@ ZESTY_COOKIE=
 // The included SDK tests require providing resource ZUIDs to run against
 TEST_ITEM_VERSION=
 TEST_BIN_ZUID=
+TEST_GROUP_ZUID=
+TEST_FILE_ZUID
 TEST_MODEL_ZUID=
 TEST_ITEM_ZUID=
 TEST_FIELD_ZUID=
 TEST_AUDIT_LOG_ZUID=
 TEST_PUBLISH_ZUID=
 TEST_HEAD_TAG_ZUID=
+TEST_VIEW_ZUID=
+TEST_PREVIEW=
 ```
 
 #### testing
