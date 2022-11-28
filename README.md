@@ -12,10 +12,12 @@
 ### prerequisites
 
 - [Node.js 18.12 LTS](https://nodejs.org/dist/latest-v18.x/docs/api/)
+- [npm 8.19.2](https://www.npmjs.com/package/npm/v/8.19.2)
+
 
 ### installing
 
-```
+```npm
 npm install @zesty-io/sdk
 ```
 
