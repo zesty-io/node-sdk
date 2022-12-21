@@ -32,7 +32,7 @@ module.exports = class Media extends Service {
       deleteGroup: "/media-manager-service/group/GROUP_ZUID",
     };
 
-    // Needed to support lookup of instance ZID for legacy API support
+    // Needed to support lookup of instance ZUID for legacy API support
     if (token) {
       this.account = new Account(instanceZUID, token);
     }
