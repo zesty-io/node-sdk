@@ -18,6 +18,7 @@ module.exports = {
 
     createItem: "/content/models/MODEL_ZUID/items",
     updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
+    patchItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
     publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
@@ -230,6 +231,33 @@ module.exports = {
         }
         return await this.putRequest(
           this.interpolate(this.API.updateItem, {
+            MODEL_ZUID: modelZUID,
+            ITEM_ZUID: itemZUID,
+          }),
+          {
+            payload,
+          }
+        );
+      }
+
+      async patchItem(modelZUID, itemZUID, payload) {
+        if (!modelZUID) {
+          throw new Error(
+            "SDK:Instance:patchItem() missing required `modelZUID` argument"
+          );
+        }
+        if (!itemZUID) {
+          throw new Error(
+            "SDK:Instance:patchItem() missing required `itemZUID` argument"
+          );
+        }
+        if (!payload) {
+          throw new Error(
+            "SDK:Instance:patchItem() missing required `payload` argument"
+          );
+        }
+        return await this.patchRequest(
+          this.interpolate(this.API.patchItem, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID,
           }),

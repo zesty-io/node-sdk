@@ -24,6 +24,7 @@ test("fetchItems:200", async (t) => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
+
 test("fetchItem:200", async (t) => {
   const res = await t.context.sdk.instance.getItem(
     TEST_MODEL_ZUID,
@@ -34,6 +35,7 @@ test("fetchItem:200", async (t) => {
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
   t.is(res.data.meta.contentModelZUID, TEST_MODEL_ZUID);
 });
+
 test("getItemPublishings:200", async (t) => {
   const res = await t.context.sdk.instance.getItemPublishings(
     TEST_MODEL_ZUID,
@@ -44,6 +46,7 @@ test("getItemPublishings:200", async (t) => {
   t.truthy(res.data.length > 0);
   t.is(res.data[0].itemZUID, TEST_ITEM_ZUID);
 });
+
 test("getItemPublishing:200", async (t) => {
   const res = await t.context.sdk.instance.getItemPublishing(
     TEST_MODEL_ZUID,
@@ -52,6 +55,7 @@ test("getItemPublishing:200", async (t) => {
   );
   t.is(res.statusCode, 200);
 });
+
 test("getItemVersions:200", async (t) => {
   const res = await t.context.sdk.instance.getItemVersions(
     TEST_MODEL_ZUID,
@@ -61,6 +65,7 @@ test("getItemVersions:200", async (t) => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
 });
+
 test("getItemVersion:200", async (t) => {
   const res = await t.context.sdk.instance.getItemVersion(
     TEST_MODEL_ZUID,
@@ -73,6 +78,7 @@ test("getItemVersion:200", async (t) => {
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
   t.is(Number(res.data.meta.version), Number(TEST_ITEM_VERSION));
 });
+
 test("createItem:200", async (t) => {
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const res = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
@@ -90,6 +96,17 @@ test("createItem:200", async (t) => {
 
 test("updateItem:200", async (t) => {
   const res = await t.context.sdk.instance.updateItem(
+    TEST_MODEL_ZUID,
+    TEST_ITEM_ZUID,
+    TEST_ITEM_JSON
+  );
+
+  t.is(res.statusCode, 200);
+  t.is(res.data.ZUID, TEST_ITEM_ZUID);
+});
+
+test("patchItem:200", async (t) => {
+  const res = await t.context.sdk.instance.patchItem(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
     TEST_ITEM_JSON
