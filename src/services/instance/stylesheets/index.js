@@ -9,8 +9,7 @@ module.exports = {
     createStylesheet: "/web/stylesheets",
     updateStylesheet: "/web/stylesheets/STYLESHEET_ZUID",
     deleteStylesheet: "/web/stylesheets/STYLESHEET_ZUID",
-    publishStylesheet:
-      "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER",
+    publishStylesheet: "/web/stylesheets/STYLESHEET_ZUID/versions/VERSION_NUMBER",
     createStylesheetVariable: "/web/stylesheets/variables",
     fetchStylesheetVariables: "/web/stylesheets/variables",
     fetchStylesheetVariable: "/web/stylesheets/variables/VARIABLE_ZUID",
