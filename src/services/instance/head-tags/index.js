@@ -8,7 +8,7 @@ module.exports = {
     createHeadTag: "/web/headtags",
     updateHeadTag: "/web/headtags/HEADTAG_ZUID",
     patchHeadTag: "/web/headtags/HEADTAG_ZUID",
-    deleteHeadTag: "/web/headtags/HEADTAG_ZUID"    
+    deleteHeadTag: "/web/headtags/HEADTAG_ZUID"
   },
   mixin: superclass =>
     class extends superclass {

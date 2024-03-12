@@ -103,8 +103,10 @@ test("deleteHeadTag:200", async(t) => {
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
 
+  const newHeadtagZUID = res.data.ZUID;
+
   res = await t.context.sdk.instance.deleteHeadTag(
-    item.data.ZUID
+    newHeadtagZUID
   );
 
   t.is(res.statusCode, 200);

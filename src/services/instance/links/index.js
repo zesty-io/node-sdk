@@ -10,7 +10,7 @@ module.exports = {
     deleteLink: "/content/links/LINK_ZUID"
   },
   mixin: superclass =>
-    class Field extends superclass {
+    class Link extends superclass {
       async fetchLinks() {
         return await this.getRequest(this.API.fetchLinks)
       }

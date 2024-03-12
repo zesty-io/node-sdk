@@ -16,12 +16,13 @@ test("fetchSettings:200", async t => {
 });
 
 test("fetchSetting:200", async t => {
-  const SETTING_ZUID = "29-875da54-677865"; //1
-  const res = await t.context.sdk.instance.getSetting(SETTING_ZUID);
+  const res = await t.context.sdk.instance.getSetting(
+    process.env.TEST_SETTING_ZUID
+  );
 
   t.is(res.statusCode, 200);
   t.truthy(typeof res.data === "object");
-  t.is(res.data.ZUID, SETTING_ZUID);
+  t.is(res.data.ZUID, process.env.TEST_SETTING_ZUID);
 });
 
 test("createSetting:201", async t => {
@@ -40,56 +41,36 @@ test("createSetting:201", async t => {
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
-})
+});
 
 test("updateSetting:200", async t => {
-  const SETTING_ZUID = "29-875da54-677865"; //1
+  const name = `node-sdk_updateSetting_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.updateSetting(
-    SETTING_ZUID,
-    // {
-    //   data: {
-    //     title,
-    //   },
-    //   meta: {
-    //     contentModelZUID: "6-aa7788-9dhmdf",
-    //     masterZUID: "7-780b5a8-823sn7",
-    //     ZUID: "7-780b5a8-823sn7",
-    //   },
-    //   web: {
-    //     createdByUserZUID: "5-44ccc74-tr1vmph",
-    //     pathPart,
-    //   },
-    // }  
+    process.env.TEST_SETTING_ZUID,
+    {
+      category : "twitter",
+      key : name
+    }
   );
 
   t.is(res.statusCode, 200);
   t.truthy(typeof res.data === "object");
-  t.is(res.data.ZUID, SETTING_ZUID);
+  t.is(res.data.ZUID, process.env.TEST_SETTING_ZUID);
 });
 
 test("patchSetting:200", async t => {
-  const SETTING_ZUID = "29-875da54-677865"; //1
+  const name = `node-sdk_patchSetting_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.patchSetting(
-    SETTING_ZUID,
-    // {
-    //   data: {
-    //     title,
-    //   },
-    //   meta: {
-    //     contentModelZUID: "6-aa7788-9dhmdf",
-    //     masterZUID: "7-780b5a8-823sn7",
-    //     ZUID: "7-780b5a8-823sn7",
-    //   },
-    //   web: {
-    //     createdByUserZUID: "5-44ccc74-tr1vmph",
-    //     pathPart,
-    //   },
-    // }  
+    process.env.TEST_SETTING_ZUID,
+    {
+      category : "twitter",
+      key : name
+    }
   );
 
   t.is(res.statusCode, 200);
   t.truthy(typeof res.data === "object");
-  t.is(res.data.ZUID, SETTING_ZUID);
+  t.is(res.data.ZUID, process.env.TEST_SETTING_ZUID);
 });
 
 test("deleteSetting:200", async t => {
@@ -108,8 +89,12 @@ test("deleteSetting:200", async t => {
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+
+  const newSettingZUID = res.data.ZUID;
   
-  res = await t.context.sdk.instance.deleteSetting(res.data.ZUID);
+  res = await t.context.sdk.instance.deleteSetting(
+    newSettingZUID
+  );
 
   t.is(res.statusCode, 200);
 });

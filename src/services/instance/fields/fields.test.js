@@ -50,15 +50,12 @@ test("updateField:200", async(t) => {
   const res = await t.context.sdk.instance.updateModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID,
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
+    {
+      name: name,
+      settings: {
+        list : true
+      }
+    }
   )
   t.is(res.statusCode, 200);
   t.truthy(res.data.ZUID);
@@ -69,15 +66,9 @@ test("patchField:200", async(t) => {
   const res = await t.context.sdk.instance.patchModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID,
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
+    {
+      name: name,
+    }
   )
   t.is(res.statusCode, 200);
   t.truthy(res.data.ZUID);
@@ -100,9 +91,11 @@ test("deleteField:200", async(t) => {
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
 
+  const newFieldZUID = res.data.ZUID;
+
   res = await t.context.sdk.instance.deleteModelField(
-    TEST_MODEL_ZUID,
-    item.data.ZUID
+    process.env.TEST_MODEL_ZUID,
+    newFieldZUID
   );
 
   t.is(res.statusCode, 200);

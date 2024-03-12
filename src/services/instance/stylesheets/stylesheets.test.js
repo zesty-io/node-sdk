@@ -180,8 +180,10 @@ test("deleteStylesheetVariable:200", async(t) => {
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
 
+  const newStyleSheetVarialbleZUID = res.data.ZUID;
+
   res = await t.context.sdk.instance.deleteStylesheetVariable(
-    item.data.ZUID
+    newStyleSheetVarialbleZUID
   );
 
   t.is(res.statusCode, 200);

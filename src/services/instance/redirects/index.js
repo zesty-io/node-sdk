@@ -10,7 +10,7 @@ module.exports = {
     deleteRedirect: "/web/redirects/REDIRECT_ZUID"
   },
   mixin: superclass =>
-    class Field extends superclass {
+    class Redirect extends superclass {
       async fetchRedirects() {
         return await this.getRequest(this.API.fetchRedirects)
       }
