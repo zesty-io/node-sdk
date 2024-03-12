@@ -35,15 +35,14 @@ test("getHeadTag:200", async t => {
 test("createHeadTag:201", async t => {
   const name = `node-sdk_createHeadtag_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.createHeadTag(
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
+    {
+      type: "script",
+			attributes: {
+				name: name
+			},
+			resourceZUID: process.env.TEST_ITEM_ZUID,
+		  sort: 1
+    }
   );
 
   t.is(res.statusCode, 201);
@@ -54,33 +53,24 @@ test("updateHeadTag:200", async(t) => {
   const name = `node-sdk_updateHeadTag_${moment().valueOf()}`;
   let res = await t.context.sdk.instance.updateHeadTag(
     process.env.TEST_HEAD_TAG_ZUID,
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
+    {
+			type: "meta",
+      attributes: {
+				name: name
+			},
+		  sort: 0
+    }
   )
   t.is(res.statusCode, 200);
   t.truthy(res.data.ZUID);
 });
 
 test("patchHeadTag:200", async(t) => {
-  const name = `node-sdk_patchHeadTag_${moment().valueOf()}`;
   let res = await t.context.sdk.instance.patchHeadTag(
     process.env.TEST_HEAD_TAG_ZUID,
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
+    {
+      sort: 1
+    }
   )
   t.is(res.statusCode, 200);
   t.truthy(res.data.ZUID);
@@ -88,16 +78,15 @@ test("patchHeadTag:200", async(t) => {
 
 test("deleteHeadTag:200", async(t) => {
   const name = `node-sdk_createHeadtag_${moment().valueOf()}`;
-  const res = await t.context.sdk.instance.createHeadTag(
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
+  let res = await t.context.sdk.instance.createHeadTag(
+    {
+      type: "script",
+			attributes: {
+				name: name
+			},
+			resourceZUID: process.env.TEST_ITEM_ZUID,
+		  sort: 1
+    }
   );
 
   t.is(res.statusCode, 201);

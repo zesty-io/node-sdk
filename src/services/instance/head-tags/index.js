@@ -27,7 +27,7 @@ module.exports = {
           );
         }
         return await this.getRequest(
-          this.interpolate(this.API.fetchAuditLog, {
+          this.interpolate(this.API.getHeadTag, {
             HEADTAG_ZUID: headTagZUID
           })
         );
@@ -49,9 +49,9 @@ module.exports = {
       }
 
       async updateHeadTag(headtagZUID, payload) {
-        if (!redirectZUID) {
+        if (!headtagZUID) {
           throw new Error(
-            "SDK:Instance:updateHeadTag() missing required `redirectZUID` argument"
+            "SDK:Instance:updateHeadTag() missing required `headtagZUID` argument"
           );
         }
 
@@ -70,9 +70,9 @@ module.exports = {
       }
 
       async patchHeadTag(headtagZUID, payload) {
-        if (!redirectZUID) {
+        if (!headtagZUID) {
           throw new Error(
-            "SDK:Instance:patchHeadTag() missing required `redirectZUID` argument"
+            "SDK:Instance:patchHeadTag() missing required `headtagZUID` argument"
           );
         }
 
@@ -91,9 +91,9 @@ module.exports = {
       }
 
       async deleteHeadTag(headtagZUID) {
-        if (!redirectZUID) {
+        if (!headtagZUID) {
           throw new Error(
-            "SDK:Instance:patchHeadTag() missing required `redirectZUID` argument"
+            "SDK:Instance:patchHeadTag() missing required `headtagZUID` argument"
           );
         }
 
