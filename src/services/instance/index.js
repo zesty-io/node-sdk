@@ -10,6 +10,7 @@ const Settings = require("./settings");
 const AuditLogs = require("./audit-logs");
 const HeadTags = require("./head-tags");
 const Stylesheets = require("./stylesheets");
+const Variables = require("./variables");
 const Views = require("./views");
 
 /**
@@ -42,6 +43,7 @@ module.exports = class Instance extends mix(Service).with(
   AuditLogs.mixin,
   HeadTags.mixin,
   Stylesheets.mixin,
+  Variables.mixin,
   Views.mixin
 ) {
   constructor(instanceZUID, token, options = {}) {
@@ -62,9 +64,6 @@ module.exports = class Instance extends mix(Service).with(
 
     // TODO retire these endpoints
     this.legacy = new Service(sitesServiceURL, token);
-    this.legacy.API = {
-      ...Items.legacy.API,
-    };
 
     this.API = {
       ...Models.API,
@@ -76,6 +75,7 @@ module.exports = class Instance extends mix(Service).with(
       ...AuditLogs.API,
       ...HeadTags.API,
       ...Stylesheets.API,
+      ...Variables.API,
       ...Views.API,
     };
   }

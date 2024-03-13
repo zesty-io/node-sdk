@@ -4,7 +4,7 @@ const test = require("ava");
 const authContext = require("../../../../test/helpers/auth-context");
 const moment = require("moment");
 
-test.beforeEach(authContext);
+test.before(authContext);
 
 // Fields
 test("fetchModelFields:200", async t => {
@@ -45,7 +45,7 @@ test("createField:201", async(t) => {
   t.truthy(res.data.ZUID);
 });
 
-test("updateField:200", async(t) => {
+test.serial("updateField:200", async(t) => {
   const name = `node-sdk_updateItem_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.updateModelField(
     process.env.TEST_MODEL_ZUID,
@@ -61,7 +61,7 @@ test("updateField:200", async(t) => {
   t.truthy(res.data.ZUID);
 });
 
-test("patchField:200", async(t) => {
+test.serial("patchField:200", async(t) => {
   const name = `node-sdk_patchItem_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.patchModelField(
     process.env.TEST_MODEL_ZUID,

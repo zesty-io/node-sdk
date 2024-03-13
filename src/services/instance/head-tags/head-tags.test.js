@@ -4,7 +4,7 @@ const test = require("ava");
 const authContext = require("../../../../test/helpers/auth-context");
 const moment = require("moment");
 
-test.beforeEach(authContext);
+test.before(authContext);
 
 test("getWebHeaders:200", async t => {
   const res = await t.context.sdk.instance.getWebHeaders();
@@ -51,7 +51,7 @@ test("createHeadTag:201", async t => {
 
 test("updateHeadTag:200", async(t) => {
   const name = `node-sdk_updateHeadTag_${moment().valueOf()}`;
-  let res = await t.context.sdk.instance.updateHeadTag(
+  const res = await t.context.sdk.instance.updateHeadTag(
     process.env.TEST_HEAD_TAG_ZUID,
     {
 			type: "meta",
@@ -66,7 +66,7 @@ test("updateHeadTag:200", async(t) => {
 });
 
 test("patchHeadTag:200", async(t) => {
-  let res = await t.context.sdk.instance.patchHeadTag(
+  const res = await t.context.sdk.instance.patchHeadTag(
     process.env.TEST_HEAD_TAG_ZUID,
     {
       sort: 1

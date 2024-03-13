@@ -42,7 +42,7 @@ test("fetchStylesheet:200", async t => {
 test("updateStylesheet:200", async t => {
   const res = await t.context.sdk.instance.updateStylesheet(TEST_CSS_ZUID, {
     code: TEST_CSS,
-    filename: `test-${moment().valueOf()}.css`,
+    filename: `node-sdk_updateStylesheet-${moment().valueOf()}.css`,
     type: "text/css"
   });
 
@@ -68,7 +68,7 @@ test("createStylesheet:201", async t => {
 test.serial("deleteStylesheet:200", async t => {
   const stylesheet = await t.context.sdk.instance.createStylesheet({
     code: TEST_CSS,
-    filename: `test-${moment().valueOf()}.css`,
+    filename: `node-sdk_createStylesheet-${moment().valueOf()}.css`,
     type: "text/css"
   });
 
@@ -92,98 +92,6 @@ test("publishStylesheet:200", async t => {
   const res = await t.context.sdk.instance.publishStylesheet(
     TEST_CSS_ZUID,
     sheet.data.version
-  );
-
-  t.is(res.statusCode, 200);
-});
-
-test("createStylesheetVariable:201", async t => {
-  const name = `node-sdk_createStylesheetVariable_${moment().valueOf()}`
-
-  const res = await t.context.sdk.instance.createStylesheetVariable({
-    referenceName: 'refName_' + name,
-    name : name,
-    value : "This is from test",
-    type : "text",
-    category: 1
-  })
-
-  t.is(res.statusCode, 201);
-  t.truthy(res.data.ZUID);
-})
-
-test("fetchStylesheetVariables:200", async t => {
-  const res = await t.context.sdk.instance.fetchStylesheetVariables();
-
-  t.is(res.statusCode, 200);
-  t.truthy(Array.isArray(res.data));
-  t.truthy(res.data.length > 0);
-});
-
-test("fetchStylesheetVariable:200", async t => {
-  const res = await t.context.sdk.instance.fetchStylesheetVariable(
-    process.env.TEST_VARIABLE_ZUID
-  );
-
-  t.is(res.statusCode, 200);
-  t.truthy(typeof res.data === "object");
-  t.is(res.data.ZUID, process.env.TEST_VARIABLE_ZUID);
-});
-
-test("updateStylesheetVariable:200", async(t) => {
-  const name = `node-sdk_updateStylesheetVariable_${moment().valueOf()}`;
-  let res = await t.context.sdk.instance.updateStylesheetVariable(
-    process.env.TEST_VARIABLE_ZUID,
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
-  )
-  t.is(res.statusCode, 200);
-  t.truthy(res.data.ZUID);
-});
-
-test("patchStylesheetVariable:200", async(t) => {
-  const name = `node-sdk_patchStylesheetVariable_${moment().valueOf()}`;
-  let res = await t.context.sdk.instance.patchStylesheetVariable(
-    process.env.TEST_VARIABLE_ZUID,
-    // {
-    //   contentModelZUID :  process.env.TEST_MODEL_ZUID,
-    //   datatype : "text",
-    //   label: name,
-    //   name: name,
-    //   settings: {
-    //     list : true
-    //   }
-    // }
-  )
-  t.is(res.statusCode, 200);
-  t.truthy(res.data.ZUID);
-});
-
-test("deleteStylesheetVariable:200", async(t) => {
-  const name = `node-sdk_createStylesheetVariable_${moment().valueOf()}`
-
-  let res = await t.context.sdk.instance.createStylesheetVariable({
-    referenceName: 'refName_' + name,
-    name : name,
-    value : "This is from test",
-    type : "text",
-    category: 1
-  })
-
-  t.is(res.statusCode, 201);
-  t.truthy(res.data.ZUID);
-
-  const newStyleSheetVarialbleZUID = res.data.ZUID;
-
-  res = await t.context.sdk.instance.deleteStylesheetVariable(
-    newStyleSheetVarialbleZUID
   );
 
   t.is(res.statusCode, 200);

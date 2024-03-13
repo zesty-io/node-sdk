@@ -4,7 +4,7 @@ const test = require("ava");
 const authContext = require("../../../../test/helpers/auth-context");
 const moment = require("moment");
 
-test.beforeEach(authContext);
+test.before(authContext);
 
 // Settings
 test("fetchSettings:200", async t => {
