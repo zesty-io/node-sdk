@@ -15,24 +15,13 @@ const sdk = require("@zesty-io/sdk");
     process.env.ZESTY_INSTANCE_TOKEN
   );
 
-  const USER_ZUID = process.env.IMPORT_USER_ZUID; // Change this to your users ZUID
   const MODEL_ZUID = process.env.IMPORT_MODEL_ZUID; // Change this to the model ZUID on your instance
+  const ITEM_ZUID = process.env.IMPORT_ITEM_ZUID; // Change this to the item ZUID on your instance
 
   try {
-    const res = await zesty.instance.createItem(MODEL_ZUID, {
-      data: {
-        field_1: "Hello Test 1", // Change this to your model fields
-      },
+    const res = await zesty.instance.patchItem(MODEL_ZUID, ITEM_ZUID, {
       web: {
-        canonicalTagMode: 1,
-        metaLinkText: "Hello Test 1",
-        metaTitle: "Meta Title Text",
-        metaKeywords: "meta,keyword,list",
-        metaDescription: "This is the meta description.",
-      },
-      meta: {
-        contentModelZUID: MODEL_ZUID,
-        createdByUserZUID: USER_ZUID,
+        "pathPart": "new-path", // Change this to your item fields
       },
     });
 

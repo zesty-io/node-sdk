@@ -18,7 +18,7 @@
   "homepage": "https://github.com/zesty-io/node-sdk#readme",
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "test": "npx nyc ava src/actions/*/*.test.js --verbose --timeout=2m",
+    "test": "npx nyc ava --verbose --timeout=2m",
     "release": "npm test && npm publish --access public"
   },
   "engines": {

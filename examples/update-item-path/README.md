@@ -22,7 +22,7 @@ npm install
 
 ### Run Example
 
-*Before running the example you will need to change the model and field references as noted in the example `index.js`.*
+*Before running the example you will need to change the model and item references as noted in the example `index.js`.*
 ```
 npm run start
 ```
@@ -32,13 +32,13 @@ If successful you should see output in terminal that looks like this;
 {
   statusCode: 200,
   _meta: {
-    timestamp: '2024-03-13T09:48:18.244392995Z',
+    timestamp: '2024-03-14T13:25:08.65024201Z',
     totalResults: 2,
     start: 0,
     offset: 0,
     limit: 2
   },
-  data: { ZUID: '7-96e1c7efd2-sbjfjm', version_zuid: '9-ecaecca1cc-db45jm' }
+  data: { ZUID: '7-96ee9e9ef8-cgdmbb', version_zuid: '9-cef5f1b185-cs4p52' }
 }
 ```
 

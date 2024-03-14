@@ -19,13 +19,22 @@ const sdk = require("@zesty-io/sdk");
   const ITEM_ZUID = process.env.IMPORT_ITEM_ZUID; // Change this to the item ZUID on your instance
 
   try {
-    const res = await zesty.instance.patchItem(MODEL_ZUID, ITEM_ZUID, {
-      data: {
-        "field_1": "Hello Test 1", // Change this to your item fields
-      },
-    });
+    const getItemRes = await zesty.instance.findItem(ITEM_ZUID);
+    const item = getItemRes.data[0];
 
-    console.log(util.inspect(res, false, null));
+    const publishItemRes = await zesty.instance.publishItem(
+      MODEL_ZUID,
+      item.meta.ZUID,
+      item.meta.version
+    );
+
+    const unpublishItemRes = await zesty.instance.unpublishItem(
+      MODEL_ZUID,
+      publishItemRes.data.itemZUID,
+      publishItemRes.data.ZUID
+    );
+
+    console.log(util.inspect(unpublishItemRes, false, null));
   } catch (err) {
     console.trace(err);
   }

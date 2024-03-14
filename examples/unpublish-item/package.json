@@ -1,0 +1,16 @@
+{
+  "name": "import-example",
+  "version": "1.0.0",
+  "description": "Example of importing content into zesty.io using the node-sdk",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Zesty.io",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "@zesty-io/sdk": "^0.0.12"
+  }
+}
