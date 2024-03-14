@@ -1,6 +1,6 @@
 # Example Content Import
 
-> This is an example of importing content into a Zesty.io instance using the [`node-sdk`](https://github.com/zesty-io/node-sdk)
+> This is an example of updating a content item's in a Zesty.io instance using the [`node-sdk`](https://github.com/zesty-io/node-sdk)
 
 
 ### Create an Environment File
@@ -22,7 +22,7 @@ npm install
 
 ### Run Example
 
-*Before running the example you will need to change the user, model and field references as noted in the example `index.js`.*
+*Before running the example you will need to change the model and item references as noted in the example `index.js`.*
 ```
 npm run start
 ```
@@ -30,16 +30,16 @@ npm run start
 If successful you should see output in terminal that looks like this;
 ```
 {
-  statusCode: 201,
+  statusCode: 200,
   _meta: {
-    timestamp: '2020-04-14T22:24:34.540432415Z',
-    totalResults: 1,
+    timestamp: '2024-03-14T13:25:08.65024201Z',
+    totalResults: 2,
     start: 0,
     offset: 0,
-    limit: 1
+    limit: 2
   },
-  data: { ZUID: '7-a8b49e9f88-6v6fw0' }
+  data: { ZUID: '7-96ee9e9ef8-cgdmbb', version_zuid: '9-cef5f1b185-cs4p52' }
 }
 ```
 
-and there should be a new item shown in the model you setup on your instance.
+and the data passed for the selected model item should be updated.

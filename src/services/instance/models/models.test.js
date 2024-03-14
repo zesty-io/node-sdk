@@ -9,7 +9,7 @@ const moment = require("moment");
 //   fs.readFileSync(`./test/fixtures/${ITEM_ZUID}.json`).toString()
 // );
 
-test.beforeEach(authContext);
+test.before(authContext);
 
 // Models
 test("fetchModels:200", async t => {

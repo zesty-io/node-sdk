@@ -1,6 +1,6 @@
 /**
  * Your ZESTY_INSTANCE_TOKEN should be stored outside of your codebase
- * and loaded via an envrionment variable since this is a private secret
+ * and loaded via an environment variable since this is a private secret
  */
 require("dotenv").config({
   path: "../../.env", // Change this path to your .env file location

@@ -3,11 +3,14 @@
 const Service = require("../service");
 const Models = require("./models");
 const Fields = require("./fields");
+const Links = require("./links");
 const Items = require("./items");
+const Redirects = require("./redirects");
 const Settings = require("./settings");
 const AuditLogs = require("./audit-logs");
 const HeadTags = require("./head-tags");
 const Stylesheets = require("./stylesheets");
+const Variables = require("./variables");
 const Views = require("./views");
 
 /**
@@ -33,11 +36,14 @@ let mix = (superclass) => new MixinBuilder(superclass);
 module.exports = class Instance extends mix(Service).with(
   Models.mixin,
   Fields.mixin,
+  Links.mixin,
   Items.mixin,
   Settings.mixin,
+  Redirects.mixin,
   AuditLogs.mixin,
   HeadTags.mixin,
   Stylesheets.mixin,
+  Variables.mixin,
   Views.mixin
 ) {
   constructor(instanceZUID, token, options = {}) {
@@ -58,18 +64,18 @@ module.exports = class Instance extends mix(Service).with(
 
     // TODO retire these endpoints
     this.legacy = new Service(sitesServiceURL, token);
-    this.legacy.API = {
-      ...Items.legacy.API,
-    };
 
     this.API = {
       ...Models.API,
       ...Fields.API,
+      ...Links.API,
       ...Items.API,
+      ...Redirects.API,
       ...Settings.API,
       ...AuditLogs.API,
       ...HeadTags.API,
       ...Stylesheets.API,
+      ...Variables.API,
       ...Views.API,
     };
   }
