@@ -1,0 +1,55 @@
+name: Ci
+
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [18, 20, 22]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+        # Reusable workflow
+      - name: Authenticate in Gcloud
+        uses: ./.github/actions/gcloud
+        with:
+          credentials_json: ${{ secrets.GCP_DEV_SA_KEY }}
+          project_id: zesty-dev
+          modules_token: ${{ secrets.GO_MODULES_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Write the .env file
+        run: |
+          echo '${{ secrets.ENV_FILE }}' > .env
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: 🧪 Run unit tests
+        run: npm run test
+
+  tests-pass:
+    needs: [build-test]
+
+    if: always()
+    runs-on: ubuntu-latest
+    name: 🚀🚀🚀 Ok to Merge 😎 👍👍👍
+    steps:
+      - run: exit 1
+        if: ${{ always() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled')) }}

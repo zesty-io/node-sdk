@@ -1,0 +1,38 @@
+name: gcloud
+description: gcloud authentication
+
+inputs:
+  credentials_json:
+    description: "The JSON key for authenticating with Google Cloud."
+    required: true
+  project_id:
+    description: "The Google Cloud project ID."
+    required: true
+  modules_token:
+    description: "The token for accessing private modules."
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: ✅ Checkout code
+      uses: actions/checkout@v4
+
+    - name: 😈 Auth with Gcloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ inputs.credentials_json }}
+
+    - name: 🔧 Set up Gcloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ inputs.project_id }}
+
+    - name: 🐳 Register gcloud as a Docker credential helper
+      shell: bash
+      run: gcloud auth configure-docker
+
+    - name: 🥷 Granting Private Modules Access
+      shell: bash
+      run: |
+        git config --global url."https://${{ inputs.modules_token }}:x-oauth-basic@github.com/zesty-io".insteadOf "https://github.com/zesty-io"
