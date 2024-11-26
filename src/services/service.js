@@ -127,7 +127,9 @@ module.exports = class Service {
         if (res.status < 500) {
           return res.json().then((data) => {
             if (res.status != 200 && res.status != 201) {
-              console.error(data);
+              if (process.env.DEBUG) {
+                console.error(data);
+              }
             }
             return {
               statusCode: res.status,
