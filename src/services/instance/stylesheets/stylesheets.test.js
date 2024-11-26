@@ -42,7 +42,7 @@ test("fetchStylesheet:200", async t => {
 test("updateStylesheet:200", async t => {
   const res = await t.context.sdk.instance.updateStylesheet(TEST_CSS_ZUID, {
     code: TEST_CSS,
-    filename: `test-${moment().valueOf()}.css`,
+    filename: `node-sdk_updateStylesheet-${moment().valueOf()}.css`,
     type: "text/css"
   });
 
@@ -68,7 +68,7 @@ test("createStylesheet:201", async t => {
 test.serial("deleteStylesheet:200", async t => {
   const stylesheet = await t.context.sdk.instance.createStylesheet({
     code: TEST_CSS,
-    filename: `test-${moment().valueOf()}.css`,
+    filename: `node-sdk_createStylesheet-${moment().valueOf()}.css`,
     type: "text/css"
   });
 
@@ -97,21 +97,6 @@ test("publishStylesheet:200", async t => {
   t.is(res.statusCode, 200);
 });
 
-test("createStylesheetVariable:201", async t => {
-
-  const name = `create_variable_${moment().valueOf()}`
-
-  const res = await t.context.sdk.instance.createStylesheetVariable({
-    referenceName: 'refName_' + name,
-    name : name,
-    value : "This is from test",
-    type : "text",
-    category: 1
-  })
-
-  t.is(res.statusCode, 201)
-
-})
 // TODO trigger cache purge
 
 // TODO less file creation

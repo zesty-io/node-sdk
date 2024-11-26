@@ -9,7 +9,7 @@ const { TEST_VIEW_ZUID, TEST_PREVIEW } = process.env;
 const TEST_VIEW = fs.readFileSync(`./test/fixtures/view.html`).toString();
 
 const authContext = require("../../../../test/helpers/auth-context");
-const { resolve } = require("path");
+// const { resolve } = require("path");
 test.before(authContext);
 
 test("validation", async (t) => {
@@ -85,14 +85,14 @@ test("createView:201", async (t) => {
   t.truthy(res.data.ZUID);
 });
 
-test("updateView:200", (t) => {
+test("updateView:200", async (t) => {
   const now = moment().valueOf();
 
   return t.context.sdk.instance
     .updateView(TEST_VIEW_ZUID, {
       code: `<h1>404 Page Not Found</h1><p>${now}</p>`,
     })
-    .then((res) => {
+    .then(async (res) => {
       t.is(res.statusCode, 200);
       t.truthy(res.data.ZUID);
 

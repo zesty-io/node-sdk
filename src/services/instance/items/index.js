@@ -18,20 +18,14 @@ module.exports = {
 
     createItem: "/content/models/MODEL_ZUID/items",
     updateItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
+    patchItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
     publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
-    unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
+    unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings/VERSION_ZUID",
 
     // NOTE should this be in a separate `Search` module?
     findItem: "/search/items?q=SEARCH_TERM", // Undocumented
-  },
-  legacy: {
-    API: {
-      // TODO migrate legacy endpoints to new api
-      unpublishItem:
-        "/content/items/ITEM_ZUID/publish-schedule/PUBLISHING_ZUID",
-    },
   },
   mixin: (superclass) =>
     class Item extends superclass {
@@ -239,6 +233,33 @@ module.exports = {
         );
       }
 
+      async patchItem(modelZUID, itemZUID, payload) {
+        if (!modelZUID) {
+          throw new Error(
+            "SDK:Instance:patchItem() missing required `modelZUID` argument"
+          );
+        }
+        if (!itemZUID) {
+          throw new Error(
+            "SDK:Instance:patchItem() missing required `itemZUID` argument"
+          );
+        }
+        if (!payload) {
+          throw new Error(
+            "SDK:Instance:patchItem() missing required `payload` argument"
+          );
+        }
+        return await this.patchRequest(
+          this.interpolate(this.API.patchItem, {
+            MODEL_ZUID: modelZUID,
+            ITEM_ZUID: itemZUID,
+          }),
+          {
+            payload,
+          }
+        );
+      }
+
       async publishItem(
         modelZUID,
         itemZUID,
@@ -333,12 +354,7 @@ module.exports = {
         return results;
       }
 
-      async unpublishItem(
-        modelZUID,
-        itemZUID,
-        publishZUID,
-        offlineAt = moment().format(UTC_FORMAT)
-      ) {
+      async unpublishItem(modelZUID, itemZUID, versionZUID) {
         if (!modelZUID) {
           throw new Error(
             "SDK:Instance:unpublishItem() missing required `modelZUID` argument"
@@ -349,30 +365,19 @@ module.exports = {
             "SDK:Instance:unpublishItem() missing required `itemZUID` argument"
           );
         }
-
-        if (!publishZUID) {
-          const res = await this.getItemPublishings(modelZUID, itemZUID);
-          if (res.data.length) {
-            publishZUID = res.data[0].ZUID;
-          } else {
-            throw new Error(
-              `No publishing records found for itemZUID: ${itemZUID}`
-            );
-          }
+        if (!versionZUID) {
+          throw new Error(
+            "SDK:Instance:unpublishItem() missing required `versionZUID` argument"
+          );
         }
 
-        const url = this.legacy.interpolate(this.legacy.API.unpublishItem, {
-          MODEL_ZUID: modelZUID,
-          ITEM_ZUID: itemZUID,
-          PUBLISHING_ZUID: publishZUID,
-        });
-
-        return await this.legacy.patchRequest(url, {
-          usesCookieAuth: true,
-          payload: {
-            take_offline_at: offlineAt,
-          },
-        });
+        return await this.deleteRequest(
+          this.interpolate(this.API.unpublishItem, {
+            MODEL_ZUID: modelZUID,
+            ITEM_ZUID: itemZUID,
+            VERSION_ZUID: versionZUID
+          })
+        );
       }
 
       async findItem(query) {

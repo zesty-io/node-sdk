@@ -4,10 +4,11 @@ module.exports = {
   API: {
     getWebHeaders: "/web/headers",
     getHeadTags: "/web/headtags",
-    getHeadTag: "/web/headtags/HEADTAG_ZUID"
-    // deleteHeadTag: "/web/headtags/HEADTAG_ZUID",
-    // updateHeadTag: "/web/headtags/HEADTAG_ZUID",
-    // createHeadTag: "/web/headtags"
+    getHeadTag: "/web/headtags/HEADTAG_ZUID",
+    createHeadTag: "/web/headtags",
+    updateHeadTag: "/web/headtags/HEADTAG_ZUID",
+    patchHeadTag: "/web/headtags/HEADTAG_ZUID",
+    deleteHeadTag: "/web/headtags/HEADTAG_ZUID"
   },
   mixin: superclass =>
     class extends superclass {
@@ -26,8 +27,79 @@ module.exports = {
           );
         }
         return await this.getRequest(
-          this.interpolate(this.API.fetchAuditLog, {
+          this.interpolate(this.API.getHeadTag, {
             HEADTAG_ZUID: headTagZUID
+          })
+        );
+      }
+
+      async createHeadTag(payload) {
+        if(!payload){
+          throw new Error(
+            "SDK:Instance:createHeadTag() missing required `payload` argument"
+          );
+        }
+
+        return await this.postRequest(
+            this.API.createHeadTag,
+            {
+              payload
+            }
+        );
+      }
+
+      async updateHeadTag(headtagZUID, payload) {
+        if (!headtagZUID) {
+          throw new Error(
+            "SDK:Instance:updateHeadTag() missing required `headtagZUID` argument"
+          );
+        }
+
+        if (!payload) {
+          throw new Error(
+            "SDK:Instance:updateHeadTag() missing required `payload` argument"
+          );
+        }
+        return await this.putRequest(
+          this.interpolate(this.API.updateHeadTag, {
+            HEADTAG_ZUID: headtagZUID
+          }), {
+            payload
+          }
+        );
+      }
+
+      async patchHeadTag(headtagZUID, payload) {
+        if (!headtagZUID) {
+          throw new Error(
+            "SDK:Instance:patchHeadTag() missing required `headtagZUID` argument"
+          );
+        }
+
+        if (!payload) {
+          throw new Error(
+            "SDK:Instance:patchHeadTag() missing required `payload` argument"
+          );
+        }
+        return await this.patchRequest(
+          this.interpolate(this.API.patchHeadTag, {
+            HEADTAG_ZUID: headtagZUID
+          }), {
+            payload
+          }
+        );
+      }
+
+      async deleteHeadTag(headtagZUID) {
+        if (!headtagZUID) {
+          throw new Error(
+            "SDK:Instance:patchHeadTag() missing required `headtagZUID` argument"
+          );
+        }
+
+        return await this.deleteRequest(
+          this.interpolate(this.API.deleteHeadTag, {
+            HEADTAG_ZUID: headtagZUID
           })
         );
       }
