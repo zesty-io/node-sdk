@@ -9,27 +9,27 @@ module.exports = class Media extends Service {
     const baseAPI =
       options.mediaAPIURL ||
       process.env.ZESTY_MEDIA_API ||
-      `https://svc.zesty.io`;
+      `https://`;
 
     super(baseAPI, token);
 
     this.API = {
-      fetchBin: "/media-manager-service/bin/BIN_ZUID",
-      fetchBins: "/media-manager-service/site/SITE_ID/bins",
-      updateBin: "/media-manager-service/bin/BIN_ZUID",
+      fetchBin: "media-manager.api.zesty.io/bin/BIN_ZUID",
+      fetchBins: "media-manager.api.zesty.io/site/SITE_ID/bins",
+      updateBin: "media-manager.api.zesty.io/bin/BIN_ZUID",
 
-      fetchFile: "/media-manager-service/file/FILE_ZUID",
-      fetchFiles: "/media-manager-service/bin/BIN_ZUID/files",
+      fetchFile: "media-manager.api.zesty.io/file/FILE_ZUID",
+      fetchFiles: "media-manager.api.zesty.io/bin/BIN_ZUID/files",
       createFile:
-        "/media-storage-service/upload/STORAGE_PROVIDER/STORAGE_LOCATION",
-      updateFile: "/media-manager-service/file/FILE_ZUID",
-      deleteFile: "/media-manager-service/file/FILE_ZUID",
+        "media-storage.api.zesty.io/upload/STORAGE_PROVIDER/STORAGE_LOCATION",
+      updateFile: "media-manager.api.zesty.io/file/FILE_ZUID",
+      deleteFile: "media-manager.api.zesty.io/file/FILE_ZUID",
 
-      fetchGroup: "/media-manager-service/group/GROUP_ZUID",
-      fetchGroups: "/media-manager-service/bin/BIN_ZUID/groups",
-      createGroup: "/media-manager-service/group",
-      updateGroup: "/media-manager-service/group/GROUP_ZUID",
-      deleteGroup: "/media-manager-service/group/GROUP_ZUID",
+      fetchGroup: "media-manager.api.zesty.io/group/GROUP_ZUID",
+      fetchGroups: "media-manager.api.zesty.io/bin/BIN_ZUID/groups",
+      createGroup: "media-manager.api.zesty.io/group",
+      updateGroup: "media-manager.api.zesty.io/group/GROUP_ZUID",
+      deleteGroup: "media-manager.api.zesty.io/group/GROUP_ZUID",
     };
 
     // Needed to support lookup of instance ZUID for legacy API support
