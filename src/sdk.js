@@ -19,7 +19,7 @@ module.exports = class SDK {
     }
   }
 
-  init(token) {
+  async init(token) {
     this.token = token;
 
     this.auth = new Auth(this.options);
@@ -36,19 +36,18 @@ module.exports = class SDK {
       }
     }
 
-    // return this.auth
-    //   .verifyToken(this.token)
-    //   .then((res) => {
-    //     if (res.statusCode !== 200) {
-    //       throw res;
-    //     } else {
-    //       return res;
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("init: catch: ", err);
-    //     throw err;
-    //   });
+    try {
+      const res = await this.auth.verifyToken(this.token);
+      if (res.statusCode !== 200) {
+        throw new Error(
+          `Token verification failed with status: ${res.statusCode}`
+        );
+      }
+      return res;
+    } catch (err) {
+      console.error("init: catch:", err);
+      throw err;
+    }
   }
 
   setToken(token) {
