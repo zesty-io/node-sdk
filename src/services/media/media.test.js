@@ -61,7 +61,7 @@ test("createFile:201", async (t) => {
   t.is(res.data[0].type, "file");
   t.is(
     res.data[0].url,
-    `https://dg1wqtbj.media.zestyio.com/${res.data[0].filename}`
+    `https://8xbq19z1.media.zestyio.com/${res.data[0].filename}`
   );
 });
 
@@ -77,7 +77,7 @@ test("updateFile:200", async (t) => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
   t.is(res.data[0].filename, fileName);
-  t.is(res.data[0].url, `https://dg1wqtbj.media.zestyio.com/${fileName}`);
+  t.is(res.data[0].url, `https://8xbq19z1.media.zestyio.com/${fileName}`);
 });
 
 test("deleteFile:200", async (t) => {
