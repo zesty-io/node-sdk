@@ -6,7 +6,7 @@ const test = require("ava");
 const moment = require("moment");
 
 const authContext = require("../../../test/helpers/auth-context");
-test.beforeEach(authContext);
+test.before(authContext);
 
 test("getBins:200", async (t) => {
   const res = await t.context.sdk.media.getBins();

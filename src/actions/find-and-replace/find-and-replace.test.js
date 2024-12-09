@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const test = require("ava");
 const authContext = require("../../../test/helpers/auth-context");
-test.beforeEach(authContext);
+test.before(authContext);
 
 const MODEL_ZUID = "6-a8bae2f4d7-rffln5";
 const FIELD_NAME = "content";
