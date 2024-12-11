@@ -22,7 +22,7 @@ module.exports = {
     deleteItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID",
 
     publishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings",
-    unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings/VERSION_ZUID",
+    unpublishItem: "/content/models/MODEL_ZUID/items/ITEM_ZUID/publishings/PUBLISH_ZUID",
 
     // NOTE should this be in a separate `Search` module?
     findItem: "/search/items?q=SEARCH_TERM", // Undocumented
@@ -354,7 +354,7 @@ module.exports = {
         return results;
       }
 
-      async unpublishItem(modelZUID, itemZUID, versionZUID) {
+      async unpublishItem(modelZUID, itemZUID, publishZUID) {
         if (!modelZUID) {
           throw new Error(
             "SDK:Instance:unpublishItem() missing required `modelZUID` argument"
@@ -365,9 +365,9 @@ module.exports = {
             "SDK:Instance:unpublishItem() missing required `itemZUID` argument"
           );
         }
-        if (!versionZUID) {
+        if (!publishZUID) {
           throw new Error(
-            "SDK:Instance:unpublishItem() missing required `versionZUID` argument"
+            "SDK:Instance:unpublishItem() missing required `publishZUID` argument"
           );
         }
 
@@ -375,7 +375,7 @@ module.exports = {
           this.interpolate(this.API.unpublishItem, {
             MODEL_ZUID: modelZUID,
             ITEM_ZUID: itemZUID,
-            VERSION_ZUID: versionZUID
+            PUBLISH_ZUID: publishZUID
           })
         );
       }

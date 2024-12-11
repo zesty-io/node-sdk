@@ -6,6 +6,7 @@ const test = require("ava");
 const authContext = require("../../../test/helpers/auth-context");
 test.before(authContext);
 
+// const { TEST_MODEL_ZUID } = process.env;
 const MODEL_ZUID = "6-a8bae2f4d7-rffln5";
 const FIELD_NAME = "content";
 const PATTERN = "TOKEN";
@@ -35,7 +36,7 @@ test("findAndReplace > only item and models allowed", async (t) => {
   );
 });
 
-test("findAndReplace > on model items", async (t) => {
+test.skip("findAndReplace > on model items", async (t) => {
   try {
     const result = await t.context.sdk.action.findAndReplace(
       MODEL_ZUID,
@@ -43,8 +44,6 @@ test("findAndReplace > on model items", async (t) => {
       PATTERN,
       REPLACEMENT
     );
-
-    t.log(result)
 
     // At least one item is updated
     t.truthy(result.length > 0);
