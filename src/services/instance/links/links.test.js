@@ -42,10 +42,10 @@ test("updateLink:200", async(t) => {
   const res = await t.context.sdk.instance.updateLink(
     process.env.TEST_LINK_ZUID,
     {
-      type : "internal",
+      type : "external",
       parentZuid : "0",
       label: name,
-      target: process.env.TEST_ITEM_ZUID
+      target: "https://zesty.io"
     }
   )
   t.is(res.statusCode, 200);
