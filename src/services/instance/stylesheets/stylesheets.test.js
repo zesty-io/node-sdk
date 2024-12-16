@@ -52,7 +52,7 @@ test("updateStylesheet:200", async t => {
 });
 
 test("createStylesheet:201", async t => {
-  const res = await t.context.sdk.instance.createStylesheet({
+  let res = await t.context.sdk.instance.createStylesheet({
     code: TEST_CSS,
     filename: `test-${moment().valueOf()}.css`,
     type: "text/css"
@@ -61,6 +61,12 @@ test("createStylesheet:201", async t => {
   t.is(res.statusCode, 201);
   t.is(res.data.version, 1); // Newly created resource should have a version of 1
   t.truthy(res.data.ZUID);
+
+  res = await t.context.sdk.instance.deleteStylesheet(
+    res.data.ZUID
+  );
+
+  t.is(res.statusCode, 200);
 });
 
 // Ran serially to avoid non-unique filenames.

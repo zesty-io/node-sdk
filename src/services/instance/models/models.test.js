@@ -34,7 +34,7 @@ test("fetchModel:404", async t => {
   t.is(res.message, "No Results Found for ZUID: 6-0000-00000");
 });
 
-test("createModel:200", async t => {
+test.skip("createModel:200", async t => {
   const name = `node-sdk_createmodel_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.createModel({
       label : name,

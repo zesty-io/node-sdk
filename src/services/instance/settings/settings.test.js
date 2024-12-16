@@ -28,7 +28,7 @@ test("fetchSetting:200", async t => {
 test("createSetting:201", async t => {
   const name = `setting_name_${moment().valueOf()}`;
   const group = `setting_group_${moment().valueOf()}`;
-  const res = await t.context.sdk.instance.createSetting({
+  let res = await t.context.sdk.instance.createSetting({
     category : group,
     keyFriendly : name,
     key : name,
@@ -41,6 +41,14 @@ test("createSetting:201", async t => {
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+
+  const newSettingZUID = res.data.ZUID;
+  
+  res = await t.context.sdk.instance.deleteSetting(
+    newSettingZUID
+  );
+
+  t.is(res.statusCode, 200);
 });
 
 test("updateSetting:200", async t => {
@@ -49,7 +57,8 @@ test("updateSetting:200", async t => {
     process.env.TEST_SETTING_ZUID,
     {
       category : "twitter",
-      key : name
+      key : name,
+      options: "0,1"
     }
   );
 

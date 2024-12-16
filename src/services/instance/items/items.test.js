@@ -88,14 +88,14 @@ test("getItemVersion:200", async (t) => {
   t.is(Number(res.data.meta.version), Number(allItemVersions.data[0].meta.version));
 });
 
-test("createItem:201", async (t) => {
-  const subtitle = `node-sdk:createItem:${moment().valueOf()}`;
+test.serial("createItem:201", async (t) => {
+  const title = `node-sdk:createItem:${moment().valueOf()}`;
   let res = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      subtitle: subtitle,
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(subtitle),
+      pathPart: t.context.sdk.instance.formatPath(title),
     }
   });
 
@@ -124,13 +124,13 @@ test.serial("updateItem:200", async (t) => {
 });
 
 test.serial("patchItem:200", async (t) => {
-  const subtitle = `node-sdk_patchItem_${moment().valueOf()}`
+  const title = `node-sdk_patchItem_${moment().valueOf()}`
   const res = await t.context.sdk.instance.patchItem(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
     {
       "data": {
-        "subtitle": subtitle
+        "title": title
       }
     }
   );
@@ -138,15 +138,15 @@ test.serial("patchItem:200", async (t) => {
   t.is(res.data.ZUID, TEST_ITEM_ZUID);
 });
 
-test("publishItem:201", async (t) => {
+test.serial("publishItem:201", async (t) => {
   // Create a new item
-  const subtitle = `node-sdk:createItem:${moment().valueOf()}`;
+  const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      subtitle: subtitle,
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(subtitle),
+      pathPart: t.context.sdk.instance.formatPath(title),
     }
   });
 
@@ -198,13 +198,13 @@ test("publishItems:200", async (t) => {
 
 test("unpublishItem:200", async (t) => {
   // Create a new item
-  const subtitle = `node-sdk:createItem:${moment().valueOf()}`;
+  const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      subtitle: subtitle,
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(subtitle),
+      pathPart: t.context.sdk.instance.formatPath(title),
     }
   });
 
@@ -265,19 +265,19 @@ test("findItem:200", async (t) => {
 
 // Upsert: update existing item
 test("upsertItem:200", async (t) => {
-  const EXISTING_PATH = "biking-in-austin";
+  const EXISTING_PATH = "nodesdktest";
   const res = await t.context.sdk.instance.upsertItem(
     TEST_MODEL_ZUID,
     EXISTING_PATH,
     {
       "data": {
-        "subtitle": EXISTING_PATH
+        "title": EXISTING_PATH
       },
       "meta": {
-        "masterZUID": "7-d285fce4b7-hcz2g8"
+        "masterZUID": "7-fed58fc7cd-kskgwm"
       },
       "web": {
-        "pathPart": `biking-in-austin-${moment().valueOf()}`,
+        "pathPart": `node-sdk-test-model-${moment().valueOf()}`,
       }
     }
   );
@@ -288,14 +288,14 @@ test("upsertItem:200", async (t) => {
 
 // Upsert: create new item
 test("upsertItem:201", async (t) => {
-  const subtitle = `node-sdk:upsertItem:${moment().valueOf()}`;
-  const pathPart = t.context.sdk.instance.formatPath(subtitle);
+  const title = `node-sdk:upsertItem:${moment().valueOf()}`;
+  const pathPart = t.context.sdk.instance.formatPath(title);
   let res = await t.context.sdk.instance.upsertItem(
     TEST_MODEL_ZUID,
     pathPart,
     {
       data: {
-        subtitle,
+        title,
       },
       meta: {
         contentModelZUID: "6-aa7788-9dhmdf",
@@ -324,13 +324,13 @@ test("upsertItem:201", async (t) => {
 });
 
 test("deleteItem:200", async (t) => {
-  const subtitle = `node-sdk:deleteItem:${moment().valueOf()}`;
+  const title = `node-sdk:deleteItem:${moment().valueOf()}`;
   let res = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
-      subtitle: subtitle,
+      title: title,
     },
     web: {
-      pathPart: t.context.sdk.instance.formatPath(subtitle),
+      pathPart: t.context.sdk.instance.formatPath(title),
     },
   });
 
