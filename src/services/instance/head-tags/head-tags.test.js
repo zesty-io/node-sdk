@@ -34,7 +34,7 @@ test("getHeadTag:200", async t => {
 
 test("createHeadTag:201", async t => {
   const name = `node-sdk_createHeadtag_${moment().valueOf()}`;
-  const res = await t.context.sdk.instance.createHeadTag(
+  let res = await t.context.sdk.instance.createHeadTag(
     {
       type: "script",
 			attributes: {
@@ -47,6 +47,14 @@ test("createHeadTag:201", async t => {
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+
+  const newHeadtagZUID = res.data.ZUID;
+
+  res = await t.context.sdk.instance.deleteHeadTag(
+    newHeadtagZUID
+  );
+
+  t.is(res.statusCode, 200);
 });
 
 test("updateHeadTag:200", async(t) => {
