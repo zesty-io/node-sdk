@@ -12,6 +12,7 @@ const HeadTags = require("./head-tags");
 const Stylesheets = require("./stylesheets");
 const Variables = require("./variables");
 const Views = require("./views");
+const Langs = require("./langs");
 
 /**
   Utility class to combine mixins
@@ -44,7 +45,8 @@ module.exports = class Instance extends mix(Service).with(
   HeadTags.mixin,
   Stylesheets.mixin,
   Variables.mixin,
-  Views.mixin
+  Views.mixin,
+  Langs.mixin
 ) {
   constructor(instanceZUID, token, options = {}) {
     const baseAPI =
@@ -77,6 +79,7 @@ module.exports = class Instance extends mix(Service).with(
       ...Stylesheets.API,
       ...Variables.API,
       ...Views.API,
+      ...Langs.API
     };
   }
 
