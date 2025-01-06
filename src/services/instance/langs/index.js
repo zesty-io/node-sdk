@@ -2,15 +2,19 @@
 
 module.exports = {
   API: {
-    fetchLangs: "/env/langs",
+    fetchLangs: "/env/langs?type=TYPE",
     createLang: "/env/langs",
     updateLang: "/env/langs/LANGUAGE_CODE?action=ACTION",
     deleteLang: "/env/langs/LANGUAGE_CODE?softDelete=DELETE_ACTION"
   },
   mixin: superclass =>
     class Setting extends superclass {
-      async fetchLangs() {
-        return await this.getRequest(this.API.fetchLangs);
+      async fetchLangs(type = "") {
+        return await this.getRequest(
+          this.interpolate(this.API.fetchLangs, {
+            TYPE: type
+          })
+        );
       }
 
       async createLang(payload){
@@ -50,17 +54,11 @@ module.exports = {
         );
       }
 
-      async deleteLang(id, deleteAction) {
+      async deleteLang(id, deleteAction = "false") {
         if (!id) {
           throw new Error(
             "SDK:Instance:deleteLang() missing required `id` argument"
           );
-        }
-
-        if (!deleteAction) {
-            throw new Error(
-              "SDK:Instance:deleteLang() missing deleteAction `action` argument"
-            );
         }
 
         return await this.deleteRequest(

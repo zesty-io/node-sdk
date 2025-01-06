@@ -6,7 +6,15 @@ const authContext = require("../../../../test/helpers/auth-context");
 test.before(authContext);
 
 test.serial("fetchLangs:200", async t => {
-  const res = await t.context.sdk.instance.fetchLangs();
+  let res = await t.context.sdk.instance.fetchLangs();
+
+  t.is(res.statusCode, 200);
+  t.truthy(Array.isArray(res.data));
+  t.truthy(res.data.length);
+
+  res = await t.context.sdk.instance.fetchLangs(
+    "all"
+  );
 
   t.is(res.statusCode, 200);
   t.truthy(Array.isArray(res.data));
