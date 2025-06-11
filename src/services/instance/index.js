@@ -3,8 +3,10 @@
 const Service = require("../service");
 const Models = require("./models");
 const Fields = require("./fields");
+const Labels = require("./labels");
 const Links = require("./links");
 const Items = require("./items");
+const ItemLabelings = require("./item-labelings");
 const Redirects = require("./redirects");
 const Settings = require("./settings");
 const AuditLogs = require("./audit-logs");
@@ -36,8 +38,10 @@ let mix = (superclass) => new MixinBuilder(superclass);
 module.exports = class Instance extends mix(Service).with(
   Models.mixin,
   Fields.mixin,
+  Labels.mixin,
   Links.mixin,
   Items.mixin,
+  ItemLabelings.mixin,
   Settings.mixin,
   Redirects.mixin,
   AuditLogs.mixin,
@@ -68,8 +72,10 @@ module.exports = class Instance extends mix(Service).with(
     this.API = {
       ...Models.API,
       ...Fields.API,
+      ...Labels.API,
       ...Links.API,
       ...Items.API,
+      ...ItemLabelings.API,
       ...Redirects.API,
       ...Settings.API,
       ...AuditLogs.API,
