@@ -3,7 +3,7 @@ require("dotenv").config();
 const test = require("ava");
 
 const authContext = require("../../../test/helpers/auth-context");
-test.beforeEach(authContext);
+test.before(authContext);
 
 test("getInstance:200", async (t) => {
   const res = await t.context.sdk.account.getInstance();

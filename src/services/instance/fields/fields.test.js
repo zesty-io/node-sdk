@@ -27,9 +27,9 @@ test("fetchModelField:200", async t => {
   t.is(res.data.contentModelZUID, process.env.TEST_MODEL_ZUID);
 });
 
-test("createField:201", async(t) => {
+test.skip("createField:201", async(t) => {
   const name = `node-sdk_createItem_${moment().valueOf()}`;
-  const res = await t.context.sdk.instance.createField(
+  let res = await t.context.sdk.instance.createField(
     process.env.TEST_MODEL_ZUID,
     {
       contentModelZUID :  process.env.TEST_MODEL_ZUID,
@@ -41,10 +41,9 @@ test("createField:201", async(t) => {
       }
     }
   )
-  t.is(res.statusCode, 201);
-  t.truthy(res.data.ZUID);
 });
 
+// skip this test to stop for overpopulating the database by adding more columns without deleting them
 test.serial("updateField:200", async(t) => {
   const name = `node-sdk_updateItem_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.updateModelField(
@@ -74,7 +73,9 @@ test.serial("patchField:200", async(t) => {
   t.truthy(res.data.ZUID);
 });
 
-test("deleteField:200", async(t) => {
+ // sentry error: https://zestyio.sentry.io/issues/6012479773/?project=5726446&query=is%3Aunresolved%20issue.priority%3A%5Bhigh%2C%20medium%5D&referrer=issue-stream&statsPeriod=1h&stream_index=2
+ // skip this test as this is only a soft delete to not generate a SQL error in performing the creation of the field
+test.skip("deleteField:200", async(t) => {
   const name = `node-sdk_createItem_${moment().valueOf()}`;
   let res = await t.context.sdk.instance.createField(
     process.env.TEST_MODEL_ZUID,
