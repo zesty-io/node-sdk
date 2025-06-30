@@ -1,6 +1,6 @@
 {
   "data": {
-    "title": "nodesdktest"
+    "title": "node-sdk:updateItem"
   },
   "meta": {
     "contentModelName": null,
@@ -26,7 +26,7 @@
     "metaTitle": "23452345",
     "parentZUID": "",
     "path": "/23452345/",
-    "pathPart": "nodesdktest",
+    "pathPart": "new-item",
     "sitemapPriority": -1,
     "updatedAt": "2019-03-26T20:37:26Z"
   }

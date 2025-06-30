@@ -138,7 +138,7 @@ test.serial("patchItem:200", async (t) => {
   t.is(res.data.ZUID, TEST_ITEM_ZUID);
 });
 
-test.serial("publishItem:201", async (t) => {
+test("publishItem:201", async (t) => {
   // Create a new item
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
@@ -265,7 +265,7 @@ test("findItem:200", async (t) => {
 
 // Upsert: update existing item
 test("upsertItem:200", async (t) => {
-  const EXISTING_PATH = "nodesdktest";
+  const EXISTING_PATH = "new-item";
   const res = await t.context.sdk.instance.upsertItem(
     TEST_MODEL_ZUID,
     EXISTING_PATH,

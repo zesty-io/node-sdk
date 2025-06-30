@@ -5,7 +5,7 @@ const fs = require("fs");
 const test = require("ava");
 const moment = require("moment");
 
-const { TEST_VIEW_ZUID, TEST_PREVIEW, TEST_PREVIEW_LOCK_PASSWORD } = process.env;
+const { TEST_VIEW_ZUID, TEST_PREVIEW } = process.env;
 const TEST_VIEW = fs.readFileSync(`./test/fixtures/view.html`).toString();
 
 const authContext = require("../../../../test/helpers/auth-context");
@@ -98,7 +98,7 @@ test("updateView:200", async (t) => {
 
       return new Promise((resolve, reject) => {
         https
-          .get(`https://${TEST_PREVIEW}/page-does-not-exist?zpw=${TEST_PREVIEW_LOCK_PASSWORD}`, (res) => { // need to utilize preview lock password to get uncached content
+          .get(`https://${TEST_PREVIEW}/this-page-does-not-exist`, (res) => {
             t.is(res.statusCode, 404); // This is the 404 page we are request as such should expect a 404 response
 
             res.setEncoding("utf8");
