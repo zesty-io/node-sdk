@@ -10,7 +10,7 @@ const {
   TEST_MODEL_ZUID,
   TEST_ITEM_ZUID,
   TEST_ITEM_VERSION,
-  TEST_PUBLISH_ZUID,
+  TEST_PUBLISH_ZUID
 } = process.env;
 const TEST_ITEM_JSON = JSON.parse(
   fs.readFileSync(`./test/fixtures/${TEST_ITEM_ZUID}.json`).toString()
@@ -274,7 +274,7 @@ test("upsertItem:200", async (t) => {
         "title": EXISTING_PATH
       },
       "meta": {
-        "masterZUID": "7-fed58fc7cd-kskgwm"
+        "contentModelName": null,
       },
       "web": {
         "pathPart": `node-sdk-test-model-${moment().valueOf()}`,

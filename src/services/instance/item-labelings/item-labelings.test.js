@@ -51,4 +51,11 @@ test.serial("updateItemLabelings:200", async(t) => {
   )
 
   t.is(res.statusCode, 200);
+
+  // clean up created label to allow item publishing
+  res = await t.context.sdk.instance.deleteLabel(
+    labelZuid
+  );
+
+  t.is(res.statusCode, 200);
 });
