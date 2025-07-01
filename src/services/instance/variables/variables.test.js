@@ -29,7 +29,7 @@ test("fetchStylesheetVariable:200", async t => {
 test("createStylesheetVariable:201", async t => {
     const name = `node-sdk_createStylesheetVariable_${moment().valueOf()}`
   
-    const res = await t.context.sdk.instance.createStylesheetVariable(
+    let res = await t.context.sdk.instance.createStylesheetVariable(
         {
             referenceName: name,
             name: name,
@@ -53,6 +53,14 @@ test("createStylesheetVariable:201", async t => {
 
     t.is(res.statusCode, 201);
     t.truthy(res.data.ZUID);
+
+    const newStyleSheetVariableZUID = res.data.ZUID;
+
+    res = await t.context.sdk.instance.deleteStylesheetVariable(
+        newStyleSheetVariableZUID
+    );
+
+    t.is(res.statusCode, 200);
 });
 
 test("updateStylesheetVariable:200", async(t) => {

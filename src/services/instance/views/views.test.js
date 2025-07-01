@@ -96,6 +96,13 @@ test("updateView:200", async (t) => {
       t.is(res.statusCode, 200);
       t.truthy(res.data.ZUID);
 
+      // Need to publish view after updating so that changes will reflect on the production domain
+      const view = await t.context.sdk.instance.getView(TEST_VIEW_ZUID);
+      await t.context.sdk.instance.publishView(
+        TEST_VIEW_ZUID,
+        view.data.version
+      );
+
       return new Promise((resolve, reject) => {
         https
           .get(`https://${TEST_PREVIEW}/this-page-does-not-exist`, (res) => {

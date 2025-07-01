@@ -24,7 +24,7 @@ test("fetchLinks:200", async t => {
 
 test("createLink:201", async(t) => {
   const name = `node-sdk_createLink_${moment().valueOf()}`;
-  const res = await t.context.sdk.instance.createLink(
+  let res = await t.context.sdk.instance.createLink(
     {
       type: "external",
       parentZuid: "0",
@@ -35,6 +35,14 @@ test("createLink:201", async(t) => {
   )
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+
+  const newLinkZUID = res.data.ZUID;
+  
+  res = await t.context.sdk.instance.deleteLink(
+    newLinkZUID
+  );
+
+  t.is(res.statusCode, 200);
 });
 
 test("updateLink:200", async(t) => {
@@ -42,10 +50,10 @@ test("updateLink:200", async(t) => {
   const res = await t.context.sdk.instance.updateLink(
     process.env.TEST_LINK_ZUID,
     {
-      type : "internal",
+      type : "external",
       parentZuid : "0",
       label: name,
-      target: process.env.TEST_ITEM_ZUID
+      target: "https://zesty.io"
     }
   )
   t.is(res.statusCode, 200);

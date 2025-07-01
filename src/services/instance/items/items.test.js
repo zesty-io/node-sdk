@@ -10,7 +10,7 @@ const {
   TEST_MODEL_ZUID,
   TEST_ITEM_ZUID,
   TEST_ITEM_VERSION,
-  TEST_PUBLISH_ZUID,
+  TEST_PUBLISH_ZUID
 } = process.env;
 const TEST_ITEM_JSON = JSON.parse(
   fs.readFileSync(`./test/fixtures/${TEST_ITEM_ZUID}.json`).toString()
@@ -67,31 +67,50 @@ test("getItemVersions:200", async (t) => {
 });
 
 test("getItemVersion:200", async (t) => {
+  const allItemVersions = await t.context.sdk.instance.getItemVersions(
+    TEST_MODEL_ZUID,
+    TEST_ITEM_ZUID
+  );
+  t.is(allItemVersions.statusCode, 200);
+  t.truthy(Array.isArray(allItemVersions.data));
+  t.truthy(allItemVersions.data.length > 0);
+
   const res = await t.context.sdk.instance.getItemVersion(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
-    TEST_ITEM_VERSION
+    allItemVersions.data[0].meta.version
   );
+
   t.is(res.statusCode, 200);
   t.truthy(typeof res.data === "object");
   t.is(res.data.meta.contentModelZUID, TEST_MODEL_ZUID);
   t.is(res.data.meta.ZUID, TEST_ITEM_ZUID);
-  t.is(Number(res.data.meta.version), Number(TEST_ITEM_VERSION));
+  t.is(Number(res.data.meta.version), Number(allItemVersions.data[0].meta.version));
 });
 
-test("createItem:200", async (t) => {
+test.serial("createItem:201", async (t) => {
   const title = `node-sdk:createItem:${moment().valueOf()}`;
-  const res = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
+  let res = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
     data: {
       title: title,
     },
     web: {
       pathPart: t.context.sdk.instance.formatPath(title),
-    },
+    }
   });
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+
+  // Delete item
+  const newItemZUID = res.data.ZUID;
+
+  res = await t.context.sdk.instance.deleteItem(
+    TEST_MODEL_ZUID,
+    newItemZUID
+  );
+
+  t.is(res.statusCode, 200);
 });
 
 test.serial("updateItem:200", async (t) => {
@@ -100,28 +119,26 @@ test.serial("updateItem:200", async (t) => {
     TEST_ITEM_ZUID,
     TEST_ITEM_JSON
   );
-
   t.is(res.statusCode, 200);
   t.is(res.data.ZUID, TEST_ITEM_ZUID);
 });
 
 test.serial("patchItem:200", async (t) => {
-  const name = `node-sdk_patchItem_${moment().valueOf()}`
+  const title = `node-sdk_patchItem_${moment().valueOf()}`
   const res = await t.context.sdk.instance.patchItem(
     TEST_MODEL_ZUID,
     TEST_ITEM_ZUID,
     {
       "data": {
-        "title": name
+        "title": title
       }
     }
   );
-
   t.is(res.statusCode, 200);
   t.is(res.data.ZUID, TEST_ITEM_ZUID);
 });
 
-test("publishItem:200", async (t) => {
+test("publishItem:201", async (t) => {
   // Create a new item
   const title = `node-sdk:createItem:${moment().valueOf()}`;
   const created = await t.context.sdk.instance.createItem(TEST_MODEL_ZUID, {
@@ -130,7 +147,7 @@ test("publishItem:200", async (t) => {
     },
     web: {
       pathPart: t.context.sdk.instance.formatPath(title),
-    },
+    }
   });
 
   t.is(created.statusCode, 201);
@@ -154,6 +171,16 @@ test("publishItem:200", async (t) => {
   t.is(published.statusCode, 201);
   t.is(published.data.itemZUID, item.meta.ZUID);
   t.is(Number(published.data.version), Number(item.meta.version));
+
+  // Delete item
+  const newItemZUID = created.data.ZUID;
+
+  const deleted = await t.context.sdk.instance.deleteItem(
+    TEST_MODEL_ZUID,
+    newItemZUID
+  );
+
+  t.is(deleted.statusCode, 200);
 });
 
 test("publishItems:200", async (t) => {
@@ -178,7 +205,7 @@ test("unpublishItem:200", async (t) => {
     },
     web: {
       pathPart: t.context.sdk.instance.formatPath(title),
-    },
+    }
   });
 
   t.is(created.statusCode, 201);
@@ -213,6 +240,16 @@ test("unpublishItem:200", async (t) => {
   );
 
   t.is(unpublished.statusCode, 200);
+
+  // Delete item
+  const newItemZUID = created.data.ZUID;
+
+  const deleted = await t.context.sdk.instance.deleteItem(
+    TEST_MODEL_ZUID,
+    newItemZUID
+  );
+
+  t.is(deleted.statusCode, 200);
 });
 
 test("findItem:200", async (t) => {
@@ -238,31 +275,9 @@ test("upsertItem:200", async (t) => {
       },
       "meta": {
         "contentModelName": null,
-        "contentModelZUID": "6-a8bae2f4d7-rffln5",
-        "createdAt": "2018-12-27T21:27:04Z",
-        "langID": 1,
-        "listed": true,
-        "masterZUID": "7-8ccddcd6da-6lkf70",
-        "sort": 1,
-        "updatedAt": "2019-03-26T20:37:26Z",
-        "version": 1,
-        "ZUID": "7-8ccddcd6da-6lkf70"
       },
       "web": {
-        "canonicalQueryParamWhitelist": null,
-        "canonicalTagCustomValue": null,
-        "canonicalTagMode": 0,
-        "createdAt": "2019-03-26T20:37:26Z",
-        "createdByUserZUID": "5-84d1e6d4ae-s3m974",
-        "metaDescription": "",
-        "metaKeywords": null,
-        "metaLinkText": "23452345",
-        "metaTitle": "new item",
-        "parentZUID": "7-a1be38-1b42ht",
-        "path": `/new-item-${moment().valueOf()}/`,
-        "pathPart": `new-item-${moment().valueOf()}`,
-        "sitemapPriority": -1,
-        "updatedAt": "2019-03-26T20:37:26Z"
+        "pathPart": `node-sdk-test-model-${moment().valueOf()}`,
       }
     }
   );
@@ -275,7 +290,7 @@ test("upsertItem:200", async (t) => {
 test("upsertItem:201", async (t) => {
   const title = `node-sdk:upsertItem:${moment().valueOf()}`;
   const pathPart = t.context.sdk.instance.formatPath(title);
-  const res = await t.context.sdk.instance.upsertItem(
+  let res = await t.context.sdk.instance.upsertItem(
     TEST_MODEL_ZUID,
     pathPart,
     {
@@ -296,6 +311,16 @@ test("upsertItem:201", async (t) => {
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+
+  // Delete item
+  const newItemZUID = res.data.ZUID;
+
+  res = await t.context.sdk.instance.deleteItem(
+    TEST_MODEL_ZUID,
+    newItemZUID
+  );
+
+  t.is(res.statusCode, 200);
 });
 
 test("deleteItem:200", async (t) => {
