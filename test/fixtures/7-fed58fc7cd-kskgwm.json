@@ -4,15 +4,15 @@
   },
   "meta": {
     "contentModelName": null,
-    "contentModelZUID": "6-aa7788-9dhmdf",
+    "contentModelZUID": "6-fed9f6b2ba-0b491g",
     "createdAt": "2018-12-27T21:27:04Z",
     "langID": 1,
     "listed": true,
-    "masterZUID": "7-780b5a8-823sn7",
+    "masterZUID": "7-fed58fc7cd-kskgwm",
     "sort": 1,
     "updatedAt": "2019-03-26T20:37:26Z",
     "version": 4,
-    "ZUID": "7-780b5a8-823sn7"
+    "ZUID": "7-fed58fc7cd-kskgwm"
   },
   "web": {
     "canonicalQueryParamWhitelist": null,
@@ -26,7 +26,7 @@
     "metaTitle": "23452345",
     "parentZUID": "",
     "path": "/23452345/",
-    "pathPart": "node-sdk-updateitem",
+    "pathPart": "new-item",
     "sitemapPriority": -1,
     "updatedAt": "2019-03-26T20:37:26Z"
   }

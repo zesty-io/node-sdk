@@ -6,7 +6,7 @@ const test = require("ava");
 const moment = require("moment");
 
 const authContext = require("../../../test/helpers/auth-context");
-test.beforeEach(authContext);
+test.before(authContext);
 
 test("getBins:200", async (t) => {
   const res = await t.context.sdk.media.getBins();
@@ -45,6 +45,9 @@ test("createFile:201", async (t) => {
   const opts = {
     title: "Midgar Mass Transit Map",
     fileName: "midgar-transit-map.jpg",
+    user_zuid: "5-a6f8ed9ba3-wd6jlj",
+    bin_id: process.env.TEST_BIN_ZUID,
+    group_id: process.env.TEST_GROUP_ZUID
   };
 
   const res = await t.context.sdk.media.createFile(
@@ -61,7 +64,7 @@ test("createFile:201", async (t) => {
   t.is(res.data[0].type, "file");
   t.is(
     res.data[0].url,
-    `https://dg1wqtbj.media.zestyio.com/${res.data[0].filename}`
+    `https://rc37pfxg.media.zestyio.com/${res.data[0].filename}`
   );
 });
 
@@ -77,7 +80,7 @@ test("updateFile:200", async (t) => {
   t.truthy(Array.isArray(res.data));
   t.truthy(res.data.length > 0);
   t.is(res.data[0].filename, fileName);
-  t.is(res.data[0].url, `https://dg1wqtbj.media.zestyio.com/${fileName}`);
+  t.is(res.data[0].url, `https://rc37pfxg.media.zestyio.com/${fileName}`);
 });
 
 test("deleteFile:200", async (t) => {
@@ -88,6 +91,9 @@ test("deleteFile:200", async (t) => {
   const opts = {
     title: "Midgar Mass Transit Map",
     fileName: "midgar-transit-map.jpg",
+    user_zuid: "5-a6f8ed9ba3-wd6jlj",
+    bin_id: process.env.TEST_BIN_ZUID,
+    group_id: process.env.TEST_GROUP_ZUID
   };
 
   const file = await t.context.sdk.media.createFile(

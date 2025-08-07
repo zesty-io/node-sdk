@@ -25,7 +25,7 @@ test("fetchRedirect:200", async t => {
 
 test("createRedirect:201", async(t) => {
   const name = `node_sdk_createRedirect_${moment().valueOf()}`;
-  const res = await t.context.sdk.instance.createRedirect(
+  let res = await t.context.sdk.instance.createRedirect(
     {
       path: `/test/path/${name}`,
       targetType: "path",
@@ -36,6 +36,14 @@ test("createRedirect:201", async(t) => {
 
   t.is(res.statusCode, 201);
   t.truthy(res.data.ZUID);
+
+  const newRedirectZUID = res.data.ZUID;
+  
+  res = await t.context.sdk.instance.deleteRedirect(
+    newRedirectZUID
+  );
+
+  t.is(res.statusCode, 200);
 });
 
 test("updateRedirect:200", async(t) => {
