@@ -33,10 +33,11 @@ test("authenticated", async (t) => {
 
 test("init with options", async (t) => {
   const opts = {
-    accountsAPIURL: "https://accounts.api.dev.zesty.io/v1/",
-    authURL: "https://auth.api.dev.zesty.io/v1/",
+    accountsAPIURL: "https://accounts.api.dev.zesty.io/v1",
+    authURL: "https://auth.api.dev.zesty.io",
     instancesAPIURL: "https://INSTANCE_ZUID.api.dev.zesty.io/v1",
-    mediaAPIURL: "https://svc.dev.zesty.io",
+    mediaAPIURL: "https://media-manager.api.dev.zesty.io",
+    mediaStorageAPIURL: "https://media-storage.api.dev.zesty.io",
   };
   const token = await getToken();
   const sdk = new SDK(process.env.ZESTY_INSTANCE_ZUID, token, opts);
