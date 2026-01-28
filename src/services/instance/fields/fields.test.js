@@ -76,7 +76,7 @@ test.serial("patchField:200", async(t) => {
 // Field deletion is only a soft-delete so need to also run field hard deletion to stop overpopulating the database by adding more columns without actually deleting them
 test("deleteField:200", async(t) => {
   const name = `node-sdk_createItem_${moment().valueOf()}`;
-  let res = await t.context.sdk.instance.createField(
+  const createRes = await t.context.sdk.instance.createField(
     process.env.TEST_MODEL_ZUID,
     {
       datatype : "text",
@@ -88,19 +88,21 @@ test("deleteField:200", async(t) => {
     }
   )
 
-  t.is(res.statusCode, 201);
-  t.truthy(res.data.ZUID);
-  const newFieldZUID = res.data.ZUID;
+  t.is(createRes.statusCode, 201);
+  t.truthy(createRes.data.ZUID);
+  const newFieldZUID = createRes.data.ZUID;
 
-  res = await t.context.sdk.instance.deleteModelField(
+  const deleteRes = await t.context.sdk.instance.deleteModelField(
     process.env.TEST_MODEL_ZUID,
     newFieldZUID
   );
-  t.is(res.statusCode, 200);
+  t.is(deleteRes.statusCode, 200);
 
-  res = await t.context.sdk.instance.hardDeleteModelField(
+  // hard delete
+  const hardDeleteRes = await t.context.sdk.instance.deleteModelField(
     process.env.TEST_MODEL_ZUID,
-    newFieldZUID
+    newFieldZUID, 
+    true
   );
-  t.is(res.statusCode, 200);
+  t.is(hardDeleteRes.statusCode, 200);
 });
