@@ -7,7 +7,8 @@ module.exports = {
     createFieldPath: "/content/models/MODEL_ZUID/fields",
     updateModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID",
     patchModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID",
-    deleteModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID"
+    deleteModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID",
+    hardDeleteModelField: "/content/models/MODEL_ZUID/fields/FIELD_ZUID?hardDelete=true"
   },
   mixin: superclass =>
     class Field extends superclass {
@@ -131,6 +132,26 @@ module.exports = {
 
         return await this.deleteRequest(
           this.interpolate(this.API.deleteModelField, {
+            MODEL_ZUID: modelZUID,
+            FIELD_ZUID: fieldZUID
+          })
+        );
+      }
+
+      async hardDeleteModelField(modelZUID, fieldZUID) {
+        if (!modelZUID) {
+          throw new Error(
+            "SDK:Instance:deleteModelField() missing required `modelZUID` argument"
+          );
+        }
+        if (!fieldZUID) {
+          throw new Error(
+            "SDK:Instance:deleteModelField() missing required `fieldZUID` argument"
+          );
+        }
+
+        return await this.deleteRequest(
+          this.interpolate(this.API.hardDeleteModelField, {
             MODEL_ZUID: modelZUID,
             FIELD_ZUID: fieldZUID
           })
