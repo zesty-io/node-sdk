@@ -45,7 +45,7 @@ test.skip("createField:201", async(t) => {
 
 // skip this test to stop for overpopulating the database by adding more columns without deleting them
 test.serial("updateField:200", async(t) => {
-  const name = `node-sdk_updateItem_${moment().valueOf()}`;
+  const name = `node_sdk_updateItem_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.updateModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID,
@@ -61,7 +61,7 @@ test.serial("updateField:200", async(t) => {
 });
 
 test.serial("patchField:200", async(t) => {
-  const name = `node-sdk_patchItem_${moment().valueOf()}`;
+  const name = `node_sdk_patchItem_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.patchModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID,
@@ -73,10 +73,10 @@ test.serial("patchField:200", async(t) => {
   t.truthy(res.data.ZUID);
 });
 
-// Field deletion is only a soft-delete so need to skip this test to stop overpopulating the database by adding more columns without actually deleting them
-test.skip("deleteField:200", async(t) => {
-  const name = `node-sdk_createItem_${moment().valueOf()}`;
-  let res = await t.context.sdk.instance.createField(
+// Field deletion is only a soft-delete so need to also run field hard deletion to stop overpopulating the database by adding more columns without actually deleting them
+test("deleteField:200", async(t) => {
+  const name = `node_sdk_createItem_${moment().valueOf()}`;
+  const createRes = await t.context.sdk.instance.createField(
     process.env.TEST_MODEL_ZUID,
     {
       datatype : "text",
@@ -87,15 +87,22 @@ test.skip("deleteField:200", async(t) => {
       }
     }
   )
-  t.is(res.statusCode, 201);
-  t.truthy(res.data.ZUID);
 
-  const newFieldZUID = res.data.ZUID;
+  t.is(createRes.statusCode, 201);
+  t.truthy(createRes.data.ZUID);
+  const newFieldZUID = createRes.data.ZUID;
 
-  res = await t.context.sdk.instance.deleteModelField(
+  const deleteRes = await t.context.sdk.instance.deleteModelField(
     process.env.TEST_MODEL_ZUID,
     newFieldZUID
   );
+  t.is(deleteRes.statusCode, 200);
 
-  t.is(res.statusCode, 200);
+  // hard delete
+  const hardDeleteRes = await t.context.sdk.instance.deleteModelField(
+    process.env.TEST_MODEL_ZUID,
+    newFieldZUID, 
+    true
+  );
+  t.is(hardDeleteRes.statusCode, 200);
 });
