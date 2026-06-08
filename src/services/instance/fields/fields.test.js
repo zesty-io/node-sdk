@@ -45,7 +45,7 @@ test.skip("createField:201", async(t) => {
 
 // skip this test to stop for overpopulating the database by adding more columns without deleting them
 test.serial("updateField:200", async(t) => {
-  const name = `node-sdk_updateItem_${moment().valueOf()}`;
+  const name = `node_sdk_updateItem_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.updateModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID,
@@ -61,7 +61,7 @@ test.serial("updateField:200", async(t) => {
 });
 
 test.serial("patchField:200", async(t) => {
-  const name = `node-sdk_patchItem_${moment().valueOf()}`;
+  const name = `node_sdk_patchItem_${moment().valueOf()}`;
   const res = await t.context.sdk.instance.patchModelField(
     process.env.TEST_MODEL_ZUID,
     process.env.TEST_FIELD_ZUID,
@@ -75,7 +75,7 @@ test.serial("patchField:200", async(t) => {
 
 // Field deletion is only a soft-delete so need to also run field hard deletion to stop overpopulating the database by adding more columns without actually deleting them
 test("deleteField:200", async(t) => {
-  const name = `node-sdk_createItem_${moment().valueOf()}`;
+  const name = `node_sdk_createItem_${moment().valueOf()}`;
   const createRes = await t.context.sdk.instance.createField(
     process.env.TEST_MODEL_ZUID,
     {

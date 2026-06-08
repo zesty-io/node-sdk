@@ -117,7 +117,7 @@ module.exports = {
         );
       }
 
-      async deleteModelField(modelZUID, fieldZUID, hardDelete = "false") {
+      async deleteModelField(modelZUID, fieldZUID, hardDelete = false) {
         if (!modelZUID) {
           throw new Error(
             "SDK:Instance:deleteModelField() missing required `modelZUID` argument"
