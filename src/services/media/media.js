@@ -9,26 +9,32 @@ module.exports = class Media extends Service {
     const baseAPI =
       options.mediaAPIURL ||
       process.env.ZESTY_MEDIA_API ||
-      `https://`;
+      `https://media-manager.api.zesty.io`;
 
     super(baseAPI, token);
 
+    // Base API for media storage/upload
+    this.storageAPI =
+      options.mediaStorageAPIURL ||
+      process.env.ZESTY_MEDIA_STORAGE_API ||
+      `https://media-storage.api.zesty.io`;
+
     this.API = {
-      fetchBin: "media-manager.api.zesty.io/bin/BIN_ZUID",
-      fetchBins: "media-manager.api.zesty.io/site/SITE_ID/bins",
-      updateBin: "media-manager.api.zesty.io/bin/BIN_ZUID",
+      fetchBin: "/bin/BIN_ZUID",
+      fetchBins: "/site/SITE_ID/bins",
+      updateBin: "/bin/BIN_ZUID",
 
-      fetchFile: "media-manager.api.zesty.io/file/FILE_ZUID",
-      fetchFiles: "media-manager.api.zesty.io/bin/BIN_ZUID/files",
-      createFile: "media-storage.api.zesty.io/upload/STORAGE_PROVIDER/STORAGE_LOCATION",
-      updateFile: "media-manager.api.zesty.io/file/FILE_ZUID",
-      deleteFile: "media-manager.api.zesty.io/file/FILE_ZUID",
+      fetchFile: "/file/FILE_ZUID",
+      fetchFiles: "/bin/BIN_ZUID/files",
+      createFile: "/upload/STORAGE_PROVIDER/STORAGE_LOCATION",
+      updateFile: "/file/FILE_ZUID",
+      deleteFile: "/file/FILE_ZUID",
 
-      fetchGroup: "media-manager.api.zesty.io/group/GROUP_ZUID",
-      fetchGroups: "media-manager.api.zesty.io/bin/BIN_ZUID/groups",
-      createGroup: "media-manager.api.zesty.io/group",
-      updateGroup: "media-manager.api.zesty.io/group/GROUP_ZUID",
-      deleteGroup: "media-manager.api.zesty.io/group/GROUP_ZUID",
+      fetchGroup: "/group/GROUP_ZUID",
+      fetchGroups: "/bin/BIN_ZUID/groups",
+      createGroup: "/group",
+      updateGroup: "/group/GROUP_ZUID",
+      deleteGroup: "/group/GROUP_ZUID",
     };
 
     // Needed to support lookup of instance ZUID for legacy API support
@@ -161,6 +167,7 @@ module.exports = class Media extends Service {
         STORAGE_LOCATION: bin.data[0].storage_name,
       }),
       {
+        baseAPI: this.storageAPI,
         isFormData: true,
         payload,
       }

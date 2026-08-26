@@ -93,7 +93,8 @@ module.exports = class Service {
       throw new Error("Missing required `path`. Can not make request.");
     }
 
-    const uri = `${this.baseAPI}${path}`;
+    const base = params.baseAPI || this.baseAPI;
+    const uri = `${base}${path}`;
     const opts = {
       method: params.method,
       headers: {},

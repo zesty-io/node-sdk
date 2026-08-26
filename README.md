@@ -44,6 +44,7 @@ ZESTY_AUTH_API=
 ZESTY_ACCOUNTS_API=
 ZESTY_INSTANCE_API=
 ZESTY_MEDIA_API=
+ZESTY_MEDIA_STORAGE_API=
 ZESTY_COOKIE=
 
 // The included SDK tests require providing resource ZUIDs to run against
